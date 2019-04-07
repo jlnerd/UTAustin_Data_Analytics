@@ -1,0 +1,18 @@
+"0","```r
+df_iris<- read_csv(\"R Tutorial Data Sets/iris.csv\")
+```"
+"1","Missing column names filled in: 'X1' [1]Parsed with column specification:
+cols(
+  X1 = [32mcol_double()[39m,
+  Sepal.Length = [32mcol_double()[39m,
+  Sepal.Width = [32mcol_double()[39m,
+  Petal.Length = [32mcol_double()[39m,
+  Petal.Width = [32mcol_double()[39m,
+  Species = [31mcol_character()[39m
+)
+"
+"0","```r
+df_iris <- subset(df_iris, select = -c(X1))
+View(df_iris)
+print(df_iris)
+```"

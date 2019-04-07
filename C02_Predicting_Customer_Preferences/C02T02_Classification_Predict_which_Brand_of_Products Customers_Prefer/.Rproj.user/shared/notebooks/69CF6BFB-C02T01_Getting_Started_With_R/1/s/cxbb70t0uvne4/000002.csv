@@ -1,0 +1,14 @@
+"0","```r
+predict_lm_cars_vs_distance <- predict(lm_cars_speed_vs_distance,df_testSet)
+print(\"predictions:\")
+```"
+"1","[1] \"predictions:\"
+"
+"0","```r
+predict_lm_cars_vs_distance
+```"
+"1","         1          2          3          4          5          6          7          8 
+-12.596735   7.085622  12.006212  21.847390  31.688568  31.688568  36.609158  36.609158 
+         9         10         11         12         13         14         15 
+ 41.529747  41.529747  56.291515  56.291515  61.212104  61.212104  80.894461 
+"

@@ -1,0 +1,117 @@
+"0","```r
+print(paste(\"NROW(df):\",NROW(df_validation)))
+```"
+"1","[1] \"NROW(df): 5000\"
+"
+"0","```r
+#View(df_validation)
+# Update Data Types
+df_validation$\"elevel\" <- as.factor(df_validation$\"elevel\")
+df_validation$\"car\" <- as.factor(df_validation$\"car\")
+df_validation$\"zipcode\" <- as.factor(df_validation$zipcode)
+df_validation$brand<-as.factor(df_validation$brand)
+Get_to_know_data(df_validation)
+```"
+"1","[1] \"GET TO KNOW:  df_validation\"
+[1] \"fetching summary...\"
+     salary            age        elevel        car          zipcode         credit       brand   
+ Min.   : 20000   Min.   :20.00   0: 989   19     : 278   4      : 592   Min.   :     0   0:4937  
+ 1st Qu.: 52590   1st Qu.:35.00   1: 988   18     : 264   7      : 569   1st Qu.:122311   1:  63  
+ Median : 86221   Median :50.00   2:1017   16     : 262   5      : 565   Median :250974           
+ Mean   : 85794   Mean   :49.94   3:1000   8      : 260   8      : 560   Mean   :249546           
+ 3rd Qu.:118535   3rd Qu.:65.00   4:1006   11     : 259   1      : 549   3rd Qu.:375653           
+ Max.   :150000   Max.   :80.00            5      : 257   3      : 549   Max.   :500000           
+                                           (Other):3420   (Other):1616                            
+[1] \"fetching data structure...\"
+Classes ‘spec_tbl_df’, ‘tbl_df’, ‘tbl’ and 'data.frame':	5000 obs. of  7 variables:
+ $ salary : num  150000 82524 115647 141443 149211 ...
+ $ age    : num  76 51 34 22 56 26 64 50 26 46 ...
+ $ elevel : Factor w/ 5 levels \"0\",\"1\",\"2\",\"3\",..: 2 2 1 4 1 5 4 4 3 4 ...
+ $ car    : Factor w/ 20 levels \"1\",\"2\",\"3\",\"4\",..: 3 8 10 18 5 12 1 9 3 18 ...
+ $ zipcode: Factor w/ 9 levels \"0\",\"1\",\"2\",\"3\",..: 4 4 3 3 4 2 3 1 5 7 ...
+ $ credit : num  377980 141658 360980 282736 215667 ...
+ $ brand  : Factor w/ 2 levels \"0\",\"1\": 2 1 2 2 2 2 2 2 2 1 ...
+ - attr(*, \"spec\")=
+  .. cols(
+  ..   salary = [32mcol_double()[39m,
+  ..   age = [32mcol_double()[39m,
+  ..   elevel = [32mcol_double()[39m,
+  ..   car = [32mcol_double()[39m,
+  ..   zipcode = [32mcol_double()[39m,
+  ..   credit = [32mcol_double()[39m,
+  ..   brand = [32mcol_double()[39m
+  .. )
+NULL
+"
+"0","```r
+# transform the dataset using the parameters
+df_validation_preprocesssed<- predict(preprocessParams, df_validation)
+Get_to_know_data(df_validation_preprocesssed)
+```"
+"1","[1] \"GET TO KNOW:  df_validation_preprocesssed\"
+[1] \"fetching summary...\"
+     salary            age        elevel        car          zipcode         credit       brand   
+ Min.   :0.5303   Min.   :1.137   0: 989   19     : 278   4      : 592   Min.   :0.0000   0:4937  
+ 1st Qu.:1.3945   1st Qu.:1.989   1: 988   18     : 264   7      : 569   1st Qu.:0.8423   1:  63  
+ Median :2.2863   Median :2.841   2:1017   16     : 262   5      : 565   Median :1.7283           
+ Mean   :2.2750   Mean   :2.838   3:1000   8      : 260   8      : 560   Mean   :1.7185           
+ 3rd Qu.:3.1431   3rd Qu.:3.694   4:1006   11     : 259   1      : 549   3rd Qu.:2.5869           
+ Max.   :3.9775   Max.   :4.546            5      : 257   3      : 549   Max.   :3.4433           
+                                           (Other):3420   (Other):1616                            
+[1] \"fetching data structure...\"
+Classes ‘spec_tbl_df’, ‘tbl_df’, ‘tbl’ and 'data.frame':	5000 obs. of  7 variables:
+ $ salary : num  3.98 2.19 3.07 3.75 3.96 ...
+ $ age    : num  4.32 2.9 1.93 1.25 3.18 ...
+ $ elevel : Factor w/ 5 levels \"0\",\"1\",\"2\",\"3\",..: 2 2 1 4 1 5 4 4 3 4 ...
+ $ car    : Factor w/ 20 levels \"1\",\"2\",\"3\",\"4\",..: 3 8 10 18 5 12 1 9 3 18 ...
+ $ zipcode: Factor w/ 9 levels \"0\",\"1\",\"2\",\"3\",..: 4 4 3 3 4 2 3 1 5 7 ...
+ $ credit : num  2.603 0.976 2.486 1.947 1.485 ...
+ $ brand  : Factor w/ 2 levels \"0\",\"1\": 2 1 2 2 2 2 2 2 2 1 ...
+ - attr(*, \"spec\")=
+  .. cols(
+  ..   salary = [32mcol_double()[39m,
+  ..   age = [32mcol_double()[39m,
+  ..   elevel = [32mcol_double()[39m,
+  ..   car = [32mcol_double()[39m,
+  ..   zipcode = [32mcol_double()[39m,
+  ..   credit = [32mcol_double()[39m,
+  ..   brand = [32mcol_double()[39m
+  .. )
+NULL
+"
+"0","```r
+print(\"Testing Set:\")
+```"
+"1","[1] \"Testing Set:\"
+"
+"0","```r
+prediction <- predict(rfFit_manualgrid_1, df_validation_preprocesssed)
+confusionMatrix(prediction, df_validation_preprocesssed$brand)
+```"
+"1","Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 1854    5
+         1 3083   58
+                                         
+               Accuracy : 0.3824         
+                 95% CI : (0.3689, 0.396)
+    No Information Rate : 0.9874         
+    P-Value [Acc > NIR] : 1              
+                                         
+                  Kappa : 0.0118         
+ Mcnemar's Test P-Value : <2e-16         
+                                         
+            Sensitivity : 0.37553        
+            Specificity : 0.92063        
+         Pos Pred Value : 0.99731        
+         Neg Pred Value : 0.01847        
+             Prevalence : 0.98740        
+         Detection Rate : 0.37080        
+   Detection Prevalence : 0.37180        
+      Balanced Accuracy : 0.64808        
+                                         
+       'Positive' Class : 0              
+                                         
+"

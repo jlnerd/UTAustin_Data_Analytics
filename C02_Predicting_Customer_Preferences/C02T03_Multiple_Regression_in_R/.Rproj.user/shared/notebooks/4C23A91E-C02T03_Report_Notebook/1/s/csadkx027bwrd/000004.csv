@@ -1,0 +1,8 @@
+"0","# Delete one of the pairs from each correlation"
+"0","drops <- c(""x1StarReviews"",""x5StarReviews"")"
+"0","df_preprocessed<-df_preprocessed[,!(colnames(df_preprocessed) %in% drops)] "
+"0","#Transform Volume to log10_Volume to prevent predictions of <0 volume"
+"0","df_preprocessed<-df_preprocessed[!(df$Volume==0),]"
+"0","df_preprocessed['log10_Volume'] <- log10(df_preprocessed$Volume)"
+"0","drops <- c(""Volume"")"
+"0","df_preprocessed<-df_preprocessed[,!(colnames(df_preprocessed) %in% drops)] "

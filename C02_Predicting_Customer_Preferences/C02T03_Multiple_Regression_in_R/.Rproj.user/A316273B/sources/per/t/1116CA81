@@ -1,0 +1,24 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1550373386120.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "374998992",
+    "id" : "1116CA81",
+    "lastKnownWriteTime" : 1550551443,
+    "last_content_update" : 1550551443865,
+    "path" : "~/Documents/Certificate_Courses/UTAustin_Data_Analytics/C02_Predicting_Customer_Preferences/C02T03_Multiple_Regression_in_R/C02T03_Report_Notebook.Rmd",
+    "project_path" : "C02T03_Report_Notebook.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "468,37",
+        "scrollLine" : "462",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

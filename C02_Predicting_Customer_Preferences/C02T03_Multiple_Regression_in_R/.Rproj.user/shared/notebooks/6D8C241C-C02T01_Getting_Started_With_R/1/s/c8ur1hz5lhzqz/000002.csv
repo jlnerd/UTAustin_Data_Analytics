@@ -1,0 +1,14 @@
+"0","```r
+df_cars<- read_csv(\"R Tutorial Data Sets/cars.csv\");
+```"
+"1","Parsed with column specification:
+cols(
+  `name of car` = [31mcol_character()[39m,
+  `speed of car` = [32mcol_double()[39m,
+  `distance of car` = [32mcol_double()[39m
+)
+"
+"0","```r
+View(df_cars)
+print(df_cars)
+```"

@@ -1,0 +1,7 @@
+"0","#install.packages(""caret"","
+"0","#                 repos = ""http://cran.r-project.org"", "
+"0","#                 dependencies = c(""Depends"", ""Imports"", ""Suggests""))"
+"0","#install.packages(""ggplot2"")"
+"0","#install.packages(""bindrcpp"")"
+"0","#install.packages('generics')"
+"0","#install.packages('gower')"

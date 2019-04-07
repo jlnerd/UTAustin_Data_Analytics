@@ -1,0 +1,5 @@
+"0","```r
+# LinearModel<- lm(trainSet$Petal.Width ~ testingSet$Petal.Length) #original code
+# Error in eval(predvars, data, env) : object 'testingSet' not found
+LinearModel<- lm(Petal.Width ~ Petal.Length, trainSet) #new code | both data sets must come from same data frame
+```"

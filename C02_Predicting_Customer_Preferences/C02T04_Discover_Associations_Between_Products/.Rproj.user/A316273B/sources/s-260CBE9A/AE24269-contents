@@ -1,0 +1,176 @@
+---
+title: "C02T04: Discover Associations Between Products"
+output: html_notebook
+author: John T. Leonard
+---
+***
+***
+
+## Note to the reader
+<span style='color:red'> Comments made by the author are highlighted in red. The final section of the document contains the final written report </span>
+***
+***
+
+```{r setup, include=FALSE}
+library(reticulate)
+use_python("/Users/johnleonard/anaconda3/bin/python3.6")
+py_config()
+```
+***
+***
+## Your Task:
+__FROM:__ Danielle Sherman <br>
+__Subject:__ Market Basket Analysis
+Hi,
+
+Blackwell Electronics' board of directors is considering acquiring Electronidex, a start-up electronics online retailer. The board of directors has asked us to help them better understand the clientele that Electronidex currently is serving and if it would be an optimal partnership.
+
+They need our help to identify purchasing patterns that will provide insight into Electronidex's clientele. Attached is a CSV file that contains one month’s (30 days’ worth) of Electronidexes online transactions and a file containing all the electronics that they currently sell. Due to their lack of funding, Electronidex is only able to pull data on the items that customers purchased per their transactions.
+
+I would like you to to use R to conduct a market basket analysis. You will be discovering any interesting relationships (or associations) between customer’s transactions and the item(s) they’ve purchased. These associations can then be used to drive sales-oriented initiatives such as recommender systems like the ones used by Amazon and other eCommerce sites. 
+
+To help Blackwell’s board of directors form a clearer picture of Electronidex's customer buying patterns, please consider the following questions while you’re performing your analysis:
+
+Are there any interesting patterns or item relationships within Electronidex's transactions?
+Would Blackwell benefit from selling any of Electronidex's items?
+In your opinion, should Blackwell acquire Electronidex?
+If Blackwell does acquire Electronidex, do you have any recommendations for Blackwell? (Ex: cross-selling items, sale promotions, should they remove items, etc.)
+Once you've completed your market basket analysis, please put together a formal business report in Word. Thank you in advance!
+
+Best,
+
+Danielle Sherman
+Chief Technology Officer
+Blackwell Electronics
+www.blackwellelectronics.com
+
+[ElectronidexItems2017](https://s3.amazonaws.com/gbstool/emails/2901/ElectronidexItems2017.pdf?AWSAccessKeyId=AKIAJBIZLMJQ2O6DKIAA&Expires=1551258000&Signature=opODUuRPQBU6hJiONQ%2BEY29Rhxg%3D)
+[ElectronidexTransactions2017](https://s3.amazonaws.com/gbstool/emails/2901/ElectronidexTransactions2017.csv?AWSAccessKeyId=AKIAJBIZLMJQ2O6DKIAA&Expires=1551258000&Signature=DQ17zZyfGt%2BRoQpXtyCQfVod5Ls%3D)
+***
+***
+## Plan of Attack
+### Introduction
+Danielle has asked you to perform a market basket analysis to help Blackwell's board of directors to better understand the clientele that Electronidex is currently serving and if Electronidex would be an optimal acquisition. 
+
+This task requires you to prepare a formal business report for Danielle Sherman that should include the following:
+
+* Market Basket Analysis Report
+
+     * Word format
+     * 1-3 pages
+     * Summary of your findings.
+     * Any observations you've made throughout your analysis.
+     * Your answers to the questions within Danielle's email.
+     * Any future recommendations if Blackwell acquires Electronidex.
+Your report should be written for a non-data science audience that is concerned with business issues.
+
+The steps in the following tabs will walk you through this process.
+
+***
+***
+
+### Getting Started
+1. Review the email from Danielle to make sure you understand the details of this task.
+2. Download and review the sales data used in this task.
+     a. The file, ElectronidexTransactions.csv, is a record of one month’s (30 days’ worth) of 9835 online transactions and which items were purchased out of the 125 products Electronidex sells. 
+     b. The file, ElectronidexItems.pdf, is a list of the 125 products that Electronidex sells broken down into 17 product types.
+3. Before you perform the Market Basket Analysis, you need understand key aspects of this analysis. Please visit the 'Resources' tab for additional information.
+
+#### Resources
+##### Market Basket Analysis Resources
+__The Basics of Item Sets & Association Rules__
+* Item Sets
+     * The foundation of a Market Basket Analysis is the items within each transcation. A set of one or more items is called an item set. These items are surrounded by brackets, which represent a transaction.
+          * Here is an example: {item 1, item 2, item 3, item 4}
+* Association Rules
+     * Association rules are patterns discovered between items and their associated transactions. These rules are the outcome of performing a Market Basket Analysis.
+          * Example:
+               * {item 1, item 2, item 3} -> {item 4}
+               * {item 1, item 2, item 3} is known as the LHS (left-hand side) of the rule. Also known as the condition.
+               * {item 4} is known as the RHS (right-hand side) or result.
+* How do you read a rule? If the condition is fullfilled, then the results is produced. Or if items 1, 2, and 3 are purchased, then item 4 is likely to be purchased.
+
+***
+***
+
+### Install, Upload, and Get to Know Your Dataset
+__ Use the following steps to install the packages that you will need, and to uploaed and become familiar with your dataset.__
+1. Install and call on the following packages:
+     a. arules - is a package for analyzing transactional data.
+     b. arulesViz - is a package that provides visual techniques for the arules package.
+```{r}
+library(arules)
+library(arulesViz)
+```
+2. Upload the Dataset
+Electronidex's data contains rows that represent single transactions with the purchased item(s) being separated by commas, which is also called a 'basket" format. RStudio does not inherently understand transactional data. If the dataset is uploaded using the read.csv () function, RStudio will try to create variables (remember your dataset doesn't have variables) and you will encounter problems with your analysis. Therefore, you need to upload the ElectronidexTransactions.csv through the read.transactions() function.
+
+The read.transactions() function changes the dataset into a sparse matrix. It makes each row represent a transaction and creates columns for each item that a customer might purchase. Electronidex sells 125 items, so the sparse matrix creates 125 columns. It also changes the data to binary. (1=item purchased in that transaction OR 0=no purchase.)
+
+```{r}
+df = read.transactions("ElectronidexTransactions2017.csv")
+```
+```{r}
+View(df)
+```
+```{python}
+import pandas as pd
+df = pd.read_csv("ElectronidexTransactions2017.csv")
+print(df.head())
+```
+
+TIP:
+You will need to use the read.transactions functions arguments (parameters). Consider thinking about these questions when uploading your dataset: What format do you need to use? How are items separated? Do you need to remove any duplicate items?
+
+3. Get to know your transactional data. What are the most frequent items? How many items do customers purchase the most? Least? What's the average?
+
+Here are some helpful functions:
+```{r}
+inspect (df) # You can view the transactions. Is there a way to see a certain # of transactions?
+length (df) # Number of transactions.
+size (df) # Number of items per transaction
+LIST(df) # Lists the transactions by conversion (LIST must be capitalized)
+itemLabels(df)# To see the item labels
+```
+
+After getting to know your dataset, do you have any insights or observations? Take notes on any thoughts that you have to use later in your report.
+
+***
+***
+### Visualize Your Dataset
+__Use the following steps to visualize the items within your dataset:__
+
+1. You can use the itemFrequencyPlot() function to visualize the item frequencies within the transactions as a bar chart. 
+
+TIP:
+You will need to use the itemFrequencyPlot function's parameters because the dataset is large. Consider these questions when plotting: Is there a way only to plot items with the highest frequency? Is there a way to plot using certain metrics? Which plots might provide the most insight?
+
+```{r}
+itemFrequency(df)
+```
+
+
+Use the following steps to visualize the transactions within your dataset:
+
+2. By using the image() function, you can visualize all of the transactions within your dataset. It will display the 125 possible items as your x-axis (the columns in your sparse matrix) and the number of transactions (the rows in your sparse matrix) as your y-axis. The items that were purchased are blacked out.
+
+```{r}
+image(df,)
+```
+
+
+TIP:
+You will need to use the image function's parameters because the dataset is large. Consider thinking about these questions when plotting: Is there a way to only plot a certain number of transactions? Is there a way to plot using certain metrics? Which plots might provide the most insight?
+
+3.  Another option to visualize your transactions is to use the sample() function with the image () function. The sample() function will create a sample that contains a random set of transactions.
+
+Here is how you might implement this:
+
+image(sample(DatasetName, # of Transactions you'd like to plot))
+
+```{r}
+image(sample(df, 1000))
+```
+
+
+After plotting your visualizations, do you notice any patterns? Or have any observations? Take notes on your insights and observations, which might be useful to include in your formal report.

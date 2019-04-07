@@ -1,0 +1,1 @@
+"0","points(df_testSet$speed_of_car, df_testSet$distance_of_car,col='blue')"

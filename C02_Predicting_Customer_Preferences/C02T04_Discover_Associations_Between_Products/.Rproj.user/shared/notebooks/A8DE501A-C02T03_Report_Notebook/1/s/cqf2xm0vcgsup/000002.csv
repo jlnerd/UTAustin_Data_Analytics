@@ -1,0 +1,21 @@
+"0","```r
+#drop columsn that contain NA
+drops <- c(\"BestSellersRank\")
+df_preprocessed <- df_preprocessed[,!(names(df_preprocessed) %in% drops)]
+names(df_preprocessed)
+```"
+"1"," [1] \"ProductTypeAccessories\"      \"ProductTypeDisplay\"         
+ [3] \"ProductTypeExtendedWarranty\" \"ProductTypeGameConsole\"     
+ [5] \"ProductTypeLaptop\"           \"ProductTypeNetbook\"         
+ [7] \"ProductTypePC\"               \"ProductTypePrinter\"         
+ [9] \"ProductTypePrinterSupplies\"  \"ProductTypeSmartphone\"      
+[11] \"ProductTypeSoftware\"         \"ProductTypeTablet\"          
+[13] \"ProductNum\"                  \"Price\"                      
+[15] \"x5StarReviews\"               \"x4StarReviews\"              
+[17] \"x3StarReviews\"               \"x2StarReviews\"              
+[19] \"x1StarReviews\"               \"PositiveServiceReview\"      
+[21] \"NegativeServiceReview\"       \"Recommendproduct\"           
+[23] \"ShippingWeight\"              \"ProductDepth\"               
+[25] \"ProductWidth\"                \"ProductHeight\"              
+[27] \"ProfitMargin\"                \"Volume\"                     
+"

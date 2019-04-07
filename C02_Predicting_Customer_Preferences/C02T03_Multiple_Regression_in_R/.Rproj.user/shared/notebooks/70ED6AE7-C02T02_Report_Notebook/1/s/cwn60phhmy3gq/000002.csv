@@ -1,0 +1,6 @@
+"0","```r
+postResample(prediction, df_validation_preprocesssed$brand)
+```"
+"1","  Accuracy      Kappa 
+0.38240000 0.01179155 
+"

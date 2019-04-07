@@ -1,0 +1,12 @@
+"0","import pandas as pd
+df = pd.read_csv(""ElectronidexTransactions2017.csv"")
+print(df.head())"
+"1","    Acer Aspire    Brother Printer Toner     ...     Unnamed: 30 Unnamed: 31
+0  Dell Desktop  Lenovo Desktop Computer     ...             NaN         NaN
+1          iMac                      NaN     ...             NaN         NaN
+2  Acer Desktop  Lenovo Desktop Computer     ...             NaN         NaN
+3     HP Laptop                     iMac     ...             NaN         NaN
+4          iMac             ASUS Monitor     ...             NaN         NaN
+
+[5 rows x 32 columns]
+"

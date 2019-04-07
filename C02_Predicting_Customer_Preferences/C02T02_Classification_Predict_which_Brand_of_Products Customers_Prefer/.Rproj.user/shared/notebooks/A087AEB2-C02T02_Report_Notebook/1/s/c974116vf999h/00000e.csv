@@ -1,0 +1,4 @@
+"0","subplot_cols = 2"
+"0","subplot_rows = 3"
+"0","par(mfrow=c(subplot_rows,subplot_cols)) "
+"0","plot(df$brand,df$salary, xlab = 'brand', ylab = 'salary')"

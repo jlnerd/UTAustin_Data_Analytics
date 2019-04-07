@@ -1,0 +1,4 @@
+"0","```r
+testSize <- nrow(IrisDataset) - trainSet # original code
+testSize
+```"

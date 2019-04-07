@@ -1,0 +1,1 @@
+"0","plot(df$salary,df$age, xlab = 'salary', ylab = 'age', type=""p"",pch=20,col=df$brand)"

@@ -1,0 +1,664 @@
+---
+title: 'Task 2: Classification: Predict which Brand of Products Customers Prefer'
+output:
+  html_notebook: default
+  pdf_document: default
+---
+***
+***
+#### Note to the reader
+
+> <span style='color:red'> markdown comments noted by the student/author (John Leonard) are highlighted in red. The final section of the document (section 7) contains the informal written report <\span>
+
+***
+***
+### Your Task:
+__FROM:__ Danielle Sherman <br>
+__Subject:__ Brand Preference Prediction
+Hello,
+
+Let me begin by thanking you for your investigation into the use of R in our day-to-day data analytics activities. I believe it’s going to be a useful addition, and your investigation was integral in my decision to bring on board as one of our main tools. We will not be replacing RapidMiner completely, since RapidMiner is a very useful tool for visualization and analytics, but we will be using R and R Studio going forward in the next project since we have some deep analytics work to do. Speaking of that…
+
+The sales team engaged a market research firm to conduct a survey of our existing customers. One of the objectives of the survey was to find out which of two brands of computers our customers prefer. This information will help us decide with which manufacturer we should pursue a deeper strategic relationship. Unfortunately, the answer to the brand preference question was not properly captured for all of the respondents.
+
+That is where you come in: I want you to investigate if customer responses to some survey questions (e.g. income, age, etc.) enable us to predict the answer to the brand preference question. If we can do this with confidence, I would like you to make those predictions and provide the sales team with a complete view of what brand our customers prefer. 
+
+To do this, I would like you to run and optimize at least two different decision tree classification methods in R - C5.0 and RandomForest - and compare which one works better for this data set. 
+
+I have already set up the data for you in the attached CSV files: the file labelled CompleteResponses.csv is the data set you will use to train your model and build your predictive model. It includes ~10,000 fully-answered surveys and the key to the survey can be found in survey_key.csv. The file labelled SurveyIncomplete.csv will be your main test set (the data you will apply your optimized model to predict the brand preference). You'll be applying your trained and tested model to this data to prepare the model for production.
+
+When you have completed your analysis, please submit a brief report that includes the methods you tried and your results. I would also like to see the results exported from R for each of the classifiers you tried.
+
+Thanks,
+Danielle
+ 
+Danielle Sherman
+Chief Technology Officer
+Blackwell Electronics
+www.blackwellelectronics.com
+
+
+__[survey key](https://s3.amazonaws.com/gbstool/emails/2898/survey%20key.xlsx?AWSAccessKeyId=AKIAJBIZLMJQ2O6DKIAA&Expires=1549184400&Signature=khsHJlHm4C%2Bku4kWqX7Deiu39w4%3D)__ <br>
+__[CompleteResponses](https://s3.amazonaws.com/gbstool/emails/2898/CompleteResponses.csv?AWSAccessKeyId=AKIAJBIZLMJQ2O6DKIAA&Expires=1549184400&Signature=GSJfN3AZgi5IV9XM0OhxaKGGtBY%3D)__<br>
+__[SurveyIncomplete](https://s3.amazonaws.com/gbstool/emails/2898/SurveyIncomplete.csv?AWSAccessKeyId=AKIAJBIZLMJQ2O6DKIAA&Expires=1549184400&Signature=X1Qpf7i%2FYupchclG35bEvtwPEz4%3D)__<br>
+
+***
+***
+## Plan of Attack
+### Introduction
+You have been asked by Danielle Sherman, CTO of Blackwell Electronics, to predict the customers' brand preferences that are missing from the incomplete surveys by conducting two classification methods in R. Once you have determined which classifier — C5.0 or RandomForest —works better on the provided data set, she would like you to predict the brand preferences for the incomplete survey responses and prepare a report of your findings.
+
+__This task requires you to prepare one deliverable for Danielle Sherman:__
+
+* Customer Brand Preferences Report. A report in a Zip file that includes:
+    * A brief summary in Word or Excel of your methods and results that includes:
+        * The classifiers you tried.
+        * The classifier you selected to make the predictions, including a rationale for selecting the method you did and the level of confidence in the predictions.
+        * The predicted answers to the brand preference question for the instances of survey results that are missing that answer. 
+        * A chart that displays the customer preference for each brand based on the combination of the actual answers and the predicted answers to the brand preference survey question.
+        * The results of each classifier you ran exported from R
+
+The steps in the following tabs will walk you through this process.
+
+***
+### 1. Get Started
+1. Review the email from Danielle to understand the details of the task.
+2. Download the attachments:
+    a. Complete Responses: This csv file contains the 10,000 completed survey responses - you'll use this file to build trained and predictive models using the caret package.
+    b. Survey Key: This file also includes a tab that explains the survey questions and the numeric code for each of the possible answers in the survey. 
+    c. Survey_Incomplete: This is the data set you will use to test your model. It includes 5,000 observations, but no brand preference - this is what you'll be predicting.
+
+In general, you must be cautious when analyzing externally supplied data
+
+***
+### 2. Learn the Basics of The Caret Package
+The caret package (short for Classification And REgression Training) is a set of functions that attempt to streamline the process for creating predictive models. The package contains tools for:
+
+* data splitting
+* pre-processing
+* feature selection
+* model tuning using resampling
+* variable importance estimation
+
+In this step you will work through the following exercises to become more familiar with this all-important package for R; you will be using caret throughout the remainder of the program so it is very important that you become very confident with applying it to data analytics problems. To do this you will need to work through a short tutorial on the package and be prepared to discuss your questions and findings in the weekly mentor meetings.
+
+To begin:
+
+1. Work through the  "A Short Introduction to the caret Package"" tutorial so you can understand how the training process in caret works. You’ll need the skills from the tutorial to work through the remainder of this task so be sure to allocate enough time for working the examples and working through some of the free datasets from the optional resources in task one to reinforce your learning.
+
+* * *
+> ### A Short Introduction to the caret Package
+__Max Kuhn__ <br>
+__max.kuhn@pfizer.com August 6, 2015__ <br>
+<span style='font-size:14px'> The caret package (short for classification and regression training) contains functions to streamline the model training process for complex regression and classification problems. The package utilizes a number of R packages but tries not to load them all at package start-up. The package “suggests” field includes 27 packages. caret loads packages as needed and assumes that they are installed. Install caret using
+
+```{r}
+#install.packages("caret",
+#                 repos = "http://cran.r-project.org", 
+#                 dependencies = c("Depends", "Imports", "Suggests"))
+#install.packages("ggplot2")
+#install.packages("bindrcpp")
+#install.packages('generics')
+#install.packages('gower')
+```
+
+> <span style='font-size:14px'> 
+The main help pages for the package are at: http://caret.r-forge.r-project.org/
+Here, there are extended examples and a large amount of information that previously found in the package vignettes.
+caret has several functions that attempt to streamline the model building and evaluation process, as well as feature selection and other techniques.
+One of the primary tools in the package is the train function which can be used to
+* evaluate, using resampling, the effect of model tuning parameters on performance
+* choose the “optimal” model across these parameters
+* estimate model performance from a training set
+There are options for customizing almost every step of this process (e.g. resampling technique, choosing the optimal parameters etc). To demonstrate this function, the Sonar data from the mlbench package will be used.
+The Sonar data consist of 208 data points collected on 60 predictors. The goal is to predict the two classes (M for metal cylinder or R for rock).
+First, we split the data into two groups: a training set and a test set. To do this, the createDataPartition function is used:
+<\span>
+>
+
+```{r}
+library(caret)
+library(mlbench)
+data(Sonar)
+set.seed(107)
+inTrain <- createDataPartition(y=Sonar$Class, ## the outcome data are needed
+                               p=0.75, ## the percentage of data in the training set
+                               list = FALSE) #The format of the results)
+## The output is a set of integers for the rows of Sonar that belong in the training set
+
+str(inTrain)
+```
+> <span style='font-size:14px'> 
+By default, createDataPartition does a stratified random split of the data. To partition the data:
+<\span>
+
+```{r}
+training <- Sonar [inTrain]
+testing <- Sonar[-inTrain,]
+
+print(paste('NROW(training):',NROW(training)))
+print(paste('NROW(testing):',NROW(testing)))
+
+```
+> <span style='font-size:14px'> 
+To tune a model using Algorithm ??, the train function can be used. More details on this function can be found at: http://caret.r-forge.r-project.org/training.html
+Here, a partial least squares discriminant analysis (PLSDA) model will be tuned over the number of PLS components that should be retained. The most basic syntax to do this is:
+<\span>
+>
+
+```{r}
+#plsFit <- train(Class ~., data = training,
+#                method = "pls",
+#                ## Center and scale the predictors for the training set and all future samples
+#                preProc = c("center","scale"))
+```
+
+<span style='color:red'> for some reason "Class" could not be found in the test data set, so I just stopped working through the tutorial here and just read the rest of it and moved on.
+
+__Learn the Basics of The Caret Package... continued__
+
+2. After working through the introduction to the caret package: Develop a working ‘pipeline’ (an example can be seen in the resources) for model training/testing using the caret package so you can easily train/test different models for the capstone. At a minimum you should utilize the following functions with a definitive training and testing set that you will build from the training data that you have already sampled:
+* createDataPartition()
+* trainControl()
+* train()
+* predict()
+* postResample()
+3. You might also find it quite useful to use an alternate tuning grid such as expand.grid, which can be used to specific any of the numerous training parameters that are available with many of the model that are available in the caret package.
+
+TIP:
+Note: caret uses two grid methods for tuning: Automatic Grid (automated tuning) and Manual Grid (you specify the parameter values). TuneLength can also be added to training with Automatic Grids for models with numeric hyperparameter values (K value in KNN, for example). This method uses caret's 'best guess' for the numeric parameter values and will limit the model runs according to the number of tuneLengths, but does not work on non-numeric values and will increase training time(s), which is not necessarily a bad thing.
+
+TIP:
+This is a good way of getting start with automated tuning if you are using models that support such. Otherwise caret might spend a great deal of time building many models until the process has been optimized. 
+
+TIP:
+caret can also use a random search for tuning hyperparameters. tuneLength isnt used when using Random Search
+
+There are additional tutorials on the caret package in the optional resources.
+
+#### <span style='color:red'> ML Pipeline
+
+##### <span style='color:red'> Slice, Preprocess, Train-Test Split
+```{r}
+#caret model - Automatic Tuning Grid
+#http://topepo.github.io/caret/bytag.html
+#model training: http://topepo.github.io/caret/training.html
+#model measurement: http://topepo.github.io/caret/other.html
+#dataframe = WholeYear
+#Y Value = SolarRad
+
+#load library and set seed
+library(caret)
+library(readr) 
+set.seed(998)
+
+#load the data set
+WholeYear<- read_csv("WholeYear.csv");
+print(paste("NROW(WholeYear):",NROW(WholeYear)))
+
+#create a 20% sample of the data
+subset_ratio = 0.2
+print(paste('subset_ratio',subset_ratio))
+subset_size = round(NROW(WholeYear)*subset_ratio,0)
+WholeYear <- WholeYear[sample(1:nrow(WholeYear), subset_size,replace=FALSE),]
+print(paste("NROW(WholeYear) Subset:",NROW(WholeYear)))
+
+#define a 75-25% train-test split of the dataset
+inTraining <- createDataPartition(WholeYear$SolarRad, p = .75, list = FALSE)
+training <- WholeYear[inTraining,]
+testing <- WholeYear[-inTraining,]
+
+#10 fold cross validation
+fitControl <- trainControl(method = "repeatedcv", number = 10, repeats = 1)
+```
+##### <span style='color:red'> caret model - Automatic Grid - Random Forest
+```{r}
+#train Random Forest Regression model with a tuneLenght = 1 (trains with 1 mtry value for RandomForest)
+rfFit_autogrid_1<- train(SolarRad~., data = training, method = "rf", trControl=fitControl, tuneLength = 1)
+
+#training results
+rfFit_autogrid_1
+
+#train Random Forest Regression model with a tuneLenght = 2 (trains with 2 mtry values for RandomForest)
+rfFit_autogrid_2 <- train(SolarRad~., data = training, method = "rf", trControl=fitControl, tuneLength = 2)
+#training results
+rfFit_autogrid_2
+```
+
+##### <span style='color:red'> caret model - Manual Grid - Random Forest
+```{r}
+#dataframe for manual tuning of mtry
+rfGrid <- expand.grid(mtry=c(1,2,3))
+
+#train Random Forest Regression model
+#note the system time wrapper. system.time()
+#this is used to measure process execution time 
+system.time(rfFit_manualgrid_1 <- train(SolarRad~., data = training, method = "rf", trControl=fitControl, tuneGrid=rfGrid))
+
+#training results
+rfFit_manualgrid_1
+```
+
+##### <span style='color:red'> caret model - Random Tuning Search - Random Forest
+```{r}
+#10 fold cross validation
+rfitControl <- trainControl(method = "repeatedcv", number = 10, repeats = 1, search = 'random')
+
+#train Random Forest Regression model
+rfFit_randomsearch_1 <- train(SolarRad~., data = training, method = "rf", trControl=rfitControl)
+
+#training results
+rfFit_randomsearch_1
+```
+
+##### <span style='color:red'> caret model - Automatic Grid - Linear Model
+
+```{r}
+#10 fold cross validation
+fitControl <- trainControl(method = "repeatedcv", number = 10, repeats = 1)
+
+#train Linear Regression model
+LMFit_autogrid_1 <- train(SolarRad~., data = training, method = "lm", trControl=fitControl)
+
+#check the results
+LMFit_autogrid_1
+```
+
+##### <span style='color:red'> Prediction Assessment in caret
+caret has many built-in functions for checking how well our models make predictions; here are a few you can use:
+
+* defaultSummary(data, lev = NULL, model = NULL)
+* postResample(pred, obs)
+* twoClassSummary(data, lev = NULL, model = NULL)
+* mnLogLoss(data, lev = NULL, model = NULL)
+* multiClassSummary(data, lev = NULL, model = NULL)
+* prSummary(data, lev = NULL, model = NULL)
+
+```{r}
+# Prediction for the previously trained models
+model_list = list(rfFit_autogrid_1, rfFit_autogrid_2, rfFit_manualgrid_1, rfFit_randomsearch_1, LMFit_autogrid_1)
+
+y_training <- training$SolarRad
+y_testing <- testing$SolarRad
+
+for(i in 1:length(model_list )){
+
+  model_ID <- model_list[i]
+  print(model_ID)
+  
+  predicted_training <- predict(model_ID, newdata = training)[[1]]
+  predicted_training_residuals <- y_training - predicted_training
+  RMSE_training = round(RMSE(pred = predicted_training, obs = y_training),2)
+
+  predicted_testing <- predict(model_ID, newdata = testing)[[1]]
+  predicted_testing_residuals <- y_testing - predicted_testing
+  RMSE_testing = round(RMSE(pred = predicted_testing, obs = y_testing),2)
+  
+  subplot_rows = 1
+  subplot_cols = 2
+  par(mfrow=c(subplot_rows,subplot_cols))  
+  
+  hist(predicted_training_residuals, xlab = 'predicted_training_residuals',main = paste("model method",model_ID[[1]]["method"], ", RMSE:" ,   RMSE_training))
+  hist(predicted_testing_residuals, xlab = 'predicted_testing_residuals', main = paste("model method",model_ID[[1]]["method"], ', RMSE:',   RMSE_testing))
+  
+}
+
+```
+
+
+***
+### 3. Train the Models
+
+1. Import and familiarize yourself with the training set. The file CompleteResponses is an CSV file that includes answers to all the questions in the market research survey, including which brand of computer products the customer prefers. You will be using this data set to train and test the classifier to make predictions. You will notice that there is a mix of numeric and nominal values; some might need to be converted to factors. Consult the Survey Key to gain an understanding of what the survey response values mean. The coding key’s primary function is to help you understand the coding of the survey – you only need the coding key to prepare the labels in your final preferences graph. 
+
+```{r}
+#load library and set seed
+library(caret)
+library(readr) 
+set.seed(998)
+
+#load the data set
+df <- read_csv("CompleteResponses.csv");
+head(df)
+print(paste("NROW(df):",NROW(df)))
+
+# Update Data Types
+df$"elevel" <- as.factor(df$"elevel")
+df$"car" <- as.factor(df$"car")
+df$"zipcode" <- as.factor(df$zipcode)
+df$brand<-as.factor(df$brand)
+
+
+
+Get_to_know_data <- function(df){
+  print(paste("GET TO KNOW: ",deparse(substitute(df))))
+  
+  print('fetching summary...')
+  print(summary(df) )#Prints the min, max, mean, median, and quartiles of each attribute.
+  
+  print('fetching data structure...')
+  print(str(df) )#Displays the structure of your data set.
+  
+}
+
+Get_to_know_data(df)
+```
+
+
+```{r}
+plot_summary_of_data<-function(DatasetName,x_index=1){
+  
+  column_names = names(DatasetName)
+  
+  subplot_cols = 2
+  subplot_rows = 2
+  par(mfrow=c(subplot_rows,subplot_cols))  
+  
+  x <- unlist(DatasetName[,x_index])
+  x_header = column_names[x_index]
+  
+  for(i in 1:length(column_names)){
+    y <- unlist(DatasetName[,i])
+    y_header = column_names[i]
+    try(hist(y, main = paste(y_header, "Histogram"), xlab = y_header ),silent=TRUE)#Histogram Plot
+  }
+  
+  for(i in 1:length(column_names)){
+    
+    if(i != x_index) {
+    y <- unlist(DatasetName[,i])
+    y_header = column_names[i]
+    
+    try(plot(x,y, xlab = x_header, ylab = y_header),silent=TRUE)  #Scatter (Box) Plot
+    } 
+  }
+  
+  #Normal Quantile Plot- is a way to see if your data is normally distributed.
+  for(i in 1:length(column_names)){
+    
+    y <- unlist(DatasetName[,i])
+    y_header = column_names[i]
+    
+ try(qqnorm(y,main = paste(y_header, " Normal Q-Q Plot")),silent=TRUE) ##Normal Quantile Plot
+  }
+}
+
+plot_summary_of_data(df,x_index=7)
+```
+
+* Perform any necessary pre-processing.
+```{r}
+
+# calculate the pre-process parameters from the dataset
+preprocessParams <- preProcess(df, method=c("scale"))
+# summarize transform parameters
+print(preprocessParams)
+# transform the dataset using the parameters
+df_preprocesssed<- predict(preprocessParams, df)
+# summarize the transformed dataset
+Get_to_know_data(df_preprocesssed)
+```
+
+* Perform any necessary Feature Engineering/Selection
+
+<span style='color:red'> If most of the data was continuous I would plot a correlation matrix to see if we should drop highly correlated features, but since most of it is categorical/factor in type, we won't run this process here. Regardless of that though, let's check for any NA...
+
+```{r}
+anyNA(df_preprocesssed)
+```
+
+
+* Using createDataPartition create training and test sets. These will be created from the CompleteResponses.csv file. The training data should represent 75% of the total data and the remaining 25% will be used for testing. After optimizing your model you'll later use it to make predictions on the incomplete surveys.
+
+```{r}
+#setup seed for reproducability
+set.seed(998)
+
+#define a 75-25% train-test split of the dataset
+y <- df_preprocesssed$brand
+inTraining <- createDataPartition(y, p = .75, list = FALSE)
+training <- df_preprocesssed[inTraining,]
+testing <- df_preprocesssed[-inTraining,]
+
+#check dimensions of train & test set
+dim(training); dim(testing);
+
+```
+
+* Build a model using a decision tree, C5.0,  on the training set with 10-fold cross validation and an Automatic Tuning Grid with a tuneLength of 2. In an earlier task, you used another decision trees, Gradient Boosted Trees, to predict a specific numeric value (the sales volume of a new product); in this task you will use C5.0 to predict nominal data (a customer's computer brand preference). The main difference is that, in numeric prediction, you are inferring a real number (such as how many products may be sold in a period of time) while, in nominal (or categorical) prediction, you are selecting what class a given observation belongs to.
+
+```{r}
+#10 fold cross validation with automatic tuning grid
+fitControl <- trainControl(method = "repeatedcv", number = 10, repeats = 1)
+
+model<- train(brand~., data = training, method = "C5.0", trControl=fitControl, tuneLength = 2)
+```
+
+1. Assess the performance of the trained model and record the Accuracy and Kappa scores for each parameter value the model used during training.
+
+```{r}
+model
+
+#save unique model ID
+model_decision_tree_C5 = model
+```
+
+2. Use VarImp() to ascertain how the model prioritized each feature in the training (more on this in the resources)
+
+```{r}
+# Analyze Variable Importance
+varImp(model)
+```
+
+TIP:
+Remember that the data mining algorithms make the prediction in both types of tasks based on the similarities and differences between the attributes (columns) of observations (rows). You will be classifying "brand" in this task. 
+
+6. Use Random Forest with 10-fold cross validation and manually tune 5 different mtry values. Using the same caret pipeline you developed for the previous step and the same training data, build a trained model using the Random Forest classifier in the caret package. 
+
+```{r}
+#10 fold cross validation
+fitControl <- trainControl(method = "repeatedcv", number = 10, repeats = 1)
+
+#dataframe for manual tuning of mtry
+rfGrid <- expand.grid(mtry=c(1,2,3,4,5))
+
+#train Random Forest Regression model
+rfFit_manualgrid_1 <- train(brand~., data = training, method = "rf", trControl=fitControl, tuneGrid=rfGrid)
+```
+
+After building the trained model
+1. Assess the performance of the trained model and record the Accuracy and Kappa scores for each number of features the model used during training.
+
+```{r}
+#training results
+rfFit_manualgrid_1
+```
+
+2. Use VarImp() to ascertain how the model prioritized each feature in the training (more on this in the resources)
+
+```{r}
+# Analyze Variable Importance
+varImp(rfFit_manualgrid_1)
+```
+
+***
+### 3. Predict Product Preference
+
+1. Compare optimized predictive models you have created and select one. Review the performance metrics for your optimized Random Forest and C5.0 models. Note the predictive model that performed best.
+
+```{r}
+print("Decision Tree Model Summary:")
+model_decision_tree_C5
+#Confusion matrix stats
+print("Training Set:")
+prediction <- predict(model_decision_tree_C5, training)
+confusionMatrix(prediction, training$brand)
+print("Testing Set:")
+prediction <- predict(model_decision_tree_C5, testing)
+confusionMatrix(prediction, testing$brand)
+print("Train+Test Set:")
+prediction <- predict(model_decision_tree_C5, df_preprocesssed)
+confusionMatrix(prediction, df_preprocesssed$brand)
+
+
+print("Random Forest with Manual Grid Summary:")
+rfFit_manualgrid_1
+#Confusion matrix stats
+print("Training Set:")
+prediction <- predict(rfFit_manualgrid_1, training)
+print(confusionMatrix(prediction, training$brand))
+print("Testing Set:")
+prediction <- predict(rfFit_manualgrid_1, testing)
+confusionMatrix(prediction, testing$brand)
+print("Train+Test Set:")
+prediction <- predict(rfFit_manualgrid_1, df_preprocesssed)
+confusionMatrix(prediction, df_preprocesssed$brand)
+
+#Variable Importance Data:
+varImp(model_decision_tree_C5)
+varImp(rfFit_manualgrid_1)
+
+
+```
+```{r}
+TrainTest_Accuracy_Kappa = 
+```
+
+<span style='color:red'> The table below shows the accuracy and kappa statistics from the confusion matrix performed on the entire train-test set, the train set alone, and the test set alone. Here, we see the random forest model has higher accuraccy and kappa on the entire train+test set, however it has a accuracy (but higher kappa) on the testing set alone. This may suggest that it is possibly overfitting slightly, however because the testing set accuracy differnece between the random forest and decision tree is small, and because the random forest actually has a higher kappa, as well as higher accuracy+kappa on the training set + total data set, we will proceed using the random forest as the optimal model. It is interesting to note that the decision tree put extremely high weights on salary and age alone, while the random forest put the highest weights on those two parameters as well, but also put non-zero weights on the various other features/classes.
+
+![models_accuracy_kappa_table](figures/models_accuracy_kappa_table.png)
+
+2. Use the predict() function, the surveyIncomplete data set as your test set and your best optimized model to make predictions about brand preference.
+
+```{r}
+df_validation <- read_csv("SurveyIncomplete.csv");
+head(df_validation)
+print(paste("NROW(df):",NROW(df_validation)))
+
+#View(df_validation)
+
+# Update Data Types
+df_validation$"elevel" <- as.factor(df_validation$"elevel")
+df_validation$"car" <- as.factor(df_validation$"car")
+df_validation$"zipcode" <- as.factor(df_validation$zipcode)
+df_validation$brand<-as.factor(df_validation$brand)
+
+Get_to_know_data(df_validation)
+
+# transform the dataset using the parameters
+df_validation_preprocesssed<- predict(preprocessParams, df_validation)
+
+Get_to_know_data(df_validation_preprocesssed)
+
+print("Testing Set:")
+prediction <- predict(rfFit_manualgrid_1, df_validation_preprocesssed)
+
+confusionMatrix(prediction, df_validation_preprocesssed$brand)
+```
+
+3. After making the predictions using the test set use postResample() to assess the metrics of the new predictions compared to the Ground Truth (see the resources for more information)
+
+```{r}
+postResample(prediction, df_validation_preprocesssed$brand)
+```
+
+4. Did something interesting happen here? If so, be prepared to explain why!
+
+<span style='color:red'> The accuracy and kappa scores are quite terrible on the validation set. Digging into the data a bit more, we see below the summary of the distributions for brand class in the training-test set and the validation set. You can see the validation set has a huge amount of "0" brand classes. Based on this fact, and the fact that the file is labeled "incomplete", it is likely that this data set was simply populated with 0's for the unkown brands, thus these labels are likely not real. It is possilbe that this data set is composed of data which sits outside of the parameter space which was trained, and thus the model is relying on extrapolation. This could be confirmed by simply plotting all the data and seeing if the validatioan data sits in the same parameter space as the train-test data, however we will skip this since the evidence seems quite strong that the validation data is just composed of many incorrectly labeled brand IDs.
+
+```{r}
+"Train-test set brand distribution:"
+summary(df$brand)
+
+"Validation set brand distirbution:"
+summary(df_validation_preprocesssed$brand)
+```
+
+5. Use the summary() function and your prediction object to learn how many individuals are predicted to prefer Sony and Acer.
+```{r}
+summary(prediction)
+```
+
+6. Explain the importance of each feature used in the model and support it with quantitative evidence.
+
+<span style='color:red'> Below we see the ten most important variables (out of 34) composing the random forest model. Here, we see that salary, age, then credit are the highest contributing factors to determining brand.
+
+!['random_forest_variable_importance_table.png'](figures/random_forest_variable_importance_table.png)
+
+<span style='color:red'> We can get a more intuitive feel for the meaning behind these variable impact values by plotting a series of scatter plots. Viewing the brand vs. salary plot, we see brand 1 (Sony) customers have a higher mean salary than brand 0 (Acer) customers. Vieing the brand and credit vs. age plots, we don't see anything noticable, however by plotting salary vs age by brand (as color), we can visualize a deeper structure in the age vs. salary data, whic the model has learned to represent/map via decision trees. You could likely visualize this even more clearly by creating a dummy data set that sweeps the random forest model over the entire mapped parameter space and plotting the prediction in color, however we won't go into such detail here. Finally, we also see a weaker, but significant relationship in the salary vs. credit by brand plot, which also inuitivaley makes sense from the model's variable importance table.
+
+```{r}
+subplot_cols = 2
+subplot_rows = 3
+par(mfrow=c(subplot_rows,subplot_cols)) 
+plot(df$brand,df$salary, xlab = 'brand', ylab = 'salary')
+plot(df$brand,df$age, xlab = 'brand', ylab = 'age')
+plot(df$brand,df$credit, xlab = 'brand', ylab = 'credit')
+plot(df$salary,df$age, xlab = 'salary', ylab = 'age', type="p",pch=20,col=df$brand)
+plot(df$salary,df$credit, xlab = 'salary', ylab = 'credit', type="p",pch=20,col=df$brand)
+plot(df$age,df$credit, xlab = 'age', ylab = 'credit', type="p",pch=20,col=df$brand)
+```
+
+7. Write your Customer Brand Preferences Report.
+
+***
+***
+## <span style='color:red'> Customer Brand Preferences Report </span>
+
+### Introduction
+In this report, we analyze & model the market research survey data from existing customers. This data was compiled by a market research firm hired by the Blackwell Electronics sales team engaged. In this survey, the primary objective was to document which of two brands of computers customers prefered based on the customer's characteristics, including salary, age, education level (elevel), type of car, zipcode, and available credit. Here, we analyze several models which may be used to predict customer brand preference based on these features. Using our optimal model, we predict the customer brand preferences for a subset of the data for which the survey information was incorrectly entered. 
+
+### Data Structure & Preprocessing
+Prior to divinig into the details of the models trained on the data, it is important to understand the structure and the preprocessing steps we carried out to before model training. This data set ("CompleteResponses.csv") was composed of ~10,000 samples (rows) with nominal/categorical/factor data columns, as well as continuous numerical data columns. Specifically, the features such as education level, type of car, and zipcode, as well as the label of interest, brand, were numerically encoded categorical integers. The table below summarizes the numerical keys associated with the categorical string values
+
+!["Categorical Keys Table"](figures/categorical_data_keys.png)
+After specifying these features and the brand label as factors, we performed feature scaling on the continuous data columns (credit, salary, and age). This ensured that none of these features impact the model fitting purely based on the relative scale/magnitude of their basic unit. More specifically, the preprocess scaling parameters were generated using the code below via the cerat package preProcess function.
+```{r}
+preprocessParams <- preProcess(df, method=c("scale"))
+```
+
+Following the continuos data feature scaling, we tested the features to determine if any values were missing from the data frame. It was determined that there were no missing values.
+
+Finally, we performed a 75%-25% train-test split on the preprocessed data frame using the code below:
+```{r}
+y <- df_preprocesssed$brand
+inTraining <- createDataPartition(y, p = .75, list = FALSE)
+training <- df_preprocesssed[inTraining,]
+testing <- df_preprocesssed[-inTraining,]
+```
+
+### Training & Testing the Models
+With the data preprocessed and split into training and testing set, we went on to evaluate two different classification models: (1) C5.0 decision tree and (2) Random Forest. In both models we used 10 fold cross validation, however for the C5.0 decision tree we used an automatic tuning grid, while for the random forest we evaluated a manual tuning grid composed of mtry = 1, 2, 3, 4, 5, where mtry represents the number of variables randomly sampled as candidates at each split. For the C5.0 decision tree, we also defined the tune length hyperparameter to be equal to 2. 
+
+Following training of both models, we analyzed the performance of each model by computing the accuracy and kappa on three data partitions: (1) the entire training + test set, (2) the training set alone, and (3) the testing set alone. The table below summarizes the results.
+
+![models_accuracy_kappa_table](figures/models_accuracy_kappa_table.png)
+
+
+Here, we see the random forest model has higher accuraccy and kappa on the entire train+test set, however it has a accuracy (but higher kappa) on the testing set alone. This may suggest that it is possibly overfitting slightly, however because the testing set accuracy differnce between the random forest and decision tree is small, and because the random forest actually has a higher kappa, as well as higher accuracy+kappa on the training set + total data set, we determined that using the random forest as the optimal model would be best for predicting the brand labels in the incomplete survey data. 
+
+Aside from the kappa and accuracy scores, it is interesting to note that the decision tree put extremely high weights on salary and age alone, while the random forest put the highest weights on those two parameters as well, but also put non-zero weights on the various other features/classes. The relative weights we are refering to here are from the variable importance tables generated for each model. Below we see the ten most important variables/features for each model.
+
+C5.0 Decision Tree Variable Importance:
+!['random_forest_variable_importance_table.png'](figures/decision_tree_variable_importance_table.png)
+
+Random Forest Variable Importance:
+!['random_forest_variable_importance_table.png'](figures/random_forest_variable_importance_table.png)
+
+### Predicting Incomplete Survey Brands
+Using the trained random forest model, we performed brand predictions on the incomplete survey data set, after it had been passed throug the same preprocess scalar transformation we used on the trianing set. These predictions could be used to update the incomplete survey data with the most likely brand class, overall though, we can get a sense of how incomplete the survey data actually was by considering the distribution of brands in the original data set (i.e. incorrect/incomplete labels), compared to the predicted labels. Specifically, in the original data set, ~5,000 customers were labeled as prefering Acer (0), while only 63 were labeled as prefering Sony (1). This alone seems likely an extremely assymetric distribution from a random sample of users. In contrast to this, the random forest model predicted ~2,000 customers prefer Acer and ~3,000 prefer Sony.
+
+### Illuminating the Model Prediction Logic
+To gain a more intuitivae understanding of why and how the model prediction operated, we plotted a series of scatter plots representing the top 3 most heavily weighted features vs. the brand label from the original unprocessed train-test set. The results are shown below:
+
+!['scatter_plots'](figures/scatter_plots.png)
+
+Viewing the brand vs. salary plot, we see brand 1 (Sony) customers have a higher mean salary than brand 0 (Acer) customers. Vieing the brand and credit vs. age plots, we don't see anything noticable, however by plotting salary vs age by brand (as color, with black being Acer and red being Sony), we can visualize a deeper structure in the age vs. salary data, which the model has learned to represent/map via decision trees. Finally, we also see a weaker, but significant relationship in the salary vs. credit by brand plot, which also inuitivaley makes sense from the model's variable importance table.
+
+To do this, I would like you to run and optimize at least two different decision tree classification methods in R -  - and compare which one works better for this data set. 
+
+### Conclusions
+In summary, we have review the data structure, preprocessing, model selection, and prediction for the customer survey responses. Using the kappa and accuracy scores form the training+test set combined, and from each set individually, we determined the random forest to be a better model overall. With this trained random forest model, we prediced the brand labels for the incomplete customer survey data. Finally, using scatter plots with color maps, we were able to get a more intuitive understanding of weigh salary and age were assigned such a high variable importance. Specifically, by plotting salary vs. age. and salary vs credit with a color axis of brand ID (red: Sony, black: Asos) we can see a clear cluster-like behaviour in the age vs salary plot, while we see a weaker, but still significant line of deliniation in the credict vs. salary plot.
+        
+
+

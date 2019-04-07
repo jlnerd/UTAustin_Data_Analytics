@@ -1,0 +1,10 @@
+"1","
+ df_test post resample: 
+     RMSE  Rsquared       MAE 
+0.2852245 0.8933604 0.2039424 
+
+ ----- model_name: xgbTree -----
+ df_train post resample: 
+       RMSE    Rsquared         MAE 
+0.004438720 0.999970293 0.002037815 
+"

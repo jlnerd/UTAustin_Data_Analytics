@@ -1,0 +1,61 @@
+"0","```r
+Get_to_know_data <- function(DatasetName){
+  print(paste(\"GET TO KNOW: \",deparse(substitute(DatasetName))))
+  
+  print('fetching attributes...')
+  print(attributes(DatasetName) )#List your attributes within your data set.
+  
+  print('fetching summary...')
+  print(summary(DatasetName) )#Prints the min, max, mean, median, and quartiles of each attribute.
+  
+  print('fetching data structure...')
+  print(str(DatasetName) )#Displays the structure of your data set.
+  
+  print('fetching data attribute names...')
+  print(names(DatasetName) )#Names your attributes within your data set.
+  #DatasetName$ColumnName #Will print out the instances within that particular column in your data set.
+}
+Get_to_know_data(df_cars)
+```"
+"1","[1] \"GET TO KNOW:  df_cars\"
+[1] \"fetching attributes...\"
+$names
+[1] \"name of car\"     \"speed of car\"    \"distance of car\"
+
+$class
+[1] \"spec_tbl_df\" \"tbl_df\"      \"tbl\"         \"data.frame\" 
+
+$row.names
+ [1]  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29
+[30] 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50
+
+$spec
+cols(
+  `name of car` = [31mcol_character()[39m,
+  `speed of car` = [32mcol_double()[39m,
+  `distance of car` = [32mcol_double()[39m
+)
+
+[1] \"fetching summary...\"
+ name of car         speed of car  distance of car 
+ Length:50          Min.   : 4.0   Min.   :  2.00  
+ Class :character   1st Qu.:12.0   1st Qu.: 26.00  
+ Mode  :character   Median :15.0   Median : 36.00  
+                    Mean   :15.4   Mean   : 42.98  
+                    3rd Qu.:19.0   3rd Qu.: 56.00  
+                    Max.   :25.0   Max.   :120.00  
+[1] \"fetching data structure...\"
+Classes ‘spec_tbl_df’, ‘tbl_df’, ‘tbl’ and 'data.frame':	50 obs. of  3 variables:
+ $ name of car    : chr  \"Ford\" \"Jeep\" \"Honda\" \"KIA\" ...
+ $ speed of car   : num  4 4 7 7 8 9 10 10 10 11 ...
+ $ distance of car: num  2 4 10 10 14 16 17 18 20 20 ...
+ - attr(*, \"spec\")=
+  .. cols(
+  ..   `name of car` = [31mcol_character()[39m,
+  ..   `speed of car` = [32mcol_double()[39m,
+  ..   `distance of car` = [32mcol_double()[39m
+  .. )
+NULL
+[1] \"fetching data attribute names...\"
+[1] \"name of car\"     \"speed of car\"    \"distance of car\"
+"

@@ -1,0 +1,20 @@
+"0","```r
+#setup seed for reproducability
+set.seed(1)
+# Define Label
+y <- df_preprocessed$log10_Volume
+#define a 75-25% train-test split of the dataset
+inTraining <- createDataPartition(y, p = .75, list = FALSE)
+df_train <- df_preprocessed[inTraining,]
+df_test <- df_preprocessed[-inTraining,]
+y_train = df_train$log10_Volume
+y_test = df_test$log10_Volume
+#check dimensions of train & test set
+dim(df_train); dim(df_test);
+```"
+"1","[1] 58 26
+[1] 19 26
+"
+"0","```r
+View(df_train)
+```"

@@ -1,0 +1,5 @@
+"0","```r
+# prediction<-predict(LinearModeltestSet) #orignal code
+# Error in predict(LinearModeltestSet) : object 'LinearModeltestSet' not found
+prediction<-predict(LinearModel,testSet) #new code
+```"

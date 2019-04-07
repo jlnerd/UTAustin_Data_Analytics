@@ -1,0 +1,39 @@
+"0","```r
+plot_summary_of_data<-function(DatasetName,x_index=1){
+  
+  column_names = names(DatasetName)
+  
+  subplot_cols = 2
+  subplot_rows = 2
+  par(mfrow=c(subplot_rows,subplot_cols))  
+  
+  x <- unlist(DatasetName[,x_index])
+  x_header = column_names[x_index]
+  
+  for(i in 1:length(column_names)){
+    y <- unlist(DatasetName[,i])
+    y_header = column_names[i]
+    try(hist(y, main = paste(y_header, \"Histogram\"), xlab = y_header ),silent=TRUE)#Histogram Plot
+  }
+  
+  for(i in 1:length(column_names)){
+    
+    if(i != x_index) {
+    y <- unlist(DatasetName[,i])
+    y_header = column_names[i]
+    
+    try(plot(x,y, xlab = x_header, ylab = y_header),silent=TRUE)  #Scatter (Box) Plot
+    } 
+  }
+  
+  #Normal Quantile Plot- is a way to see if your data is normally distributed.
+  for(i in 1:length(column_names)){
+    
+    y <- unlist(DatasetName[,i])
+    y_header = column_names[i]
+    
+ try(qqnorm(y,main = paste(y_header, \" Normal Q-Q Plot\")),silent=TRUE) ##Normal Quantile Plot
+  }
+}
+plot_summary_of_data(df,x_index=7)
+```"

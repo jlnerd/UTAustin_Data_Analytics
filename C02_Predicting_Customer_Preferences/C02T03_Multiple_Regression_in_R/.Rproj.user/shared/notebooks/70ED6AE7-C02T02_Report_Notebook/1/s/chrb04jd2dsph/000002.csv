@@ -1,0 +1,61 @@
+"0","```r
+# Prediction for the previously trained models
+model_list = list(rfFit_autogrid_1, rfFit_autogrid_2, rfFit_manualgrid_1, rfFit_randomsearch_1, LMFit_autogrid_1)
+y_training <- training$SolarRad
+y_testing <- testing$SolarRad
+for(i in 1:length(model_list )){
+  model_ID <- model_list[i]
+  print(model_ID)
+  
+  predicted_training <- predict(model_ID, newdata = training)[[1]]
+  predicted_training_residuals <- y_training - predicted_training
+  RMSE_training = round(RMSE(pred = predicted_training, obs = y_training),2)
+  predicted_testing <- predict(model_ID, newdata = testing)[[1]]
+  predicted_testing_residuals <- y_testing - predicted_testing
+  RMSE_testing = round(RMSE(pred = predicted_testing, obs = y_testing),2)
+  
+  subplot_rows = 1
+  subplot_cols = 2
+  par(mfrow=c(subplot_rows,subplot_cols))  
+  
+  hist(predicted_training_residuals, xlab = 'predicted_training_residuals',main = paste(\"model method\",model_ID[[1]][\"method\"], \", RMSE:\" ,   RMSE_training))
+  hist(predicted_testing_residuals, xlab = 'predicted_testing_residuals', main = paste(\"model method\",model_ID[[1]][\"method\"], ', RMSE:',   RMSE_testing))
+  
+  
+  
+}
+```"
+"1","[[1]]
+Random Forest 
+
+5271 samples
+   7 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 1 times) 
+Summary of sample sizes: 4744, 4743, 4744, 4743, 4745, 4744, ... 
+Resampling results:
+
+  RMSE      Rsquared   MAE     
+  84.64967  0.9046372  48.09927
+
+Tuning parameter 'mtry' was held constant at a value of 2
+
+[[1]]
+Random Forest 
+
+5271 samples
+   7 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 1 times) 
+Summary of sample sizes: 4744, 4743, 4744, 4744, 4743, 4743, ... 
+Resampling results across tuning parameters:
+
+  mtry  RMSE      Rsquared   MAE     
+  2     84.31088  0.9053028  47.86665
+  7     82.58053  0.9057808  41.58025
+
+RMSE was used to select the optimal model using the smallest value.
+The final value used for the model was mtry = 7.
+"

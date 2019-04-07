@@ -1,0 +1,53 @@
+"0","```r
+#caret model - Automatic Tuning Grid
+#http://topepo.github.io/caret/bytag.html
+#model training: http://topepo.github.io/caret/training.html
+#model measurement: http://topepo.github.io/caret/other.html
+#dataframe = WholeYear
+#Y Value = SolarRad
+#load library and set seed
+library(caret)
+library(readr) 
+set.seed(998)
+#load the data set
+WholeYear<- read_csv(\"WholeYear.csv\");
+```"
+"1","Missing column names filled in: 'X1' [1]Parsed with column specification:
+cols(
+  X1 = [32mcol_double()[39m,
+  TimeofDay = [32mcol_double()[39m,
+  AirTemp = [32mcol_double()[39m,
+  Humidity = [32mcol_double()[39m,
+  Dewpoint = [32mcol_double()[39m,
+  BarPres = [32mcol_double()[39m,
+  WindSpeed = [32mcol_double()[39m,
+  SolarRad = [32mcol_double()[39m
+)
+"
+"0","```r
+print(paste(\"NROW(WholeYear):\",NROW(WholeYear)))
+```"
+"1","[1] \"NROW(WholeYear): 35136\"
+"
+"0","```r
+#create a 20% sample of the data
+subset_ratio = 0.2
+print(paste('subset_ratio',subset_ratio))
+```"
+"1","[1] \"subset_ratio 0.2\"
+"
+"0","```r
+subset_size = round(NROW(WholeYear)*subset_ratio,0)
+WholeYear <- WholeYear[sample(1:nrow(WholeYear), subset_size,replace=FALSE),]
+print(paste(\"NROW(WholeYear) Subset:\",NROW(WholeYear)))
+```"
+"1","[1] \"NROW(WholeYear) Subset: 7027\"
+"
+"0","```r
+#define a 75-25% train-test split of the dataset
+inTraining <- createDataPartition(WholeYear$SolarRad, p = .75, list = FALSE)
+training <- WholeYear[inTraining,]
+testing <- WholeYear[-inTraining,]
+#10 fold cross validation
+fitControl <- trainControl(method = \"repeatedcv\", number = 10, repeats = 1)
+```"

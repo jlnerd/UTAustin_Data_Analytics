@@ -1,0 +1,13 @@
+"0","```r
+#Plot Ratings and Reviews vs. Volume
+x<-log10(df_validation_w_predictions$x4StarReviews)
+y<-log10(df_validation_w_predictions$Predicted_Volume)
+plot(x,y,col='red',xlab = \"log10(# of ratings)\", ylab = \"log10(Predicted_Volume)\")
+x<-log10(df_validation_w_predictions$x3StarReviews)
+points(x,y,col='green')
+```"
+"0","```r
+x<-log10(df_validation_w_predictions$x2StarReviews)
+points(x,y,col='blue')
+legend(2.1,2.2, legend = list('4 Stars','3 Stars','2 Stars'),col=c('red','green','blue'),pch='o')
+```"

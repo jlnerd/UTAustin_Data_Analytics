@@ -1,0 +1,57 @@
+"0","```r
+# calculate the pre-process parameters from the dataset
+preprocessParams <- preProcess(df, method=c(\"scale\"))
+# summarize transform parameters
+print(preprocessParams)
+```"
+"1","Created from 9898 samples and 7 variables
+
+Pre-processing:
+  - ignored (4)
+  - scaled (3)
+"
+"0","```r
+# transform the dataset using the parameters
+df_preprocesssed<- predict(preprocessParams, df)
+# summarize the transformed dataset
+Get_to_know_data(df_preprocesssed)
+```"
+"1","[1] \"GET TO KNOW:  df_preprocesssed\"
+[1] \"fetching summary...\"
+     salary            age        elevel        car          zipcode         credit      
+ Min.   :0.5303   Min.   :1.137   0:2052   15     : 542   6      :1155   Min.   :0.0000  
+ 1st Qu.:1.3810   1st Qu.:1.989   1:1948   18     : 524   8      :1135   1st Qu.:0.8319  
+ Median :2.2526   Median :2.841   2:1983   8      : 511   2      :1112   Median :1.7258  
+ Mean   :2.2505   Mean   :2.829   3:1947   2      : 509   5      :1108   Mean   :1.7160  
+ 3rd Qu.:3.1067   3rd Qu.:3.694   4:1968   17     : 508   4      :1087   3rd Qu.:2.5800  
+ Max.   :3.9775   Max.   :4.546            5      : 505   0      :1085   Max.   :3.4433  
+                                           (Other):6799   (Other):3216                   
+ brand   
+ 0:3744  
+ 1:6154  
+         
+         
+         
+         
+         
+[1] \"fetching data structure...\"
+Classes ‘spec_tbl_df’, ‘tbl_df’, ‘tbl’ and 'data.frame':	9898 obs. of  7 variables:
+ $ salary : num  3.18 2.83 2.07 1.69 1.35 ...
+ $ age    : num  2.56 3.58 1.31 2.9 1.14 ...
+ $ elevel : Factor w/ 5 levels \"0\",\"1\",\"2\",\"3\",..: 1 2 1 4 4 4 5 4 5 2 ...
+ $ car    : Factor w/ 20 levels \"1\",\"2\",\"3\",\"4\",..: 14 11 15 6 14 14 8 3 17 5 ...
+ $ zipcode: Factor w/ 9 levels \"0\",\"1\",\"2\",\"3\",..: 5 7 3 6 5 4 6 1 1 5 ...
+ $ credit : num  3.044 0.31 0.336 0.282 2.431 ...
+ $ brand  : Factor w/ 2 levels \"0\",\"1\": 1 2 1 2 1 2 2 2 1 2 ...
+ - attr(*, \"spec\")=
+  .. cols(
+  ..   salary = [32mcol_double()[39m,
+  ..   age = [32mcol_double()[39m,
+  ..   elevel = [32mcol_double()[39m,
+  ..   car = [32mcol_double()[39m,
+  ..   zipcode = [32mcol_double()[39m,
+  ..   credit = [32mcol_double()[39m,
+  ..   brand = [32mcol_double()[39m
+  .. )
+NULL
+"

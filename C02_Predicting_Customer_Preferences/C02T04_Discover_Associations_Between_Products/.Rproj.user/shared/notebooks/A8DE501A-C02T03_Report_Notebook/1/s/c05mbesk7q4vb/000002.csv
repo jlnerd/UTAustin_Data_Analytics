@@ -1,0 +1,68 @@
+"0","```r
+summary(df_preprocessed)
+```"
+"1"," ProductTypeAccessories ProductTypeDisplay ProductTypeExtendedWarranty
+ Min.   :0.000          Min.   :0.0000     Min.   :0.000              
+ 1st Qu.:0.000          1st Qu.:0.0000     1st Qu.:0.000              
+ Median :0.000          Median :0.0000     Median :0.000              
+ Mean   :0.325          Mean   :0.0625     Mean   :0.125              
+ 3rd Qu.:1.000          3rd Qu.:0.0000     3rd Qu.:0.000              
+ Max.   :1.000          Max.   :1.0000     Max.   :1.000              
+                                                                      
+ ProductTypeGameConsole ProductTypeLaptop ProductTypeNetbook ProductTypePC 
+ Min.   :0.000          Min.   :0.0000    Min.   :0.000      Min.   :0.00  
+ 1st Qu.:0.000          1st Qu.:0.0000    1st Qu.:0.000      1st Qu.:0.00  
+ Median :0.000          Median :0.0000    Median :0.000      Median :0.00  
+ Mean   :0.025          Mean   :0.0375    Mean   :0.025      Mean   :0.05  
+ 3rd Qu.:0.000          3rd Qu.:0.0000    3rd Qu.:0.000      3rd Qu.:0.00  
+ Max.   :1.000          Max.   :1.0000    Max.   :1.000      Max.   :1.00  
+                                                                           
+ ProductTypePrinter ProductTypePrinterSupplies ProductTypeSmartphone
+ Min.   :0.00       Min.   :0.0000             Min.   :0.00         
+ 1st Qu.:0.00       1st Qu.:0.0000             1st Qu.:0.00         
+ Median :0.00       Median :0.0000             Median :0.00         
+ Mean   :0.15       Mean   :0.0375             Mean   :0.05         
+ 3rd Qu.:0.00       3rd Qu.:0.0000             3rd Qu.:0.00         
+ Max.   :1.00       Max.   :1.0000             Max.   :1.00         
+                                                                    
+ ProductTypeSoftware ProductTypeTablet   ProductNum        Price        
+ Min.   :0.000       Min.   :0.0000    Min.   :101.0   Min.   :   3.60  
+ 1st Qu.:0.000       1st Qu.:0.0000    1st Qu.:120.8   1st Qu.:  52.66  
+ Median :0.000       Median :0.0000    Median :140.5   Median : 132.72  
+ Mean   :0.075       Mean   :0.0375    Mean   :142.6   Mean   : 247.25  
+ 3rd Qu.:0.000       3rd Qu.:0.0000    3rd Qu.:160.2   3rd Qu.: 352.49  
+ Max.   :1.000       Max.   :1.0000    Max.   :200.0   Max.   :2249.99  
+                                                                        
+ x5StarReviews    x4StarReviews    x3StarReviews    x2StarReviews   
+ Min.   :   0.0   Min.   :  0.00   Min.   :  0.00   Min.   :  0.00  
+ 1st Qu.:  10.0   1st Qu.:  2.75   1st Qu.:  2.00   1st Qu.:  1.00  
+ Median :  50.0   Median : 22.00   Median :  7.00   Median :  3.00  
+ Mean   : 176.2   Mean   : 40.20   Mean   : 14.79   Mean   : 13.79  
+ 3rd Qu.: 306.5   3rd Qu.: 33.00   3rd Qu.: 11.25   3rd Qu.:  7.00  
+ Max.   :2801.0   Max.   :431.00   Max.   :162.00   Max.   :370.00  
+                                                                    
+ x1StarReviews     PositiveServiceReview NegativeServiceReview Recommendproduct
+ Min.   :   0.00   Min.   :  0.00        Min.   :  0.000       Min.   :0.100   
+ 1st Qu.:   2.00   1st Qu.:  2.00        1st Qu.:  1.000       1st Qu.:0.700   
+ Median :   8.50   Median :  5.50        Median :  3.000       Median :0.800   
+ Mean   :  37.67   Mean   : 51.75        Mean   :  6.225       Mean   :0.745   
+ 3rd Qu.:  15.25   3rd Qu.: 42.00        3rd Qu.:  6.250       3rd Qu.:0.900   
+ Max.   :1654.00   Max.   :536.00        Max.   :112.000       Max.   :1.000   
+                                                                               
+ BestSellersRank ShippingWeight     ProductDepth      ProductWidth   
+ Min.   :    1   Min.   : 0.0100   Min.   :  0.000   Min.   : 0.000  
+ 1st Qu.:    7   1st Qu.: 0.5125   1st Qu.:  4.775   1st Qu.: 1.750  
+ Median :   27   Median : 2.1000   Median :  7.950   Median : 6.800  
+ Mean   : 1126   Mean   : 9.6681   Mean   : 14.425   Mean   : 7.819  
+ 3rd Qu.:  281   3rd Qu.:11.2050   3rd Qu.: 15.025   3rd Qu.:11.275  
+ Max.   :17502   Max.   :63.0000   Max.   :300.000   Max.   :31.750  
+ NA's   :15                                                          
+ ProductHeight     ProfitMargin        Volume     
+ Min.   : 0.000   Min.   :0.0500   Min.   :    0  
+ 1st Qu.: 0.400   1st Qu.:0.0500   1st Qu.:   40  
+ Median : 3.950   Median :0.1200   Median :  200  
+ Mean   : 6.259   Mean   :0.1545   Mean   :  705  
+ 3rd Qu.:10.300   3rd Qu.:0.2000   3rd Qu.: 1226  
+ Max.   :25.800   Max.   :0.4000   Max.   :11204  
+                                                  
+"

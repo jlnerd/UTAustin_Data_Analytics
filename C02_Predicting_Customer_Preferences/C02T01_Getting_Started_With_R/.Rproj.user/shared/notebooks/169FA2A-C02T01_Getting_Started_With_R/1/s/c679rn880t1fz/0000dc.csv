@@ -1,0 +1,2 @@
+"0","legend(""topleft"", legend=c(""TrainSet & Linear Model"",""TestSet""),"
+"0","       col=c(""red"",""blue""),lty=1, cex=.9)"

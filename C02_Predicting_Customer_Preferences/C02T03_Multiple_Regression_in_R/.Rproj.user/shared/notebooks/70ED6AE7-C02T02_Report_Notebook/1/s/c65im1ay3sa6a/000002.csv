@@ -1,0 +1,22 @@
+"0","```r
+\"Train-test set brand distribution:\"
+```"
+"1","[1] \"Train-test set brand distribution:\"
+"
+"0","```r
+summary(df$brand)
+```"
+"1","   0    1 
+3744 6154 
+"
+"0","```r
+\"Validation set brand distirbution:\"
+```"
+"1","[1] \"Validation set brand distirbution:\"
+"
+"0","```r
+summary(df_validation_preprocesssed$brand)
+```"
+"1","   0    1 
+4937   63 
+"

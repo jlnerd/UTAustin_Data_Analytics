@@ -1,0 +1,6 @@
+"0","```r
+y <- df_preprocesssed$brand
+inTraining <- createDataPartition(y, p = .75, list = FALSE)
+training <- df_preprocesssed[inTraining,]
+testing <- df_preprocesssed[-inTraining,]
+```"

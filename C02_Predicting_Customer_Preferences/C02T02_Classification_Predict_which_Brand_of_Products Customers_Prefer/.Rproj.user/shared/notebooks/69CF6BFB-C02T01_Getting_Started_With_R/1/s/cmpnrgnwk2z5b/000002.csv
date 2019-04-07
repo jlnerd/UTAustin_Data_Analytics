@@ -1,0 +1,5 @@
+"0","```r
+#library(“readr”) # Original Code
+#Error: unexpected input in \"library(�\"
+library(readr) # New Code | Note: reference by unquoted name when reading library package.
+```"

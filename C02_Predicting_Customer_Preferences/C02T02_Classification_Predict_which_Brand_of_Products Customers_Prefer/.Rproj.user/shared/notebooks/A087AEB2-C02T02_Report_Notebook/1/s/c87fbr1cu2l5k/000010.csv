@@ -1,0 +1,50 @@
+"0","#caret model - Automatic Tuning Grid"
+"0","#http://topepo.github.io/caret/bytag.html"
+"0","#model training: http://topepo.github.io/caret/training.html"
+"0","#model measurement: http://topepo.github.io/caret/other.html"
+"0","#dataframe = WholeYear"
+"0","#Y Value = SolarRad"
+"0","#load library and set seed"
+"0","library(caret)"
+"0","library(readr) "
+"0","set.seed(998)"
+"0","#load the data set"
+"0","WholeYear<- read_csv(""WholeYear.csv"");"
+"2","Missing column names filled in: 'X1' [1]"
+"2","Parsed with column specification:
+cols(
+  X1 = [32mcol_double()[39m,
+  TimeofDay = [32mcol_double()[39m,
+  AirTemp = [32mcol_double()[39m,
+  Humidity = [32mcol_double()[39m,
+  Dewpoint = [32mcol_double()[39m,
+  BarPres = [32mcol_double()[39m,
+  WindSpeed = [32mcol_double()[39m,
+  SolarRad = [32mcol_double()[39m
+)
+"
+"0","print(paste(""NROW(WholeYear):"",NROW(WholeYear)))"
+"1","[1]"
+"1"," ""NROW(WholeYear): 35136"""
+"1","
+"
+"0","#create a 20% sample of the data"
+"0","subset_ratio = 0.2"
+"0","print(paste('subset_ratio',subset_ratio))"
+"1","[1]"
+"1"," ""subset_ratio 0.2"""
+"1","
+"
+"0","subset_size = round(NROW(WholeYear)*subset_ratio,0)"
+"0","WholeYear <- WholeYear[sample(1:nrow(WholeYear), subset_size,replace=FALSE),]"
+"0","print(paste(""NROW(WholeYear) Subset:"",NROW(WholeYear)))"
+"1","[1]"
+"1"," ""NROW(WholeYear) Subset: 7027"""
+"1","
+"
+"0","#define a 75-25% train-test split of the dataset"
+"0","inTraining <- createDataPartition(WholeYear$SolarRad, p = .75, list = FALSE)"
+"0","training <- WholeYear[inTraining,]"
+"0","testing <- WholeYear[-inTraining,]"
+"0","#10 fold cross validation"
+"0","fitControl <- trainControl(method = ""repeatedcv"", number = 10, repeats = 1)"

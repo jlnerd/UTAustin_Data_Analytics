@@ -1,0 +1,48 @@
+"0","```r
+compare_models <- function (model_list, df_train, df_test, label_column){
+    for (i in 1:length(model_list)){
+      
+      model <- model_list[i]
+      model_name <- list(model[[1]]$method)[[1]]
+      
+      cat(paste('\n ----- model_name:',model_name,'-----'))
+      cat('\n df_train post resample: \n')
+      df_train_test = df_train
+      y_train_test = df_train[,c(label_column)]
+      prediction <- predict(model, df_train_test)[[1]]
+            
+      df_postResample<-postResample(pred = prediction, obs = y_train_test)
+      print(df_postResample)
+    
+      plot(y_train_test,prediction,xlab = 'Label',ylab = 'Prediction', col='blue', main = model_name)
+      par(new=FALSE)
+      
+      cat('\n df_test post resample: \n')
+      df_train_test = df_test
+      y_train_test = df_test[,c(label_column)]
+      prediction <- predict(model, df_train_test)[[1]]
+      df_postResample<-postResample(pred = prediction, obs = y_train_test)
+      print(df_postResample)
+      
+      points(y_train_test,prediction,xlab = 'Label',ylab = 'Prediction', col='red')
+      legend(4, legend = list('Train','Test'),col=c('Blue','Red'),pch='o')
+    }
+}
+model_list <- list(model_svmLinear, model_rf, model_gbTree)
+compare_models(model_list, df_train, df_test, label_column = 'log10_Volume')
+```"
+"1","
+ ----- model_name: svmLinear -----
+ df_train post resample: 
+     RMSE  Rsquared       MAE 
+0.3243008 0.8199906 0.2046974 
+
+ df_test post resample: 
+     RMSE  Rsquared       MAE 
+0.9348012 0.1020904 0.7404686 
+
+ ----- model_name: rf -----
+ df_train post resample: 
+      RMSE   Rsquared        MAE 
+0.08523613 0.98868133 0.05978294 
+"

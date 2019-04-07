@@ -1,0 +1,7 @@
+"0","```r
+varImp(rfFit_manualgrid_1)
+```"
+"1","rf variable importance
+
+  only 20 most important variables shown (out of 34)
+"

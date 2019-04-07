@@ -1,0 +1,2 @@
+"0","trainSet <- IrisDataset[training_indices, ] #original code (repreated previously)"
+"0","testSet <- IrisDataset[-training_indices, ] #original code (repreated previously)"

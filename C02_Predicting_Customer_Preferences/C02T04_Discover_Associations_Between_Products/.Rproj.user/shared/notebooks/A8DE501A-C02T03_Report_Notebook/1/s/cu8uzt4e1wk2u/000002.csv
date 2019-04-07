@@ -1,0 +1,67 @@
+"0","```r
+train_controls <- trainControl(method = \"repeatedcv\", number = 10, repeats = 1)
+#View(df_train)
+ 
+model <- train(log10_Volume ~., data = df_train, method = \"rf\",
+                 trControl=train_controls,
+                 tuneLength = 10)
+model_rf <- model
+print(model)
+```"
+"1","Random Forest 
+
+58 samples
+25 predictors
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 1 times) 
+Summary of sample sizes: 52, 52, 52, 52, 52, 52, ... 
+Resampling results across tuning parameters:
+
+  mtry  RMSE       Rsquared   MAE      
+   2    0.2929948  0.9109390  0.2245404
+   4    0.2299453  0.9303843  0.1769531
+   7    0.2049799  0.9385415  0.1530137
+   9    0.2010769  0.9413503  0.1495050
+  12    0.2004596  0.9409190  0.1518874
+  14    0.2001748  0.9396720  0.1520021
+  17    0.1982224  0.9403279  0.1500803
+  19    0.1982045  0.9416796  0.1505520
+  22    0.1973757  0.9418469  0.1510513
+  25    0.2034560  0.9371050  0.1547379
+
+RMSE was used to select the optimal model using the smallest value.
+The final value used for the model was mtry = 22.
+"
+"0","```r
+cat('\n df_train post resample: \n')
+```"
+"1","
+ df_train post resample: 
+"
+"0","```r
+df_train_test = df_train
+y_train_test=y_train
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+```"
+"1","      RMSE   Rsquared        MAE 
+0.08523613 0.98868133 0.05978294 
+"
+"0","```r
+cat('\n df_test post resample: \n')
+```"
+"1","
+ df_test post resample: 
+"
+"0","```r
+df_train_test = df_test
+y_train_test=y_test
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+```"
+"1","     RMSE  Rsquared       MAE 
+0.2852245 0.8933604 0.2039424 
+"

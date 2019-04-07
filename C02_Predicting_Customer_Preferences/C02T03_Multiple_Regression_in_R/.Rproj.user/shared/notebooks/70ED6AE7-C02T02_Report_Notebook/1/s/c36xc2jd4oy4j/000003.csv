@@ -1,0 +1,62 @@
+"0","```r
+print(paste(\"NROW(df):\",NROW(df)))
+```"
+"1","[1] \"NROW(df): 9898\"
+"
+"0","```r
+# Update Data Types
+df$\"elevel\" <- as.factor(df$\"elevel\")
+df$\"car\" <- as.factor(df$\"car\")
+df$\"zipcode\" <- as.factor(df$zipcode)
+df$brand<-as.factor(df$brand)
+Get_to_know_data <- function(df){
+  print(paste(\"GET TO KNOW: \",deparse(substitute(df))))
+  
+  print('fetching summary...')
+  print(summary(df) )#Prints the min, max, mean, median, and quartiles of each attribute.
+  
+  print('fetching data structure...')
+  print(str(df) )#Displays the structure of your data set.
+  
+}
+Get_to_know_data(df)
+```"
+"1","[1] \"GET TO KNOW:  df\"
+[1] \"fetching summary...\"
+     salary            age        elevel        car          zipcode         credit      
+ Min.   : 20000   Min.   :20.00   0:2052   15     : 542   6      :1155   Min.   :     0  
+ 1st Qu.: 52082   1st Qu.:35.00   1:1948   18     : 524   8      :1135   1st Qu.:120807  
+ Median : 84950   Median :50.00   2:1983   8      : 511   2      :1112   Median :250607  
+ Mean   : 84871   Mean   :49.78   3:1947   2      : 509   5      :1108   Mean   :249176  
+ 3rd Qu.:117162   3rd Qu.:65.00   4:1968   17     : 508   4      :1087   3rd Qu.:374640  
+ Max.   :150000   Max.   :80.00            5      : 505   0      :1085   Max.   :500000  
+                                           (Other):6799   (Other):3216                   
+ brand   
+ 0:3744  
+ 1:6154  
+         
+         
+         
+         
+         
+[1] \"fetching data structure...\"
+Classes ‘spec_tbl_df’, ‘tbl_df’, ‘tbl’ and 'data.frame':	9898 obs. of  7 variables:
+ $ salary : num  119807 106880 78021 63690 50874 ...
+ $ age    : num  45 63 23 51 20 56 24 62 29 41 ...
+ $ elevel : Factor w/ 5 levels \"0\",\"1\",\"2\",\"3\",..: 1 2 1 4 4 4 5 4 5 2 ...
+ $ car    : Factor w/ 20 levels \"1\",\"2\",\"3\",\"4\",..: 14 11 15 6 14 14 8 3 17 5 ...
+ $ zipcode: Factor w/ 9 levels \"0\",\"1\",\"2\",\"3\",..: 5 7 3 6 5 4 6 1 1 5 ...
+ $ credit : num  442038 45007 48795 40889 352951 ...
+ $ brand  : Factor w/ 2 levels \"0\",\"1\": 1 2 1 2 1 2 2 2 1 2 ...
+ - attr(*, \"spec\")=
+  .. cols(
+  ..   salary = [32mcol_double()[39m,
+  ..   age = [32mcol_double()[39m,
+  ..   elevel = [32mcol_double()[39m,
+  ..   car = [32mcol_double()[39m,
+  ..   zipcode = [32mcol_double()[39m,
+  ..   credit = [32mcol_double()[39m,
+  ..   brand = [32mcol_double()[39m
+  .. )
+NULL
+"

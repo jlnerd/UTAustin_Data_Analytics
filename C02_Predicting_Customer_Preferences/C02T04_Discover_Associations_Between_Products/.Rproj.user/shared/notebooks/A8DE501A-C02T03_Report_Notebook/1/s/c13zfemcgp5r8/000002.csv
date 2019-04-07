@@ -1,0 +1,22 @@
+"0","```r
+# one-hot encode (dummify) the data
+df_preprocessed <- dummyVars(\" ~.\",data = df)
+df_preprocessed <- data.frame(predict(df_preprocessed,newdata = df))
+colnames(df_preprocessed)
+```"
+"1"," [1] \"ProductTypeAccessories\"      \"ProductTypeDisplay\"         
+ [3] \"ProductTypeExtendedWarranty\" \"ProductTypeGameConsole\"     
+ [5] \"ProductTypeLaptop\"           \"ProductTypeNetbook\"         
+ [7] \"ProductTypePC\"               \"ProductTypePrinter\"         
+ [9] \"ProductTypePrinterSupplies\"  \"ProductTypeSmartphone\"      
+[11] \"ProductTypeSoftware\"         \"ProductTypeTablet\"          
+[13] \"ProductNum\"                  \"Price\"                      
+[15] \"x5StarReviews\"               \"x4StarReviews\"              
+[17] \"x3StarReviews\"               \"x2StarReviews\"              
+[19] \"x1StarReviews\"               \"PositiveServiceReview\"      
+[21] \"NegativeServiceReview\"       \"Recommendproduct\"           
+[23] \"BestSellersRank\"             \"ShippingWeight\"             
+[25] \"ProductDepth\"                \"ProductWidth\"               
+[27] \"ProductHeight\"               \"ProfitMargin\"               
+[29] \"Volume\"                     
+"

@@ -1,0 +1,18 @@
+"0","```r
+train_test_split<-function(DatasetName,training_size_ratio=0.7){
+                           
+  df_train_test_size <- train_test_size(df_cars,training_size_ratio)  #get train test sizes
+  trainSize<-df_train_test_size[1,1]
+  
+  training_indices<-sample(seq_len(nrow(DatasetName)),size = trainSize)
+  
+  trainSet<-DatasetName[training_indices,]
+  
+  testSet<-DatasetName[-training_indices,] 
+  
+  return(list(trainSet,testSet))
+}
+list_df_train_test_sets = train_test_split(df_cars,0.7)
+df_trainSet = list_df_train_test_sets[[1]]
+print(df_trainSet)
+```"

@@ -1,0 +1,17 @@
+"0","```r
+#Add predictions to df
+df_validation_w_predictions <- df_validation
+df_validation_w_predictions['Predicted_Volume'] <- prediction_validation_Volume
+#sort the df
+df_validation_w_predictions <- df_validation_w_predictions[order(df_validation_w_predictions$Predicted_Volume),]
+#Add unique ID column
+df_validation_w_predictions['ProductType_ProductNumber_Price']<- with(df_validation_w_predictions, paste0(ProductType,'_#', ProductNum,'_$', Price))
+par(mar=c(11,4,1,1))
+barplot(height = df_validation_w_predictions$Predicted_Volume, names.arg = df_validation_w_predictions$ProductType_ProductNumber_Price, las=2, cex.axis = .8 , cex.names = 0.8, ylab = 'Volume')
+#aggregate by Product Type
+df_ProductType_aggregate <- aggregate(df_validation_w_predictions$Predicted_Volume, by=list(Category=df_validation_w_predictions$ProductType), FUN=sum)
+colnames(df_ProductType_aggregate) <- c(\"ProductType\", \"Total_Predicted_Volume\")
+# sort the aggregate
+df_ProductType_aggregate <- df_ProductType_aggregate[order(df_ProductType_aggregate$Total_Predicted_Volume),]
+par(mar=c(9,4,1,4))
+```"

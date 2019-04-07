@@ -1,0 +1,6 @@
+"0","```r
+testSize <- round(nrow(IrisDataset)) - trainSize # new code | replace trainSet with trainSize
+testSize
+```"
+"1","[1] 120
+"

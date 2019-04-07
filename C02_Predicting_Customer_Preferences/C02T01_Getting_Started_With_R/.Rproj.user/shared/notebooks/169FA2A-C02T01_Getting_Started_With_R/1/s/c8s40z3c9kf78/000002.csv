@@ -1,0 +1,2 @@
+"0","df_cars$""name of car""<-as.factor(df_cars$""name of car"")"
+"0","df_iris$""Species""<-as.factor(df_iris$""Species"")"

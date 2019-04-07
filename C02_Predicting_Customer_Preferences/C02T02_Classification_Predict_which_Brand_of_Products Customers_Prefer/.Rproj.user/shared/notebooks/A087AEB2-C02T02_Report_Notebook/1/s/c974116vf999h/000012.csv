@@ -1,0 +1,1 @@
+"0","plot(df$brand,df$credit, xlab = 'brand', ylab = 'credit')"

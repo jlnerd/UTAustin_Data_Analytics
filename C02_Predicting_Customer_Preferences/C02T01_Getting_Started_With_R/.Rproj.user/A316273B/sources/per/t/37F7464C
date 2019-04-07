@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1548053815769.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1796172593",
+    "id" : "37F7464C",
+    "lastKnownWriteTime" : 1548088270,
+    "last_content_update" : 1548088270652,
+    "path" : "~/Documents/Certificate_Courses/UTAustin_Data_Analytics/C02_Predicting_Customer_Preferences/C02T01_Getting_Started_With_R.Rmd",
+    "project_path" : "C02T01_Getting_Started_With_R.Rmd",
+    "properties" : {
+        "chunk_output_type" : "inline",
+        "cursorPosition" : "634,2",
+        "docOutlineVisible" : "0",
+        "scrollLine" : "626",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

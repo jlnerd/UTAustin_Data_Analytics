@@ -1,0 +1,61 @@
+"0","```r
+train_controls <- trainControl(method = \"repeatedcv\", number = 10, repeats = 3)
+#View(df_train)
+ 
+model <- train(log10_Volume ~., data = df_train, method = \"svmLinear\",
+                 trControl=train_controls,
+                 tuneLength = 10)
+```"
+"1","Variable(s) `' constant. Cannot scale data.Variable(s) `' constant. Cannot scale data.Variable(s) `' constant. Cannot scale data.Variable(s) `' constant. Cannot scale data.Variable(s) `' constant. Cannot scale data.Variable(s) `' constant. Cannot scale data.
+"
+"0","```r
+model_svmLinear <- model
+print(model)
+```"
+"1","Support Vector Machines with Linear Kernel 
+
+58 samples
+25 predictors
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 3 times) 
+Summary of sample sizes: 52, 51, 52, 53, 54, 53, ... 
+Resampling results:
+
+  RMSE      Rsquared   MAE      
+  1.299165  0.5567494  0.7928724
+
+Tuning parameter 'C' was held constant at a value of 1
+"
+"0","```r
+cat('\n df_train post resample: \n')
+```"
+"1","
+ df_train post resample: 
+"
+"0","```r
+df_train_test = df_train
+y_train_test=y_train
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+```"
+"1","     RMSE  Rsquared       MAE 
+0.3243008 0.8199906 0.2046974 
+"
+"0","```r
+cat('\n df_test post resample: \n')
+```"
+"1","
+ df_test post resample: 
+"
+"0","```r
+df_train_test = df_test
+y_train_test=y_test
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+```"
+"1","     RMSE  Rsquared       MAE 
+0.9348012 0.1020904 0.7404686 
+"

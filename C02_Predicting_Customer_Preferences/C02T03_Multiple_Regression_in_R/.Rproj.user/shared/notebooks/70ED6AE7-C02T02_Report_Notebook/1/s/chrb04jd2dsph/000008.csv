@@ -1,0 +1,16 @@
+"1","[[1]]
+Linear Regression 
+
+5271 samples
+   7 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 1 times) 
+Summary of sample sizes: 4743, 4744, 4744, 4745, 4744, 4742, ... 
+Resampling results:
+
+  RMSE      Rsquared   MAE     
+  190.4205  0.4993306  150.6668
+
+Tuning parameter 'intercept' was held constant at a value of TRUE
+"

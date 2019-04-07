@@ -1,0 +1,15 @@
+"0","```r
+subplot_cols = 2
+subplot_rows = 3
+par(mfrow=c(subplot_rows,subplot_cols)) 
+plot(df$brand,df$salary, xlab = 'brand', ylab = 'salary')
+plot(df$brand,df$age, xlab = 'brand', ylab = 'age')
+```"
+"0","```r
+plot(df$brand,df$credit, xlab = 'brand', ylab = 'credit')
+plot(df$salary,df$age, xlab = 'salary', ylab = 'age', type=\"p\",pch=20,col=df$brand)
+```"
+"0","```r
+plot(df$salary,df$credit, xlab = 'salary', ylab = 'credit', type=\"p\",pch=20,col=df$brand)
+plot(df$age,df$credit, xlab = 'age', ylab = 'credit', type=\"p\",pch=20,col=df$brand)
+```"

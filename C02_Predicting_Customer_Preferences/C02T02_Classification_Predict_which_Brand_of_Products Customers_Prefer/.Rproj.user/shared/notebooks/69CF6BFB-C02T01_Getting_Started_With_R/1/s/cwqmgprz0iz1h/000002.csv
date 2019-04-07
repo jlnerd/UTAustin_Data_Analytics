@@ -1,0 +1,9 @@
+"0","```r
+plot(df_trainSet$speed_of_car, df_trainSet$distance_of_car, xlab = 'speed of car', ylab = 'distance of car', col='red',pch = 19)
+abline(lm(distance_of_car ~ speed_of_car, df_trainSet),col='red')
+```"
+"0","```r
+points(df_testSet$speed_of_car, df_testSet$distance_of_car,col='blue')
+legend(\"topleft\", legend=c(\"TrainSet & Linear Model\",\"TestSet\"),
+       col=c(\"red\",\"blue\"),lty=1, cex=.9)
+```"

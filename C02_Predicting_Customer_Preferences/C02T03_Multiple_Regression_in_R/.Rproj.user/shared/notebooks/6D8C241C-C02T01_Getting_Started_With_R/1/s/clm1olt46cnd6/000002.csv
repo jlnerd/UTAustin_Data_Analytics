@@ -1,0 +1,3 @@
+"0","```r
+na.omit(df_cars)#Drops any rows with missing values and omits them forever.
+```"

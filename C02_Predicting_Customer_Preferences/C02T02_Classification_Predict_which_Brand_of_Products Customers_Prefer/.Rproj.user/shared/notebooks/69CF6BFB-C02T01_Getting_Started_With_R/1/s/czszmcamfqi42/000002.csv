@@ -1,0 +1,7 @@
+"0","```r
+# trainSizes # orgiinal code
+# Error: object 'trainSizes' not found
+trainSize # new code | drop \"s\" from original code
+```"
+"1","[1] 30
+"

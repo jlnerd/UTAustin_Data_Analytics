@@ -1,0 +1,1 @@
+"0","plot(df_trainSet$speed_of_car, df_trainSet$distance_of_car, xlab = 'speed of car', ylab = 'distance of car', col='red',pch = 19)"

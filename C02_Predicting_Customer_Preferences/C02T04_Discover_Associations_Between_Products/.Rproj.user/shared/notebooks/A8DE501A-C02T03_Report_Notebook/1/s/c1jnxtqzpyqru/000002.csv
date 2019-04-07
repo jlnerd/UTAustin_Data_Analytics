@@ -1,0 +1,64 @@
+"0","```r
+train_controls <- trainControl(method = \"repeatedcv\", number = 10, repeats = 3)
+model <- train(log10_Volume ~., data = df_train, method = \"lm\", trControl=train_controls)
+```"
+"1","prediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleadingprediction from a rank-deficient fit may be misleading
+"
+"0","```r
+print(model)
+```"
+"1","Linear Regression 
+
+58 samples
+25 predictors
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 3 times) 
+Summary of sample sizes: 52, 51, 53, 51, 53, 52, ... 
+Resampling results:
+
+  RMSE       Rsquared   MAE      
+  0.7816035  0.6272193  0.5384831
+
+Tuning parameter 'intercept' was held constant at a value of TRUE
+"
+"0","```r
+cat('\n df_train post resample: \n')
+```"
+"1","
+ df_train post resample: 
+"
+"0","```r
+df_train_test = df_train
+y_train_test=y_train
+prediction <- predict(model, df_train_test)
+```"
+"1","prediction from a rank-deficient fit may be misleading
+"
+"0","```r
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+```"
+"1","     RMSE  Rsquared       MAE 
+0.2491830 0.8933307 0.1890489 
+"
+"0","```r
+cat('\n df_test post resample: \n')
+```"
+"1","
+ df_test post resample: 
+"
+"0","```r
+df_train_test = df_test
+y_train_test=y_test
+prediction <- predict(model, df_train_test)
+```"
+"1","prediction from a rank-deficient fit may be misleading
+"
+"0","```r
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+```"
+"1","      RMSE   Rsquared        MAE 
+1.36678107 0.02705989 0.95938732 
+"

@@ -1,0 +1,23 @@
+"0","```r
+#10 fold cross validation
+fitControl <- trainControl(method = \"repeatedcv\", number = 10, repeats = 1)
+#train Linear Regression model
+LMFit_autogrid_1 <- train(SolarRad~., data = training, method = \"lm\", trControl=fitControl)
+#check the results
+LMFit_autogrid_1
+```"
+"1","Linear Regression 
+
+5271 samples
+   7 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 1 times) 
+Summary of sample sizes: 4743, 4744, 4744, 4745, 4744, 4742, ... 
+Resampling results:
+
+  RMSE      Rsquared   MAE     
+  190.4205  0.4993306  150.6668
+
+Tuning parameter 'intercept' was held constant at a value of TRUE
+"

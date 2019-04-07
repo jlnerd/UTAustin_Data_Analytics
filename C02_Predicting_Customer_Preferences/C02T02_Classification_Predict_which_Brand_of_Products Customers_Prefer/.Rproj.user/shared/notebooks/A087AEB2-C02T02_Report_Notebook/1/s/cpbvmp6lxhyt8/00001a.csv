@@ -1,0 +1,13 @@
+"0","df_validation <- read_csv(""SurveyIncomplete.csv"");"
+"2","Parsed with column specification:
+cols(
+  salary = [32mcol_double()[39m,
+  age = [32mcol_double()[39m,
+  elevel = [32mcol_double()[39m,
+  car = [32mcol_double()[39m,
+  zipcode = [32mcol_double()[39m,
+  credit = [32mcol_double()[39m,
+  brand = [32mcol_double()[39m
+)
+"
+"0","head(df_validation)"

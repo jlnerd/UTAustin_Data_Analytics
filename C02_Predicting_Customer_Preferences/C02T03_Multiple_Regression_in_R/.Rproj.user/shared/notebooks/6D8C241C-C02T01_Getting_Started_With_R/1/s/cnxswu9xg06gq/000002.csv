@@ -1,0 +1,4 @@
+"0","```r
+df_cars$\"name of car\"<-as.factor(df_cars$\"name of car\")
+df_iris$\"Species\"<-as.factor(df_iris$\"Species\")
+```"

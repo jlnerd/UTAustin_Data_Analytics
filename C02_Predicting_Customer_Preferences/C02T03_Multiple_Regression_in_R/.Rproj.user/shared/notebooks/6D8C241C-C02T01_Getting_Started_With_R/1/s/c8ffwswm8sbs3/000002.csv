@@ -1,0 +1,22 @@
+"0","```r
+summary(lm_cars_speed_vs_distance)
+```"
+"1","
+Call:
+lm(formula = distance_of_car ~ speed_of_car, data = df_trainSet)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-9.3709 -4.9106 -0.8151  1.4703 29.2644 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  -32.2791     3.8682  -8.345 1.22e-09 ***
+speed_of_car   4.9206     0.2304  21.358  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 7.295 on 33 degrees of freedom
+Multiple R-squared:  0.9325,	Adjusted R-squared:  0.9305 
+F-statistic: 456.2 on 1 and 33 DF,  p-value: < 2.2e-16
+"

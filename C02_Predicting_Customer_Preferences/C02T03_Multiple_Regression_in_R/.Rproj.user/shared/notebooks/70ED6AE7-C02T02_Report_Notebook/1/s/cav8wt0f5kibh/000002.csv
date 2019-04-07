@@ -1,0 +1,287 @@
+"0","```r
+print(\"Decision Tree Model Summary:\")
+```"
+"1","[1] \"Decision Tree Model Summary:\"
+"
+"0","```r
+model_decision_tree_C5
+```"
+"1","C5.0 
+
+7424 samples
+   6 predictor
+   2 classes: '0', '1' 
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 1 times) 
+Summary of sample sizes: 6681, 6682, 6682, 6682, 6682, 6681, ... 
+Resampling results across tuning parameters:
+
+  model  winnow  trials  Accuracy   Kappa    
+  rules  FALSE    1      0.8178888  0.6368363
+  rules  FALSE   10      0.9187776  0.8268130
+  rules   TRUE    1      0.8293296  0.6587103
+  rules   TRUE   10      0.9229504  0.8354124
+  tree   FALSE    1      0.8178888  0.6368363
+  tree   FALSE   10      0.9232203  0.8368493
+  tree    TRUE    1      0.8290604  0.6581053
+  tree    TRUE   10      0.9181014  0.8257198
+
+Accuracy was used to select the optimal model using the largest value.
+The final values used for the model were trials = 10, model = tree and winnow = FALSE.
+"
+"0","```r
+#Confusion matrix stats
+print(\"Training Set:\")
+```"
+"1","[1] \"Training Set:\"
+"
+"0","```r
+prediction <- predict(model_decision_tree_C5, training)
+confusionMatrix(prediction, training$brand)
+```"
+"1","Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 2521  233
+         1  287 4383
+                                          
+               Accuracy : 0.93            
+                 95% CI : (0.9239, 0.9357)
+    No Information Rate : 0.6218          
+    P-Value [Acc > NIR] : < 2e-16         
+                                          
+                  Kappa : 0.8505          
+ Mcnemar's Test P-Value : 0.02011         
+                                          
+            Sensitivity : 0.8978          
+            Specificity : 0.9495          
+         Pos Pred Value : 0.9154          
+         Neg Pred Value : 0.9385          
+             Prevalence : 0.3782          
+         Detection Rate : 0.3396          
+   Detection Prevalence : 0.3710          
+      Balanced Accuracy : 0.9237          
+                                          
+       'Positive' Class : 0               
+                                          
+"
+"0","```r
+print(\"Testing Set:\")
+```"
+"1","[1] \"Testing Set:\"
+"
+"0","```r
+prediction <- predict(model_decision_tree_C5, testing)
+confusionMatrix(prediction, testing$brand)
+```"
+"1","Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0  833   86
+         1  103 1452
+                                          
+               Accuracy : 0.9236          
+                 95% CI : (0.9124, 0.9338)
+    No Information Rate : 0.6217          
+    P-Value [Acc > NIR] : <2e-16          
+                                          
+                  Kappa : 0.837           
+ Mcnemar's Test P-Value : 0.2445          
+                                          
+            Sensitivity : 0.8900          
+            Specificity : 0.9441          
+         Pos Pred Value : 0.9064          
+         Neg Pred Value : 0.9338          
+             Prevalence : 0.3783          
+         Detection Rate : 0.3367          
+   Detection Prevalence : 0.3715          
+      Balanced Accuracy : 0.9170          
+                                          
+       'Positive' Class : 0               
+                                          
+"
+"0","```r
+print(\"Train+Test Set:\")
+```"
+"1","[1] \"Train+Test Set:\"
+"
+"0","```r
+prediction <- predict(model_decision_tree_C5, df_preprocesssed)
+confusionMatrix(prediction, df_preprocesssed$brand)
+```"
+"1","Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 3354  319
+         1  390 5835
+                                          
+               Accuracy : 0.9284          
+                 95% CI : (0.9231, 0.9334)
+    No Information Rate : 0.6217          
+    P-Value [Acc > NIR] : < 2.2e-16       
+                                          
+                  Kappa : 0.8471          
+ Mcnemar's Test P-Value : 0.008566        
+                                          
+            Sensitivity : 0.8958          
+            Specificity : 0.9482          
+         Pos Pred Value : 0.9132          
+         Neg Pred Value : 0.9373          
+             Prevalence : 0.3783          
+         Detection Rate : 0.3389          
+   Detection Prevalence : 0.3711          
+      Balanced Accuracy : 0.9220          
+                                          
+       'Positive' Class : 0               
+                                          
+"
+"0","```r
+print(\"Random Forest with Manual Grid Summary:\")
+```"
+"1","[1] \"Random Forest with Manual Grid Summary:\"
+"
+"0","```r
+rfFit_manualgrid_1
+```"
+"1","Random Forest 
+
+7424 samples
+   6 predictor
+   2 classes: '0', '1' 
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 1 times) 
+Summary of sample sizes: 6681, 6682, 6681, 6682, 6682, 6681, ... 
+Resampling results across tuning parameters:
+
+  mtry  Accuracy   Kappa       
+  1     0.6217673  0.0000000000
+  2     0.6219020  0.0004418206
+  3     0.7267010  0.3390088145
+  4     0.8537144  0.6805815658
+  5     0.8923742  0.7709911267
+
+Accuracy was used to select the optimal model using the largest value.
+The final value used for the model was mtry = 5.
+"
+"0","```r
+#Confusion matrix stats
+print(\"Training Set:\")
+```"
+"1","[1] \"Training Set:\"
+"
+"0","```r
+prediction <- predict(rfFit_manualgrid_1, training)
+print(confusionMatrix(prediction, training$brand))
+```"
+"1","Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 2784    5
+         1   24 4611
+                                          
+               Accuracy : 0.9961          
+                 95% CI : (0.9944, 0.9974)
+    No Information Rate : 0.6218          
+    P-Value [Acc > NIR] : < 2.2e-16       
+                                          
+                  Kappa : 0.9917          
+ Mcnemar's Test P-Value : 0.0008302       
+                                          
+            Sensitivity : 0.9915          
+            Specificity : 0.9989          
+         Pos Pred Value : 0.9982          
+         Neg Pred Value : 0.9948          
+             Prevalence : 0.3782          
+         Detection Rate : 0.3750          
+   Detection Prevalence : 0.3757          
+      Balanced Accuracy : 0.9952          
+                                          
+       'Positive' Class : 0               
+                                          
+"
+"0","```r
+print(\"Testing Set:\")
+```"
+"1","[1] \"Testing Set:\"
+"
+"0","```r
+prediction <- predict(rfFit_manualgrid_1, testing)
+confusionMatrix(prediction, testing$brand)
+```"
+"1","Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0  815  135
+         1  121 1403
+                                          
+               Accuracy : 0.8965          
+                 95% CI : (0.8838, 0.9083)
+    No Information Rate : 0.6217          
+    P-Value [Acc > NIR] : <2e-16          
+                                          
+                  Kappa : 0.7807          
+ Mcnemar's Test P-Value : 0.4165          
+                                          
+            Sensitivity : 0.8707          
+            Specificity : 0.9122          
+         Pos Pred Value : 0.8579          
+         Neg Pred Value : 0.9206          
+             Prevalence : 0.3783          
+         Detection Rate : 0.3294          
+   Detection Prevalence : 0.3840          
+      Balanced Accuracy : 0.8915          
+                                          
+       'Positive' Class : 0               
+                                          
+"
+"0","```r
+print(\"Train+Test Set:\")
+```"
+"1","[1] \"Train+Test Set:\"
+"
+"0","```r
+prediction <- predict(rfFit_manualgrid_1, df_preprocesssed)
+confusionMatrix(prediction, df_preprocesssed$brand)
+```"
+"1","Confusion Matrix and Statistics
+
+          Reference
+Prediction    0    1
+         0 3598  141
+         1  146 6013
+                                          
+               Accuracy : 0.971           
+                 95% CI : (0.9675, 0.9742)
+    No Information Rate : 0.6217          
+    P-Value [Acc > NIR] : <2e-16          
+                                          
+                  Kappa : 0.9383          
+ Mcnemar's Test P-Value : 0.8133          
+                                          
+            Sensitivity : 0.9610          
+            Specificity : 0.9771          
+         Pos Pred Value : 0.9623          
+         Neg Pred Value : 0.9763          
+             Prevalence : 0.3783          
+         Detection Rate : 0.3635          
+   Detection Prevalence : 0.3778          
+      Balanced Accuracy : 0.9690          
+                                          
+       'Positive' Class : 0               
+                                          
+"
+"0","```r
+#Variable Importance Data:
+varImp(model_decision_tree_C5)
+```"
+"1","C5.0 variable importance
+
+  only 20 most important variables shown (out of 34)
+"

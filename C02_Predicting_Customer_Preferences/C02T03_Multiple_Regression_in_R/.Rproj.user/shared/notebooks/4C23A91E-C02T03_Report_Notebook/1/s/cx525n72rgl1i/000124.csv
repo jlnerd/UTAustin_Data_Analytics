@@ -1,0 +1,4 @@
+"0","#Plot Ratings and Reviews vs. Volume"
+"0","x<-log10(df_validation_w_predictions$x4StarReviews)"
+"0","y<-log10(df_validation_w_predictions$Predicted_Volume)"
+"0","plot(x,y,col='red',xlab = ""log10(# of ratings)"", ylab = ""log10(Predicted_Volume)"")"

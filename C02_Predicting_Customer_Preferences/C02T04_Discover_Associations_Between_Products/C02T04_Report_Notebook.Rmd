@@ -1,0 +1,422 @@
+---
+title: "C02T04: Discover Associations Between Products"
+output: html_notebook
+author: John T. Leonard
+---
+***
+***
+
+## Note to the reader
+<span style='color:red'> Comments made by the author are highlighted in red. The final section of the document contains the final written report </span>
+***
+***
+## Your Task:
+__FROM:__ Danielle Sherman <br>
+__Subject:__ Market Basket Analysis
+Hi,
+
+Blackwell Electronics' board of directors is considering acquiring Electronidex, a start-up electronics online retailer. The board of directors has asked us to help them better understand the clientele that Electronidex currently is serving and if it would be an optimal partnership.
+
+They need our help to identify purchasing patterns that will provide insight into Electronidex's clientele. Attached is a CSV file that contains one month’s (30 days’ worth) of Electronidexes online transactions and a file containing all the electronics that they currently sell. Due to their lack of funding, Electronidex is only able to pull data on the items that customers purchased per their transactions.
+
+I would like you to to use R to conduct a market basket analysis. You will be discovering any interesting relationships (or associations) between customer’s transactions and the item(s) they’ve purchased. These associations can then be used to drive sales-oriented initiatives such as recommender systems like the ones used by Amazon and other eCommerce sites. 
+
+To help Blackwell’s board of directors form a clearer picture of Electronidex's customer buying patterns, please consider the following questions while you’re performing your analysis:
+
+Are there any interesting patterns or item relationships within Electronidex's transactions?
+Would Blackwell benefit from selling any of Electronidex's items?
+In your opinion, should Blackwell acquire Electronidex?
+If Blackwell does acquire Electronidex, do you have any recommendations for Blackwell? (Ex: cross-selling items, sale promotions, should they remove items, etc.)
+Once you've completed your market basket analysis, please put together a formal business report in Word. Thank you in advance!
+
+Best,
+
+Danielle Sherman
+Chief Technology Officer
+Blackwell Electronics
+www.blackwellelectronics.com
+
+[ElectronidexItems2017](https://s3.amazonaws.com/gbstool/emails/2901/ElectronidexItems2017.pdf?AWSAccessKeyId=AKIAJBIZLMJQ2O6DKIAA&Expires=1551258000&Signature=opODUuRPQBU6hJiONQ%2BEY29Rhxg%3D)
+[ElectronidexTransactions2017](https://s3.amazonaws.com/gbstool/emails/2901/ElectronidexTransactions2017.csv?AWSAccessKeyId=AKIAJBIZLMJQ2O6DKIAA&Expires=1551258000&Signature=DQ17zZyfGt%2BRoQpXtyCQfVod5Ls%3D)
+***
+***
+## Plan of Attack
+### Introduction
+Danielle has asked you to perform a market basket analysis to help Blackwell's board of directors to better understand the clientele that Electronidex is currently serving and if Electronidex would be an optimal acquisition. 
+
+This task requires you to prepare a formal business report for Danielle Sherman that should include the following:
+
+* Market Basket Analysis Report
+
+     * Word format
+     * 1-3 pages
+     * Summary of your findings.
+     * Any observations you've made throughout your analysis.
+     * Your answers to the questions within Danielle's email.
+     * Any future recommendations if Blackwell acquires Electronidex.
+Your report should be written for a non-data science audience that is concerned with business issues.
+
+The steps in the following tabs will walk you through this process.
+
+***
+***
+
+### Getting Started
+1. Review the email from Danielle to make sure you understand the details of this task.
+2. Download and review the sales data used in this task.
+     a. The file, ElectronidexTransactions.csv, is a record of one month’s (30 days’ worth) of 9835 online transactions and which items were purchased out of the 125 products Electronidex sells. 
+     b. The file, ElectronidexItems.pdf, is a list of the 125 products that Electronidex sells broken down into 17 product types.
+3. Before you perform the Market Basket Analysis, you need understand key aspects of this analysis. Please visit the 'Resources' tab for additional information.
+
+#### Resources
+##### Market Basket Analysis Resources
+__The Basics of Item Sets & Association Rules__
+* Item Sets
+     * The foundation of a Market Basket Analysis is the items within each transcation. A set of one or more items is called an item set. These items are surrounded by brackets, which represent a transaction.
+          * Here is an example: {item 1, item 2, item 3, item 4}
+* Association Rules
+     * Association rules are patterns discovered between items and their associated transactions. These rules are the outcome of performing a Market Basket Analysis.
+          * Example:
+               * {item 1, item 2, item 3} -> {item 4}
+               * {item 1, item 2, item 3} is known as the LHS (left-hand side) of the rule. Also known as the condition.
+               * {item 4} is known as the RHS (right-hand side) or result.
+* How do you read a rule? If the condition is fullfilled, then the results is produced. Or if items 1, 2, and 3 are purchased, then item 4 is likely to be purchased.
+
+***
+***
+
+### Install, Upload, and Get to Know Your Dataset
+__ Use the following steps to install the packages that you will need, and to uploaed and become familiar with your dataset.__
+1. Install and call on the following packages:
+     a. arules - is a package for analyzing transactional data.
+     b. arulesViz - is a package that provides visual techniques for the arules package.
+```{r}
+library(arules)
+library(arulesViz)
+```
+2. Upload the Dataset
+Electronidex's data contains rows that represent single transactions with the purchased item(s) being separated by commas, which is also called a 'basket" format. RStudio does not inherently understand transactional data. If the dataset is uploaded using the read.csv () function, RStudio will try to create variables (remember your dataset doesn't have variables) and you will encounter problems with your analysis. Therefore, you need to upload the ElectronidexTransactions.csv through the read.transactions() function.
+
+The read.transactions() function changes the dataset into a sparse matrix. It makes each row represent a transaction and creates columns for each item that a customer might purchase. Electronidex sells 125 items, so the sparse matrix creates 125 columns. It also changes the data to binary. (1=item purchased in that transaction OR 0=no purchase.)
+
+```{r}
+df <- read.transactions("ElectronidexTransactions2017.csv", sep=",",rm.duplicates = TRUE, format = "basket")
+```
+```{r}
+View(df)
+```
+
+TIP:
+You will need to use the read.transactions functions arguments (parameters). Consider thinking about these questions when uploading your dataset: What format do you need to use? How are items separated? Do you need to remove any duplicate items?
+
+3. Get to know your transactional data. What are the most frequent items? How many items do customers purchase the most? Least? What's the average?
+
+Here are some helpful functions:
+```{r}
+#Look at first 10 transactions
+inspect(df[1:10])
+```
+```{r}
+cat("number of transactions:",length (df))
+```
+```{r}
+#number of items per first 100 transactions:
+size (df[1:100]) 
+```
+```{r}
+n_items <-size(df)
+
+#Summary of number of items per transaciton
+summary(n_items)
+```
+
+
+```{r}
+LIST(df[1:10]) # Lists the transactions by conversion (LIST must be capitalized)
+```
+```{r}
+item_labels<-itemLabels(df)# To see the item labels
+itemLabels(df)
+View(item_labels)
+```
+
+After getting to know your dataset, do you have any insights or observations? Take notes on any thoughts that you have to use later in your report.
+
+<span style='color:red'> Unsurpisingly, the data is a lot of electronics devices purchases. The "size" function seems the most useful, combined with summary(...). Using this, we can see that the min number of purchases is 0, while the max is 30, and the mean is 4.383 </span>
+
+***
+***
+### Visualize Your Dataset
+__Use the following steps to visualize the items within your dataset:__
+
+1. You can use the itemFrequencyPlot() function to visualize the item frequencies within the transactions as a bar chart. 
+
+TIP:
+You will need to use the itemFrequencyPlot function's parameters because the dataset is large. Consider these questions when plotting: Is there a way only to plot items with the highest frequency? Is there a way to plot using certain metrics? Which plots might provide the most insight?
+
+```{r}
+frequencies <- itemFrequency(df)
+View(frequencies)
+```
+```{r}
+cat('min frequency:', min(frequencies)*100,'% \n',
+    'min frequency item:')
+print(which.min(frequencies))
+```
+```{r}
+cat('max frequency:', max(frequencies)*100,'% \n',
+    'max frequency item:')
+print(which.max(frequencies))
+```
+```{r}
+summary(frequencies)
+```
+
+```{R}
+frequencies_ordered <- frequencies[order(frequencies)]
+par(mar=c(16,4,1,1))
+#plot top 40 most frequent purchases.
+barplot(tail(frequencies_ordered, 40),las=2,cex.names = .8, col = 'grey' ,space=0)
+```
+```{r}
+print(tail(frequencies_ordered, 3))
+```
+
+<span style='color:red'> The mean frequency of purchasing a particular item is 3.5%. The max is 25%, with the item being iMac. The min frequency is 0.22% for the iteam Logitch Wireless Keyboard. </span>
+
+Use the following steps to visualize the transactions within your dataset:
+
+2. By using the image() function, you can visualize all of the transactions within your dataset. It will display the 125 possible items as your x-axis (the columns in your sparse matrix) and the number of transactions (the rows in your sparse matrix) as your y-axis. The items that were purchased are blacked out.
+
+TIP:
+You will need to use the image function's parameters because the dataset is large. Consider thinking about these questions when plotting: Is there a way to only plot a certain number of transactions? Is there a way to plot using certain metrics? Which plots might provide the most insight?
+
+```{r}
+image(df,asp=.4) #first 200 transactions
+```
+
+3.  Another option to visualize your transactions is to use the sample() function with the image () function. The sample() function will create a sample that contains a random set of transactions.
+
+```{r}
+image(sample(df, 1000),asp=.4)
+```
+
+
+After plotting your visualizations, do you notice any patterns? Or have any observations? Take notes on your insights and observations, which might be useful to include in your formal report.
+
+<span style='color:red'> You can see item 70 is the most frequent item, and there are a number of other frequent items visible as well. Items 70 in particular corresponds to iMac, based on the item_labels list. Item 64 is HP laptop, which is second most popular.</span>
+
+***
+***
+
+### Apply The Apriori Algorithm
+
+The package that you installed (arules) contains the Apriori algorithm that you will be using to perform your Market Basket Analysis. The Apriori algorithm is helpful when working with large datasets and is used to uncover insights pertaining to transactional datasets. It is based on item frequency. For example, this item set {Item 1, Item 2, Item 3, Item 4} can only occur if items {Item 1}, {Item 2}, {Item 3} and {Item 4} occur just as frequently.
+
+The Apriori algorithm assesses association rules using two types of measurements. The first statistical measure is the Support measurement, which measures itemsets or rules frequency within your transactional data.The second statistical measure is the Confidence measurement, which measures the accuracy of the rules. A rule that measures high in both support and confidence is known as a strong rule.
+
+TIP:
+When analyzing the Confidence measurement, keep in mind that correlation does not imply causation. For example: {Item 1} -> {Item 2} is NOT the same as {Item 2} -> {Item 1}. See the 'Resource' tab for additional information.
+
+Use the following steps to discover any relationships between the items within Electronidex's transactions.
+
+TIP:
+You do not need to train your model because the Apriori Algorithm is an unsupervised learner. What's the difference between supervised and unsupervised learner?
+
+<span style='color:red'> Supervised learning refers to the case where the user defines the features and the corresponding label to predict, while unsupervised learning refers to the case where the algorithm itself determines the features and labels to predict, or determines the relationship between various parts of the data, such as the most frequent items purchased together. </span>
+
+1. Use the apriori() function to apply the Apriori algorithm to find association rules.
+
+When you use the apriori() function, it will perform two steps before creating its association rules. The first step is analyzing all itemsets that meet the support measurement requirement, which occurs in multiple phases. Each phase involves analyzing a different number of total items in an itemset. For example, phase 5 is for itemsets that have 5 items within them.  
+
+TIP:
+Consider researching the Apriori Principle.
+
+After the first step has created a set of all of the frequent itemsets, the second step analyzes all of the itemsets to determine which meet the confidence measurement requirement. The itemsets/rules that do not meet this requirement are removed.
+
+TIP:
+These parameters are requesting that the rules cover 10% of the transactions and are 80% correct.
+
+```{r}
+#RulesName<- apriori (DatasetName, parameter = list(supp = 0.1, conf = 0.8))
+RulesName<- apriori(df, parameter = list(supp = 0.001, conf = 0.90))
+```
+
+2. To view your rules, use the inspect() function. 
+
+```{r}
+summary(RulesName)
+```
+
+```{r}
+
+inspect(RulesName)
+```
+
+3. How many rules did the algorithm create? Receiving 0 rules means that you will need to experiment with the Support and Confidence values. 
+
+When you're experimenting keep in mind:
+
+If these values are too high, you will receive no rules or non-helpful rules.
+If these values are too low, your computational time/memory will suffer, or you'll receive too many rules. 
+To get ‘strong' rules, increase the value of ‘conf’ parameter.
+TIP:
+Research the minlen parameter. Would it be helpful to add? 
+
+***
+***
+
+### Evaluate Your Model
+After you've discovered the optimal levels of Support and Confidence, which will result in receiving a number of rules, use the following steps to evaluate your model.
+
+1. Use the summary() function, to view an overview of your rules' metrics. If the support and confidence are near the thresholds that you chose, you might have to adjust your values.
+
+```{r}
+summary(RulesName)
+```
+
+
+TIP:
+Lift measures the importance of a rule. A high value for lift strongly indicates that the rule is important. Unlike the Confidence measurement, {Item 1} -> {Item 2} is the same as {Item 2} -> {Item 1} in the context of the lift measurement.
+
+2. Repeat the use of the inspect() function. Consider exploring if there is a way to only view a certain number of rules?
+```{r}
+inspect(RulesName[1:10]) #rules 1 - 10
+```
+
+TIP:
+Take notes on any observations and insights you might want to include in your formal business report. 
+```{r}
+View(RulesName)
+```
+
+***
+***
+
+### Improve Your Model
+
+Are there any additional functions you can use to improve your set of association rules? 
+
+1. How would sorting your rule's by their measurements be beneficial? To sort your rules depending on high support, confidence or lift values, use the sort() function with the inspect () function. 
+
+```{r}
+RulesName_by_lift <- sort( RulesName, by = "lift")
+df_RulesName_by_lift <- as(RulesName_by_lift, "data.frame")
+print(df_RulesName_by_lift)
+View(df_RulesName_by_lift)
+```
+```{r}
+write.csv(df_RulesName_by_lift,'df_RulesName_by_lift.csv')
+```
+
+Is there a way to only see a certain number of rules? Research how you can view only a specific number of rules.
+
+TIP:
+The sort() function will sort the rules in a decreasing order (higher to lower values.)
+
+2. Would seeing a specific item's rules be helpful to your analysis? To see a certain item's rules you can use the subset () function.
+
+```{r}
+inspect(subset(RulesName_by_lift,2))
+```
+
+
+Here's is an example using the subset () function:
+
+ItemRules <- subset(RulesName, items %in% "item name")
+
+For additional information about this function's parameters enter this line of R code:
+
+?subset
+
+TIP:
+In order to view these rules, you'll need to use the inspect() function.
+
+3. OPTIONAL: Do you have any redundant rules? Would removing them be valuable to your analysis? To find out if you have any redundant rules use the is.redundant() function. TRUE means there are redundant rules, and FALSE means there are not.
+
+Here's is an example using the is.redundant() function:
+
+
+```{r}
+inspect(RulesName[is.redundant(RulesName)])
+```
+```{r}
+inspect(RulesName[!is.redundant(RulesName)])
+```
+
+***
+***
+
+## Visualize Your Results
+Similar to the visualizations of the transactions that you performed, plotting your rules could potential help you discover more insights for Blackwell's board members. Follow these steps to plot your association rules.
+
+1. The plot() function will display your rules as a scatter box, which is the arulesViz package's default. 
+
+TIP:
+?plot #To see what parameters you can add.
+```{r}
+plot(RulesName)
+```
+
+2. Graph method - Can be used to visualize a subset of your related rules. 
+
+plot(RulesName[1:# of rules you want to plot], method="graph", control=list(type="items")) 
+
+Here is an additional resource that provides more plotting options.
+
+After plotting your rules, do you notice any patterns? Or have any observations? Note things which will be helpful for your formal report.
+
+***
+***
+
+### Analyze Your Roles & Write Your Report
+
+Now it is time to derive insights into Electronidex's customer purchases from your association rules.
+
+One method that is popular with analysts is to break down the rules that you've discovered into three categories.
+
+The Insightful Rules Category - This first category is your main analysis goal while performing this Market Basket Analysis. It should contain rules that are most useful.
+The Irrelevant Rules Category - The second category is for the rules that either aren't helpful or are obvious.
+The Unclear Rules Category - The third category is for rules that are indecipherable and, thus, from which you can't draw insightful conclusions.
+TIP:
+View association rules as interesting discoveries or sources of insight, NOT as predictions.
+
+Write A Business Report
+
+After you've analyzed your association rules, it is time to write your formal business report for Blackwell's Board of Directors. Your report should be a one to three page Word document that includes rules you believe provide insights, any relevant visualizations, and the answers to Danielle's questions. It should also include any observations that you've made and any recommendations you might have if Blackwell was to acquire Electronidex.
+
+
+***
+***
+
+## <span style='color:red'> Report Discover Associations Between Products </span>
+
+### Introduction
+Here, we analyze the associations between products for 30 day's worth of purchasing data acquired from Electronidex's clientele. The objective of this analysis is to betwee understand the clientele in order to assess the how optimal the partenership between Electronidex and Blackwell Electronics is. Specifically, using R, we carry out a marked basket analysis and highlight some of the interesting relationships/associations in the customer transactions data. The 
+
+### Overview of the Data Set
+The Electronidex transactions data set is composed of 30 days worth of purchasing data. Over these 30 days, 9835 transactions took place. Each transaction was composed of purchasing 0 or more items from the set of 125 avaialable items. On average, customers purchased 4.4 items per transaction. The median number of transactions was 3 items per transaction, while the max was 30 items and the minimum was 0 items. We can visualize the density and distribution of the transactions in the figure below where we plot the transaction number vs. the item index, with each cell in the plot being populated by a block dot if the item was purchased for that particular transaction.
+
+!["Transactions vs Items"](figures/Transactions_vs_Items.png)
+
+Here, we can see several transactions are quite popular. Specifically, the item with index ~70 and ~65 appear to be the most popular items. To get more quantitatize with the frequency of purchases for each item, we plot the top 40 most frequently purchased items on the bar chart below, where the y-axis represents the frequency (fraction of total)
+
+!["item_label_vs_frequency"](figures/item_label_vs_frequency.png)
+
+In this plot of item label vs. frequency, we see iMac is the most frequently purchased item (item index 70), where ~25% of the transactions include an iMac. The second most frequent purchase is the HP Laptop with a frequency of ~20%. It is of note that of the top 5 most frequent purchases, 3 are Apple products.
+
+### Ariori Association Rules
+To determine the important association rules defining the data set, we used the Apriori algorithm with a minimum support of 0.001 and a minimum confidence of 0.9. This confidence limit allows us to highlight the strongest rules defining the dataset. The Apriori algorithm identified 197 rules in total. Of these 197 rules, 104 were made up of associations between 5 products, while 70 were composed of associations between 4 products. For each association rule, a left-hand-side (lhs) and right-hand-side (rhs) association was specified, with the rhs corresponding to a single product and the lhs corresponding to a list of products. The unique rhs products identified were: ViewSonic Montior, Dell Desktop, Lenovo Desktop Computer, Apple MacBook Air, HP Laptop, and iMac, listed in order of highest to lowest strength. Note that all of these rhs associated products were in the top 10 most frequent products. Although the iMac association rules have the lowest strength, they have the highest number of occurances with 109 rules having an rhs of iMac.
+
+To visualize the trends in the extracted assocaition rules, we plot the confidence vs. support with lift as color intensity.
+!["confidence_vs_support"](figures/confidence_vs_support.png)
+
+Here we can start to see some structure in the learned associations. Specifically, we can see that as support increases (i.e. as the fraction of transactions that contain both lhs & rhs arguments increases), the confidence also increases. Finally, it is also of note that the lift generally increases as the support decreases. The higher the lift, the more likely the lhs item is likely to be purchased along with the rhs items. This implies lift is a good metric for identifying items to recommend to customers given what they have previously purchased or are have in their shopping cart.
+
+Below, we list the rule for each rhs item class which has the highest lift for that particular rhs item:
+!["Top_Rules_by_Lift"](figures/Top_Rules_by_Lift.png) 
+
+Naturally, there are many other rules not shown here where one would recommend the same rhs item shown above for a different set of lhs items, however these are fairly examplary cases with the highest lift for each rhs class. We can also recognize some interesting attributes based on these rules. Specifically, we note that when customers have few items in their cart, they are likely to purchase an iMac. In contrast, if the customer already has some monitor or computer in their cart, their more likely to purchase another monitor or desktop.
+
+### Conclusions
+Overall, it seems Blackwell would benefit from selling Electronidex's items. This is because Electronidex's most popular items are fairly high-end items, such as iMacs or gaming desktops. Furthermore, it appears Electronidex has a fairly large a valuable dataset which will allow Blackwell electronics to target Electronidex' existing customers, while also enhancing the targeting for Blackwell's present customers.

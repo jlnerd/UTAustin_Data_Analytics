@@ -1,0 +1,12 @@
+"0","```r
+training <- Sonar [inTrain]
+testing <- Sonar[-inTrain,]
+print(paste('NROW(training):',NROW(training)))
+```"
+"1","[1] \"NROW(training): 157\"
+"
+"0","```r
+print(paste('NROW(testing):',NROW(testing)))
+```"
+"1","[1] \"NROW(testing): 51\"
+"

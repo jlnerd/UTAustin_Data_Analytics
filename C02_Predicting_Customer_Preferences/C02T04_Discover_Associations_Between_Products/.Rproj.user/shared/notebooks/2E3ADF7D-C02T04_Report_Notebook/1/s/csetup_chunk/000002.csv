@@ -1,0 +1,16 @@
+"0","library(reticulate)"
+"0","use_python(""/Users/johnleonard/anaconda3/bin/python3.6"")"
+"0","py_config()"
+"1","python:         /Users/johnleonard/anaconda3/bin/python3.6
+libpython:      /Users/johnleonard/anaconda3/lib/libpython3.6m.dylib
+pythonhome:     /Users/johnleonard/anaconda3:/Users/johnleonard/anaconda3
+version:        3.6.6 |Anaconda, Inc.| (default, Jun 28 2018, 11:07:29)  [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]
+numpy:          /Users/johnleonard/anaconda3/lib/python3.6/site-packages/numpy
+numpy_version:  1.15.4
+
+python versions found: 
+ /Users/johnleonard/anaconda3/bin/python3.6
+ /usr/bin/python
+ /usr/local/bin/python
+ /Users/johnleonard/anaconda3/bin/python
+"

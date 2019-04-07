@@ -1,0 +1,6 @@
+"0","```r
+#new code
+training_indices<-sample(seq_len(nrow(IrisDataset)),size = trainSize) #get indices
+trainSet<-IrisDataset[training_indices,]
+print(trainSet)
+```"

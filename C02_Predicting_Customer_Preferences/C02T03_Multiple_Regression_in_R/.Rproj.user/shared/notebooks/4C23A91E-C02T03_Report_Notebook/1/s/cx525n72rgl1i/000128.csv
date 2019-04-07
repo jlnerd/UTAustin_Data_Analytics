@@ -1,0 +1,2 @@
+"0","x<-log10(df_validation_w_predictions$x2StarReviews)"
+"0","points(x,y,col='blue')"

@@ -1,0 +1,11 @@
+"0","```r
+#Plot service reviews
+x<-log10(df_validation_w_predictions$PositiveServiceReview)
+y<-log10(df_validation_w_predictions$Predicted_Volume)
+plot(x,y,col='green',xlab = \"log10(# of Service Reviews)\", ylab = \"log10(Predicted_Volume)\")
+x<-log10(df_validation_w_predictions$NegativeServiceReview)
+points(x,y,col='red')
+```"
+"0","```r
+legend(2, legend = list('Positive','Negative'),col=c('green','red'),pch='o')
+```"

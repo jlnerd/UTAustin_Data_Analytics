@@ -1,0 +1,3 @@
+"0","#qqnorm(IrisDataset) #original code"
+"0","#Error in FUN(X[[i]], ...) : only defined on a data frame with all numeric variables"
+"0","qqnorm(IrisDataset$Sepal.Length) #original code | must select a specific numeric column for Q-Q plot"

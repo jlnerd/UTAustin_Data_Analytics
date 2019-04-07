@@ -1,0 +1,3 @@
+"0","df = read.transactions(""ElectronidexTransactions2017.csv"")"
+"2","incomplete final line found on 'ElectronidexTransactions2017.csv'"
+"2","removing duplicated items in transactions"

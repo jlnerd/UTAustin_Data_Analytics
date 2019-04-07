@@ -1,0 +1,36 @@
+"0","#load the data set"
+"0","df_validation <- read_csv(""newproductattributes2017.csv"");"
+"2","Parsed with column specification:
+cols(
+  ProductType = [31mcol_character()[39m,
+  ProductNum = [32mcol_double()[39m,
+  Price = [32mcol_double()[39m,
+  x5StarReviews = [32mcol_double()[39m,
+  x4StarReviews = [32mcol_double()[39m,
+  x3StarReviews = [32mcol_double()[39m,
+  x2StarReviews = [32mcol_double()[39m,
+  x1StarReviews = [32mcol_double()[39m,
+  PositiveServiceReview = [32mcol_double()[39m,
+  NegativeServiceReview = [32mcol_double()[39m,
+  Recommendproduct = [32mcol_double()[39m,
+  BestSellersRank = [32mcol_double()[39m,
+  ShippingWeight = [32mcol_double()[39m,
+  ProductDepth = [32mcol_double()[39m,
+  ProductWidth = [32mcol_double()[39m,
+  ProductHeight = [32mcol_double()[39m,
+  ProfitMargin = [32mcol_double()[39m,
+  Volume = [32mcol_double()[39m
+)
+"
+"0","# one-hot encode (dummify) the data"
+"0","df_validation_preprocessed <- dummyVars("" ~."",data = df_validation)"
+"0","df_validation_preprocessed <- data.frame(predict(df_validation_preprocessed,newdata = df_validation))"
+"0","#drop columsn that contain NA"
+"0","drops <- c(""BestSellersRank"",""x1StarReviews"",""x5StarReviews"")"
+"0","df_validation_preprocessed <- df_validation_preprocessed[,!(names(df_validation_preprocessed) %in% drops)]"
+"0","#Make predictions"
+"0","model <- model_gbTree"
+"0","df_train_test = df_validation_preprocessed"
+"0","prediction <- predict(model, df_train_test)"
+"0","prediction_validation <- prediction"
+"0","prediction_validation_Volume <- 10^(prediction_validation)"

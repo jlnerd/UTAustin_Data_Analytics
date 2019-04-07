@@ -1,0 +1,9 @@
+"0","```r
+plot(trainSet$Petal.Length, trainSet$Petal.Width, xlab = 'Petal.Length', ylab = 'Petal.Width', col='red',pch = 19)
+abline(lm(Petal.Width ~ Petal.Length, trainSet),col='red')
+```"
+"0","```r
+points(testSet$Petal.Length, testSet$Petal.Width,col='blue')
+legend(\"topleft\", legend=c(\"TrainSet & Linear Model\",\"TestSet\"),
+       col=c(\"red\",\"blue\"),lty=1, cex=0.9)
+```"

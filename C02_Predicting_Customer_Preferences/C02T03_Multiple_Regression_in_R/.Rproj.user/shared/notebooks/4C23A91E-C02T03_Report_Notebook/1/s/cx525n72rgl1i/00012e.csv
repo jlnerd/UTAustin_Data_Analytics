@@ -1,0 +1,2 @@
+"0","x<-log10(df_validation_w_predictions$NegativeServiceReview)"
+"0","points(x,y,col='red')"

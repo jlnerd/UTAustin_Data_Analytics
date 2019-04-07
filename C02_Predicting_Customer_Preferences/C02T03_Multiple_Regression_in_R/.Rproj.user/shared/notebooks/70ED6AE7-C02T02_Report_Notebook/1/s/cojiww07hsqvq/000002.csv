@@ -1,0 +1,8 @@
+"0","```r
+#plsFit <- train(Class ~., data = training,
+#                method = \"pls\",
+#                ## Center and scale the predictors for the training set and all future samples
+                preProc = c(\"center\",\"scale\"))
+```"
+"1","Error: unexpected ')' in \"                preProc = c(\"center\",\"scale\"))\"
+"

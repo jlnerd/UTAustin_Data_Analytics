@@ -1,0 +1,1 @@
+"0","plot(trainSet$Petal.Length, trainSet$Petal.Width, xlab = 'Petal.Length', ylab = 'Petal.Width', col='red',pch = 19)"

@@ -1,0 +1,640 @@
+---
+title: "C02T01_Getting_Started_with_R"
+output: html_notebook
+---
+***
+***
+#### Note to the reader
+
+> <span style='color:red'> markdown comments noted by the student/author (John Leonard) are highlighted in red. The final section of the document (section 7) contains the informal written report <\span>
+
+# Task 1: Get Started with R
+
+***
+***
+## Introduction Email
+__FROM.:__ Danielle Sherman <br>
+__Subject:__ Get Started with R
+Hello,
+ 
+Although we're generally happy with using RapidMiner as an analytics tool, many people in the industry seem to be moving to R, an open-source statistical programming language and analytics environment that is supported by a huge community of developers. Based on the excellent analysis work you have done thus far I have decided to ask you to explore introducing R into our current processes. To help you get started, I have obtained a walkthrough tutorial in R for you and a script of code to practice with.
+ 
+Here are the things I would like you to do: 
+ 
+* Learn what R and RStudio are.
+* Install R and RStudio.
+* Learn how to work within RStudio.
+* Upload a data set into RStudio.
+* Install packages into RStudio.
+* Call a package in RStudio.
+* Perform basic exploratory data analysis.
+* Preprocess data.
+* Create test and training sets using your data.
+* Develop a linear regression model
+* Evaluate your model.
+* Use your model to make to make predictions.
+ 
+I have attached the data sets that you'll be using for this task. I'll be expecting a report on your experience in a few days.
+ 
+Thanks,
+Danielle
+ 
+Danielle Sherman
+Chief Technology Officer
+Blackwell Electronics
+www.blackwellelectronics.com
+ 
+__[Link:R Tutorial Data](https://s3.amazonaws.com/gbstool/emails/2784/R%20Tutorial%20Data.zip?AWSAccessKeyId=AKIAJBIZLMJQ2O6DKIAA&Expires=1547110800&Signature=e1C8TaEwLLba30nj4oSxmemevaU%3D)__
+
+***
+***
+## Plan of Attack
+### Introduction
+Danielle has asked you to install R and R Studio on your machine, then to work through a tutorial to learn the basics of analytics and visualization using R. __Within your tutorial, you’ll be working through a regression analysis using a linear regression model.__ In this simple analysis, you’ll be __predicting distances through the speed of certain cars.__ The dataset that you’ll be using through this analysis is the __cars.csv file__, which is located within Danielle’s email.
+
+Blackwell believes that the best way to learn is through trial and error, so __after your tutorial, you’ll be asked to test your knowledge through running a script of code. The dataset that you’ll be using through this analysis is the iris.csv file,__ which is also in the zip file attached to Danielle’s email. Don’t be too surprised if you encounter errors or warning messages. Take a few deep breaths and embrace the errors!
+
+Once you’ve completed both tasks, __you'll submit an informal report to Danielle about your experience switching to R, the errors that you encountered in the task, the reasons behind them, and how you overcame them. You should also include discussion of the outcomes your model predicted.__
+
+### 1. Install R and R Studio
+#### What is R?
+R is a programming language for statistical use and data visualization. R is an interpreted language, which means you can run a line of code and receive an instant output.
+
+#### How will I be learning R? 
+In this course, you will be using and learning R within the RStudio environment. RStudio is an Integrated Development Environment (a graphical user interface for R development.) Some Data Analyst believes that RStudio makes life easier for working with R, but you can also run R through a Command Line Interface.
+
+R and RStudio are both open-source software, which means each piece of software is free and has active user and development communities. Because of these communities, a lot of resources have been created by fellow R programmers. Some examples are Stack-Exchange, Stack Overflow, etc.
+
+Once you've installed R and RStudio you will be ready to move on to the next task.
+
+#### How do I download R and RStudio?
+Here is the website where you download R.
+https://cran.r-project.org/
+
+How do I install RStudio? Here is where you can download RStudio.
+https://www.rstudio.com/products/rstudio/download/
+
+### 2. Get to Know R Studio
+Within this section of the tutorial, you will learn RStudio's general layout and the functionality that each portion of the interface provides.
+
+#### Becoming Familiar with RStudio
+Before you begin learning R, let's open RStudio within your computer to take a look at how to work RStudio. After opening the program you will see four sections within the interface.
+![](images/3.png)
+
+The 1st Section (Upper left box) is the R Script box. The R Script box is 1 of the 2 places that you can type in your code. The advantages of the R Script box are that you can edit your code, save your code (by clicking the blue floppy disk icon), run your code, and you can have several tabs open simultaneously. 
+![](images/4.png)
+
+In addition to typing your code, you can also view the data you’re working with. For example:
+![](images/5.png)
+
+The 2nd section (lower left) is called the Console. The Console is the 2nd place you can type and run your code. It is also where you’ll see which R version you are running (in the red box), which folder you’re working in on your computer (in blue), and where you’ll see the output of your code.
+![](images/6.png)
+
+The 3rd section (upper right box) contains the Environment tab and the History tab. The History tab stores all code that you’ve created during your session. (It does not store outputs.) Within your Environment tab you can upload your dataset and save your environment.
+![](images/7.png)
+
+In the 4th section (bottom right box), there are five tabs. The first tab, Files, displays the files and folders within your computer/RStudio. The second tab, Plots, is where you’ll be able to see, save, and export the plots your produce. The third tab, Packages, shows the packages that you’ve downloaded or that are available to download. The fourth tab, Help, is where you can go to receive additional documentation concerning certain topics and packages. The fifth tab, Viewer, is used to for viewing web content. (We won’t be using much of this tab during this tutorial.)
+
+You're now ready to move on to the next task to begin learning R. If you’d like additional information on the RStudio IDE, here is a helpful cheat sheet.
+https://www.rstudio.com/wp-content/uploads/2016/01/rstudio-IDE-cheatsheet.pdf
+![](images/cheat_sheet_pg2.png)
+
+### 3. Walk Through the R Tutorial - Part 1
+Within this section of the tutorial, you will learn how to start a new R Studio project, install packages, call on a package (library) and upload a dataset into RStudio.
+
+Reading the Working with Projects in RStudio section of the Resources will help with the next steps.
+
+#### Starting a new project
+R Studio has a system for organizing your projects and keeping all of your work within its own working directory, workspace, history, and source documents. In order to work effectively and efficiently in R Studio it is important that you always start a new R Studio project whenever you start a new task. This will keep your work separate and make the work portable and easy to share with your classmates and your mentor. Here are the steps you should always follow when starting a new project in R Studio:
+
+RStudio projects are associated with R working directories. You can create an RStudio project:
+
+
+* In a brand new directory
+* In an existing directory where you already have R code and data
+* By cloning a version control (Git or Subversion) repository
+To create a new project use the New Project command (available on the RStudio File menu and on the global toolbar):
+
+When a new project is created RStudio the following takes place:
+
+1. Creates a project file (with an .Rproj extension) within the project directory. This file contains various project options (discussed below) and can also be used as a shortcut for opening the project directly from the filesystem.
+2. Creates a hidden directory (named .Rproj.user) where project-specific temporary files (e.g. auto-saved source documents, window-state, etc.) are stored. This directory is also automatically added to .Rbuildignore, .gitignore, etc. if required.
+3. Loads the project into RStudio and display its name in the Projects toolbar (which is located on the far right side of the main toolbar)
+
+#### Installing Packages
+How to install packages in RStudio: The package that you will need for this part of the tutorial is the readr package. The readr package is designed to read files, like csv files. (Although we will only be going over one alternative, there are multiple ways to install a package.)
+
+You will be using the install.packages() function to install the readr package.
+```{r}
+install.packages('readr')
+```
+TIP: If you are typing in the R Script pane, press COMMAND + ENTER to run your code.
+
+#### Calling on a Package
+After the installation of the package, you need to call on it to have access to its functions. There are multiple ways to call a library. To see one of them, type this code line into your R Script OR Console section.
+```{r}
+library(readr) 
+```
+
+#### Uploading Your Data
+Now it’s time to upload the dataset that you’ll be using during this tutorial (the .CSV file) into RStudio.  When you perform this action, you are creating a data frame, which means that all of the data that is stored within the data frame is separated by columns. Like the previous steps, there are multiple ways to upload a dataset. Here is one option.
+
+TIP:
+Your dataset is cars.csv, which is located within the zip file attached to Danielle's email, but you'll want to create a name for your dataset. You will also need to make sure that you read how to set up your working environment or this line of code will not work. 
+```{r}
+df_cars<- read_csv("R Tutorial Data Sets/cars.csv");
+View(df_cars)
+print(df_cars)
+
+
+df_iris<- read_csv("R Tutorial Data Sets/iris.csv")
+df_iris <- subset(df_iris, select = -c(X1))
+View(df_iris)
+print(df_iris)
+```
+
+### 4. Walk Through the R Tutorial - Part 2
+Within this section of the tutorial, you will learn how to get to know your data, preprocess your data, and create training and test sets within RStudio.
+
+#### Getting to Know Your Data
+Once you’ve uploaded your dataset, it’s always a good idea to get to know your data. Here are some helpful functions that will help you get acquainted with your data:
+
+```{r}
+Get_to_know_data <- function(DatasetName){
+  print(paste("GET TO KNOW: ",deparse(substitute(DatasetName))))
+  
+  print('fetching attributes...')
+  print(attributes(DatasetName) )#List your attributes within your data set.
+  
+  print('fetching summary...')
+  print(summary(DatasetName) )#Prints the min, max, mean, median, and quartiles of each attribute.
+  
+  print('fetching data structure...')
+  print(str(DatasetName) )#Displays the structure of your data set.
+  
+  print('fetching data attribute names...')
+  print(names(DatasetName) )#Names your attributes within your data set.
+
+  #DatasetName$ColumnName #Will print out the instances within that particular column in your data set.
+}
+
+Get_to_know_data(df_cars)
+```
+```{r}
+Get_to_know_data(df_iris)
+```
+
+Plotting is also a helpful way to view your dataset. Here are some helpful functions that will help you get acquainted with your data visually:
+
+TIP:
+Your columns must be in numeric form to perform these plots.
+```{r}
+plot_summary_of_data<-function(DatasetName,x_index=1){
+  
+  column_names = names(DatasetName)
+  
+  subplot_cols = 2
+  subplot_rows = 2
+  par(mfrow=c(subplot_rows,subplot_cols))  
+  
+  x <- unlist(DatasetName[,x_index])
+  x_header = column_names[x_index]
+  
+  for(i in 1:length(column_names)){
+    y <- unlist(DatasetName[,i])
+    y_header = column_names[i]
+    try(hist(y, main = paste(y_header, "Histogram"), xlab = y_header ),silent=TRUE)#Histogram Plot
+  }
+  
+  for(i in 1:length(column_names)){
+    
+    if(i != x_index) {
+    y <- unlist(DatasetName[,i])
+    y_header = column_names[i]
+    
+    try(plot(x,y, xlab = x_header, ylab = y_header),silent=TRUE)  #Scatter (Box) Plot
+    } 
+  }
+  
+  #Normal Quantile Plot- is a way to see if your data is normally distributed.
+  for(i in 1:length(column_names)){
+    
+    y <- unlist(DatasetName[,i])
+    y_header = column_names[i]
+    
+ try(qqnorm(y,main = paste(y_header, " Normal Q-Q Plot")),silent=TRUE) ##Normal Quantile Plot
+  }
+}
+
+plot_summary_of_data(df_cars,x_index=2)
+```
+
+```{r}
+plot_summary_of_data(df_iris,x_index=1)
+```
+
+
+#### Preprocessing your Data
+Preprocessing, also known as data cleaning, is a vital step in your analysis process. Some reasons to prepare your data is so it can be analyzed, it might be noisy data (missing values/outliers), it could have attributes that aren’t helpful, etc. There are many steps that one may take when preparing your data, we will only be discussing a handful at a high-level view.
+
+When working with data, you will need to be aware of what a vector is. A vector is a sequence of the same data type.
+
+Here are the data types that you will encounter when working in R:
+
+* Numeric- Numbers with decimals. (Ex: 1.0, 10.5, 4.5, etc.)
+* Integer Data- Whole numbers (Ex: 11, 45, 78, etc.)
+* Factor Data- Categorical data (Ex: Red, Blue, Green, Purple, etc.)
+* Ordinal Data- Ordered data (Ex: educational levels, temperature, etc.)
+* Character Data- String values, which are characters (words) with quotes around them. (Ex: “Red”, “Blue”, “Green”, “Purple”, etc.)
+* Logical- TRUE or TRUE (Always capitalize TRUE or FALSE)
+
+Do you see any data types that need changing within your data set? If so, how do you convert data types? Converting data types is a helpful skill to learn for this tutorial and future analyses. Here is an example of how one would change a column’s data type within a data set:
+```{r}
+#DatasetName$ColumnName<-as.typeofdata(DatasetName$ColumnName)
+```
+
+Do the columns/attributes within your dataset need renaming?
+
+> <span style='color:red; font-size:14px'> the numeric data seems fine (all 'dbl'), however the character data should be changed to 'Factor' data as it is all categorical </span>
+
+```{r}
+df_cars$"name of car"<-as.factor(df_cars$"name of car")
+df_iris$"Species"<-as.factor(df_iris$"Species")
+```
+
+To rename the attributes/columns in your dataset, you'll want to use the c() function, specifying a name for each column. 
+
+```{r}
+reformat_column_headers <- function(DatasetName){
+  column_names = names(DatasetName)
+  
+  column_names_reformated = gsub(" ","_",fixed=TRUE,column_names)
+  
+  names(DatasetName)<-c(column_names_reformated)
+  
+  return(DatasetName)
+}
+
+df_cars = reformat_column_headers(df_cars)
+print(names(df_cars))
+```
+```{r}
+df_iris = reformat_column_headers(df_iris)
+print(names(df_iris))
+```
+
+Do any of your variables have missing values? How do you know if your dataset has any missing values? If you do not address missing values certain functions will not work properly, so it’s smart to start the practice checking for missing values.  R labels missing as NA (Not Available). Here are two ways to know if you have any missing values:
+```{r}
+summary(df_cars) #Will count how many NA’s you have.
+```
+
+```{r}
+summary(df_iris)
+```
+
+```{r}
+is.na(df_cars) #Will show your NA’s through logical data. (TRUE if it’s missing, FALSE if it’s not.)
+```
+
+How to address missing values? There are multiple ways to confront missing values in your dataset – all depend on how much they will affect your dataset. Here are a few options:
+
+* Remove any observations containing missing data. (If the missing data is less than 10% of the total data and only after comparing the min/max of all the features both with and without the missing data.)
+
+```{r}
+na.omit(df_cars)#Drops any rows with missing values and omits them forever.
+```
+```{r}
+na.omit(df_iris)
+```
+
+```{r}
+#na.exclude(DatasetName$ColumnName)#Drops any rows with missing values, but keeps track of where they were.
+```
+
+Replace the missing values with the mean, which is common technique, but something to use with care with as it can skew the data.
+
+```{r}
+#DatasetName$ColumnName[is.na(DatasetName$ColumnName)]<-mean(DatasetName$ColumnName,na.rm = TRUE)
+```
+
+#### Creating Testing and Training Sets
+Once you’ve preprocessed your dataset, it’s now time to create training and testing sets for the linear regression model you will be creating. 
+
+How to begin? In order to create your training and testing sets, you need to use the set.seed() function. The seed is a number that you choose for a starting point used to create a sequence of random numbers. It is also helpful for others who want to recreate your same results. Here is the function:
+
+TIP:
+A common set.seed number is 123. To use the same set of random numbers, you’ll want to use the same seed number throughout your modeling process.
+
+```{r}
+set.seed(1)
+```
+
+How do you split the data into training and test sets? You’ll now want to split your data into two sets for modeling. One is the training set and the other one being the test set. A common split is 70/30, which means that 70% of the data will be the training set’s size and 30% of the data will be the test set’s size. You will be using the 70/30 split, but another common split is 80/20.
+
+Setting the training set’s size and the testing set’s size can be done by performing these two lines of code. These two lines calculate the sizes of each set but do not create the sets:
+
+```{r}
+train_test_size<-function(DatasetName,training_size_ratio=0.7){
+  trainSize<-round(nrow(DatasetName)*training_size_ratio) 
+  testSize<-nrow(DatasetName)-trainSize
+  df_out = data.frame('trainSize'=c(trainSize),'testSize'=c(testSize))
+  return(df_out)
+}
+
+train_test_size(df_cars,0.7)
+```
+```{r}
+train_test_size(df_iris,0.7)
+```
+
+How do you create the training and test sets? It’s now time for you to create the training and test sets. We also want these sets to be in a randomized order, which will create the most optimal model.
+
+To perform this, you need to run these lines of code. Type in this code into R Script or Console:
+
+```{r}
+train_test_split<-function(DatasetName,training_size_ratio=0.7){
+                           
+  df_train_test_size <- train_test_size(df_cars,training_size_ratio)  #get train test sizes
+
+  trainSize<-df_train_test_size[1,1]
+  
+  training_indices<-sample(seq_len(nrow(DatasetName)),size = trainSize)
+  
+  trainSet<-DatasetName[training_indices,]
+  
+  testSet<-DatasetName[-training_indices,] 
+  
+  return(list(trainSet,testSet))
+
+}
+
+list_df_train_test_sets = train_test_split(df_cars,0.7)
+df_trainSet = list_df_train_test_sets[[1]]
+print(df_trainSet)
+
+df_testSet = list_df_train_test_sets[[2]]
+print(df_testSet)
+```
+
+### 5. Walk Through the R Tutorial - Part 3
+
+Within this section of the tutorial, you will learn how to create a linear regression model, understand its output and use the prediction function.
+
+### Linear Regression Model
+You’re now ready to run your data through your modeling algorithm. The model that we will be using is the Linear Regression Model, which is helpful when trying to discover the relationship between two variables. These two variables represent the X and Y within the linear equation. The X variable is the predictor variable, also known as the independent variable because it doesn’t depend on other attributes while making predictions. Y is the response variable, also known as the dependent variable because its value depends on the other variables.  (We will be keeping this at a high level. If you’d like to discover more about this equation, please feeI free to do your own research.) In our case, these two variables will be Speed and Distance. We are trying to predict Distance, so it is our dependent/response/Y variable. Speed is our independent/predictor/X variable. 
+
+```{r}
+plot(df_cars$'speed_of_car',df_cars$'distance_of_car',xlab = 'speed_of_car', ylab = 'distance_of_car',main='training+test set')
+plot(df_trainSet$'speed_of_car',df_trainSet$'distance_of_car',xlab = 'speed_of_car', ylab = 'distance_of_car',main='df_trainSet')
+plot(df_testSet$'speed_of_car',df_testSet$'distance_of_car',xlab = 'speed_of_car', ylab = 'distance_of_car',main='testSet')
+```
+
+To create this model, we will be using the linear model function – lm(). Here is the basic line of code for the linear model function. 
+
+```{r}
+lm_cars_speed_vs_distance<-lm(distance_of_car ~ speed_of_car, df_trainSet)
+```
+
+Did you create an optimal model? To see key metrics of your model, type in this code into R Script or Console
+
+```{r}
+summary(lm_cars_speed_vs_distance)
+```
+The two metrics that we will be discussing are:
+
+* Multiple R-squared- How well the regression line fits the data (1 means it’s a perfect fit).
+* p-value - Tells you how much the Independent Variable/Predictor affects the Dependent Variable/Response/. A p-value of more than 0.05 means the Independent Variable has no effect on the Dependent Variable; less than 0.05 means the relationship is statistically significant.
+* If you’d like to learn more about Adjusted R-squared and the F-statistic, see the Resources tab.
+For now, you will be leaving this model as is. You will learn how to adjust your model’s parameters to create the most optimal model in later courses. 
+
+#### Predictions
+The next step is to predict the cars distances through the speed of the cars. To do this, we’ll be using the prediction function – predict() 
+```{r}
+predict_lm_cars_vs_distance <- predict(lm_cars_speed_vs_distance,df_testSet)
+print("predictions:")
+predict_lm_cars_vs_distance
+```
+```{r}
+plot(df_trainSet$speed_of_car, df_trainSet$distance_of_car, xlab = 'speed of car', ylab = 'distance of car', col='red',pch = 19)
+abline(lm(distance_of_car ~ speed_of_car, df_trainSet),col='red')
+points(df_testSet$speed_of_car, df_testSet$distance_of_car,col='blue')
+legend("topleft", legend=c("TrainSet & Linear Model","TestSet"),
+       col=c("red","blue"),lty=1, cex=.9)
+```
+
+TIP:
+Make a note of your predictions. (You will need to include them in your informal report to Blackwell.)
+
+### Find the Errors in an R Scripts
+Congrats, you’ve now completed a Regression Analysis in R!
+
+Blackwell believes that reading and deciphering code is just as important as coding itself. Therefore, it’s now time to test your new-found knowledge of R by running a script of code. Beware that you will be encountering errors and warnings, but you have the power to overcome these! 
+
+What does an error look like? An error message will be in red and will prevent you from going further due to a mistake in the previous line or lines of code.
+
+What does a warning message look like? A warning message will also be in red. You will still be able to continue, but it might or might not affect your analysis in the long run.
+
+You’ve encountered an error/warning message, what now?
+
+Review your tutorial.
+Check your spelling/spacing.
+Research the error/warning message — Has anyone else encountered this error? 
+TIP:
+REMEMBER:
+
+Don’t forget your analysis goal!
+If you are typing in the Console, press ENTER to see run your code.
+If you are typing in the R Script, press COMMAND + ENTER to see run your code.
+The dataset that is discussed in the code concerns the Iris flower, which is within the zip file attached to Danielle's email. The analysis goal is to predict a petal's length using the petal’s width.  
+
+Here is the script that you will run (and fix any errors it contains): 
+```{r}
+install.packages(readr) # Original Code
+```
+```{r}
+install.packages('readr') # New Code | Note: make sure you use quotes when calling a package
+```
+```{r}
+#library(“readr”) # Original Code
+#Error: unexpected input in "library(�"
+
+library(readr) # New Code | Note: reference by unquoted name when reading library package.
+```
+
+```{r}
+#IrisDataset <- read.csv(iris.csv) # Original Code
+#Error in read.table(file = file, header = header, sep = sep, quote = quote, : object 'iris.csv' not found
+
+IrisDataset <- read.csv("R Tutorial Data Sets/iris.csv") # New Code | Note: point to directory location using quotes
+```
+
+```{r}
+attributes(IrisDataset) #Original code
+```
+```{r}
+#summary(risDataset) #Original code
+#Error in summary(risDataset) : object 'risDataset' not found
+
+summary(IrisDataset) # new code | note: missing "I" at start of "iris..."
+```
+
+```{r}
+# str(IrisDatasets) # Original code
+# Error in str(IrisDatasets) : object 'IrisDatasets' not found
+
+str(IrisDataset) # new code | typo
+```
+
+```{r}
+names(IrisDataset) #original code
+```
+```{r}
+# hist(IrisDataset$Species) #original code 
+# Error in hist.default(IrisDataset$Species) : 'x' must be numeric
+
+hist(IrisDataset$Sepal.Length) #new code | histogram can only accept numeric columns
+```
+
+```{r}
+# plot(IrisDataset$Sepal.Length #original code
+# Error: Incomplete expression: plot(IrisDataset$Sepal.Length #original code
+
+plot(IrisDataset$Sepal.Length) #new code | missing end bracket
+```
+
+```{r}
+#qqnorm(IrisDataset) #original code
+#Error in FUN(X[[i]], ...) : only defined on a data frame with all numeric variables
+
+qqnorm(IrisDataset$Sepal.Length) #original code | must select a specific numeric column for Q-Q plot
+```
+
+```{r}
+IrisDataset$Species<- as.numeric(IrisDataset$Species)  # original code
+```
+
+```{r}
+set.seed(123) # original code
+```
+
+```{r}
+trainSize <- round(nrow(IrisDataset) * 0.2)# original code
+trainSize
+```
+
+```{r}
+testSize <- nrow(IrisDataset) - trainSet # original code
+testSize
+```
+```{r}
+testSize <- round(nrow(IrisDataset)) - trainSize # new code | replace trainSet with trainSize
+testSize
+```
+```{r}
+# trainSizes # orgiinal code
+# Error: object 'trainSizes' not found
+
+trainSize # new code | drop "s" from original code
+```
+
+```{r}
+testSize #original code
+```
+```{r}
+trainSet <- IrisDataset[training_indices, ] #original code
+```
+
+```{r}
+#new code
+training_indices<-sample(seq_len(nrow(IrisDataset)),size = trainSize) #get indices
+
+trainSet<-IrisDataset[training_indices,]
+print(trainSet)
+```
+```{r}
+testSet <- IrisDataset[-training_indices, ]#original code
+```
+
+```{r}
+set.seed(405)#original code
+```
+
+```{r}
+trainSet <- IrisDataset[training_indices, ] #original code (repreated previously)
+testSet <- IrisDataset[-training_indices, ] #original code (repreated previously)
+```
+
+```{r}
+# LinearModel<- lm(trainSet$Petal.Width ~ testingSet$Petal.Length) #original code
+# Error in eval(predvars, data, env) : object 'testingSet' not found
+
+LinearModel<- lm(Petal.Width ~ Petal.Length, trainSet) #new code | both data sets must come from same data frame
+```
+
+```{r}
+summary(LinearModel) # original code
+```
+
+```{r}
+# prediction<-predict(LinearModeltestSet) #orignal code
+# Error in predict(LinearModeltestSet) : object 'LinearModeltestSet' not found
+
+prediction<-predict(LinearModel,testSet) #new code
+```
+
+```{r}
+# predictions #original code
+# Error: object 'predictions' not found
+
+prediction #new code
+```
+
+```{r}
+plot(trainSet$Petal.Length, trainSet$Petal.Width, xlab = 'Petal.Length', ylab = 'Petal.Width', col='red',pch = 19)
+abline(lm(Petal.Width ~ Petal.Length, trainSet),col='red')
+points(testSet$Petal.Length, testSet$Petal.Width,col='blue')
+legend("topleft", legend=c("TrainSet & Linear Model","TestSet"),
+       col=c("red","blue"),lty=1, cex=0.9)
+```
+
+### 7. Write and Informal Report
+Now that you’ve completed the R tutorial and the Find The Errors tasks, write an informal report in Word to Danielle from Blackwell.
+
+Your report should include the following: 
+
+Your predictions concerning how far a certain car can travel based on speed. (From the R tutorial.)
+Your predictions concerning the petal length through using the petal’s width. (From the Find the Errors task.)
+The errors/warning messages that you encountered and how you overcame them.
+In addition, think about adding the answers to these questions within your report:
+
+Was it straightforward to install R and RStudio?
+Was the tutorial useful? Would you recommend it to others?
+What are the main lessons you've learned from this experience?
+What recommendations would you give to other employees who need to get started using R and doing predictive analytics in R instead of Rapidminer?
+
+***
+***
+## <span style='color:red'> Getting Started with R: Informal Report </span>
+
+### Summary
+In this task we explored using R as a tool for data science/analytics. Compared to Rapid Miner, R is significantly more powerful and flexible, though it may seem more complex to new users. In particular, utilizing R via RStudio gives the user a kind of integraded development environment (IDE) for data science. The task covered the basics of a data science pipeline: loading key modules/libraries, loading data, cleaning & preprocessing data, apply a train-test split, training a machine learning model (ML), and making a prediction using the ML model. Overall, the ability to implement these steps in code and via a computational notebook style, makes data reproducability and much more efficient. This is because the notebook style of data analysis allows you to integrate written text with code and output, allowing you to create a kind of user manual for reproducing your results. Furthermore, utilizing code to perform data analysis gives you access to useful tricks, such as for loops, if-then statements, custom functions, and more.
+
+### Results
+Two data sets were analyzed: (1) "cars.csv" & (2) "iris.csv". In both data sets, double (numeric), and categorical data columns were present, however in this task we focused only on the numeric data. Specifically, after some preliminary data exploration via scatterplots, histograms, and Q-Q plots, we performed a 70-30% train-test split and fit a linear regression model to the data sets.
+
+In the case of "cars.csv", we applied linear regression to predict the distance of a card, given it's speed. The result of this linear model can be seen in the figure below.
+![Figure 1](images/distance_vs_speed.png)
+Here, we have highlighted the data points from the training set in red. The linear model was trained on this data set, thus the prediciton line is also colored red. The test set can be in blue. Note that the test set covers a similar distribution/range as the training set, though there are more data points. This linear model achieve an $R^2$ score of 0.93 on the testing set, implying the a good model fit, as can be seen from the plot. It should be noted that one could likely transform the x-axis, possibly using a semi-log scale of some degree, to force the relationship between the distance of the car and the speed of the car to become event more linear. This would then give bette prediction results in the extremes of the data set and probably lead to better extrapolation
+
+Following the "cars.csv" data analysis, we performed an analysis on the "iris.csv" data set. Part of the analysis for this data set involved debugging code provided by the instructor. This code, along with the corrected code, can be found in the "Find the Errors in an R Scripts" section of this notebook. The original code is denoted by the comment "# original code", the resulting errors have been pasted below the original code as a comment as well, followed by the new code (#new code). Most of the errors were simply syntactic in nature. The types of errors are most easily avoided using the autofill (tab-out) functionality common to most scripting languages.
+
+After debugging the provided code, we performed another linear regression fit, but this time to the "iris.csv" petal length vs. petal width. The results of the model are shown below, with color coding identical to the previously analyzed figure.
+![Figure 2](images/petal_width_vs_length.png)
+Here we see a linear model appears to represent the true nature of the trend in the data better than it did in the car case, however there is also more spread in the data for a given petal length.
+
+### Concluding Comments
+Overall, I found it pretty straightforward to download and install R and RStudio. Most of the activity was pretty straightforward, however I also have a lot of experience with notebooks generally and a few different coding languages, all of which have their own unique 'features'. One thing I enjoyed the most was actually exploring beyond what the assignment explictly asked. Specifically, I found it useful looking into how to build custom functions in R and implement for loops. This was my first time using R and overall I would say it is useful for data scientists to be familiar with R, but I honestly would not recommend new data scientists spend too much time in R. This is primarily because R seems a bit clunky and less scalable/flexible compared to python. In particular, more advanced machine learning models, such as neural networks, are not commonly developed in R. Additionally, python is used to develop professional software interfaces, interact with analytical hardware machines/tools, and much more, this it is more likely that a data scientist could integrate a code into some software engineers data acquisition/analysis pipeline if it is written in R. Another complaint about R is that some of the syntax is very non-intuiative and clunky. For example, why do I need to do '<-' to make expressions all the time. It would be some much nicer if I could just press "=". Finally, the error handling in R seems much less transparent the in python. In R it isn't immediately obvious which line of code threw an error.
+
+All that being said, I still think knowing R is useful because it is still a popular language in data science and being able to "speak" many different languages is always useful.
+
+As for recommendations to others in learning R, I would say with coding in general the key is to just practice & practice. Things feel slow and uncomfortable at first, but there is a large community that can help you solve almost any problem and the only thing stopping you from building whatever code or ML model you want is just time and perseverance.

@@ -1,0 +1,5 @@
+"0","```r
+# hist(IrisDataset$Species) #original code 
+# Error in hist.default(IrisDataset$Species) : 'x' must be numeric
+hist(IrisDataset$Sepal.Length) #new code | histogram can only accept numeric columns
+```"

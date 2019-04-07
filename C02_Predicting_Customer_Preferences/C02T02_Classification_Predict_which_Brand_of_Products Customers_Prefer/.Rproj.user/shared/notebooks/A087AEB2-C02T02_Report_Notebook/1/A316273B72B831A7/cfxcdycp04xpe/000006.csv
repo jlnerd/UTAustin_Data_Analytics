@@ -1,0 +1,9 @@
+"0","install.packages(""caret"", dependencies = c(""Depends"", ""Suggests""))"
+"2","also installing the dependency ‘pamr’
+
+"
+"1","
+"
+"1","  There is a binary version available but the source version is later"
+"1",":
+"

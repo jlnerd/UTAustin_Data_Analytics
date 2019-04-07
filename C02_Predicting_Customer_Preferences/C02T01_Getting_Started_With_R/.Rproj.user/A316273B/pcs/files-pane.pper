@@ -1,0 +1,13 @@
+{
+    "path" : "~/Documents/Certificate_Courses/UTAustin_Data_Analytics/C02_Predicting_Customer_Preferences/R Tutorial Data Sets",
+    "sortOrder" : [
+        {
+            "ascending" : false,
+            "columnIndex" : 3
+        },
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}

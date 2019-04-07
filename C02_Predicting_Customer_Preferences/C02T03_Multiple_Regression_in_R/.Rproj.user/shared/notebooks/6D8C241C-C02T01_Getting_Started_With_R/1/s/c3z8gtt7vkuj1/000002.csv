@@ -1,0 +1,15 @@
+"0","```r
+reformat_column_headers <- function(DatasetName){
+  column_names = names(DatasetName)
+  
+  column_names_reformated = gsub(\" \",\"_\",fixed=TRUE,column_names)
+  
+  names(DatasetName)<-c(column_names_reformated)
+  
+  return(DatasetName)
+}
+df_cars = reformat_column_headers(df_cars)
+print(names(df_cars))
+```"
+"1","[1] \"name_of_car\"     \"speed_of_car\"    \"distance_of_car\"
+"

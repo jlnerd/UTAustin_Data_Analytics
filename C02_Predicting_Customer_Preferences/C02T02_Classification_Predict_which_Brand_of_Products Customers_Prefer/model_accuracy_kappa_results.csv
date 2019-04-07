@@ -1,0 +1,4 @@
+﻿,Train_Test,,Train,,Test,
+Model,Accuracy,Kappa,Accuracy,Kappa,Accuracy,Kappa
+Decision Tree,0.9284,0.8471,0.94,0.8505,0.9236,0.837
+Random Forest,0.971,0.9383,0.9961,0.9917,0.8965,0.8707

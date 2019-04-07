@@ -1,0 +1,44 @@
+"0","```r
+#train Random Forest Regression model with a tuneLenght = 1 (trains with 1 mtry value for RandomForest)
+rfFit_autogrid_1<- train(SolarRad~., data = training, method = \"rf\", trControl=fitControl, tuneLength = 1)
+#training results
+rfFit_autogrid_1
+```"
+"1","Random Forest 
+
+5271 samples
+   7 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 1 times) 
+Summary of sample sizes: 4744, 4743, 4744, 4743, 4745, 4744, ... 
+Resampling results:
+
+  RMSE      Rsquared   MAE     
+  84.64967  0.9046372  48.09927
+
+Tuning parameter 'mtry' was held constant at a value of 2
+"
+"0","```r
+#train Random Forest Regression model with a tuneLenght = 2 (trains with 2 mtry values for RandomForest)
+rfFit_autogrid_2 <- train(SolarRad~., data = training, method = \"rf\", trControl=fitControl, tuneLength = 2)
+#training results
+rfFit_autogrid_2
+```"
+"1","Random Forest 
+
+5271 samples
+   7 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 1 times) 
+Summary of sample sizes: 4744, 4743, 4744, 4744, 4743, 4743, ... 
+Resampling results across tuning parameters:
+
+  mtry  RMSE      Rsquared   MAE     
+  2     84.31088  0.9053028  47.86665
+  7     82.58053  0.9057808  41.58025
+
+RMSE was used to select the optimal model using the smallest value.
+The final value used for the model was mtry = 7.
+"

@@ -1,0 +1,6 @@
+"0","#aggregate by Product Type"
+"0","df_ProductType_aggregate <- aggregate(df_validation_w_predictions$Predicted_Volume, by=list(Category=df_validation_w_predictions$ProductType), FUN=sum)"
+"0","colnames(df_ProductType_aggregate) <- c(""ProductType"", ""Total_Predicted_Volume"")"
+"0","# sort the aggregate"
+"0","df_ProductType_aggregate <- df_ProductType_aggregate[order(df_ProductType_aggregate$Total_Predicted_Volume),]"
+"0","par(mar=c(9,4,1,4))"

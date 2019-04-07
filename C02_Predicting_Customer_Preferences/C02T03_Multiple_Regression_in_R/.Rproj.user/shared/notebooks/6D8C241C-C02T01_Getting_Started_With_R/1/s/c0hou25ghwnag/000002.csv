@@ -1,0 +1,12 @@
+"0","```r
+summary(df_cars) #Will count how many NA’s you have.
+```"
+"1","  name_of_car  speed_of_car  distance_of_car 
+ Dodge  : 3   Min.   : 4.0   Min.   :  2.00  
+ Honda  : 3   1st Qu.:12.0   1st Qu.: 26.00  
+ Jeep   : 3   Median :15.0   Median : 36.00  
+ KIA    : 3   Mean   :15.4   Mean   : 42.98  
+ Acura  : 2   3rd Qu.:19.0   3rd Qu.: 56.00  
+ Audi   : 2   Max.   :25.0   Max.   :120.00  
+ (Other):34                                  
+"

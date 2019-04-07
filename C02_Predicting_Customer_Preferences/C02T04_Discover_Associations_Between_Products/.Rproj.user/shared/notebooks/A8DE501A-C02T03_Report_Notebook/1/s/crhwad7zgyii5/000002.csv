@@ -1,0 +1,25 @@
+"0","```r
+#Visualize the data
+plot_summary_of_data<-function(DatasetName,x_index=1){
+  
+  column_names = names(DatasetName)
+  
+  subplot_cols = 2
+  subplot_rows = 2
+  par(mfrow=c(subplot_rows,subplot_cols))  
+  
+  x <- unlist(DatasetName[,x_index])
+  x_header = column_names[x_index]
+  
+  for(i in 1:length(column_names)){
+    
+    if(i != x_index) {
+    y <- unlist(DatasetName[,i])
+    y_header = column_names[i]
+    
+    try(plot(x,y, xlab = x_header, ylab = y_header),silent=TRUE)  #Scatter (Box) Plot
+    } 
+  }
+}
+plot_summary_of_data(df_preprocessed,x_index=26)
+```"

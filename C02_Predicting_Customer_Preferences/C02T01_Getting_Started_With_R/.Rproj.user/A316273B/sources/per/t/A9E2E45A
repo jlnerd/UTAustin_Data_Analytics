@@ -1,0 +1,29 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1548053896629.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "A9E2E45A",
+    "lastKnownWriteTime" : 4370465366,
+    "last_content_update" : 1548053896629,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "7539CF20",
+        "caption" : "df_cars",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=df_cars&cache_key=7539CF20",
+        "displayedObservations" : "50",
+        "environment" : "",
+        "object" : "df_cars",
+        "preview" : "0",
+        "totalObservations" : "50",
+        "variables" : "3"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

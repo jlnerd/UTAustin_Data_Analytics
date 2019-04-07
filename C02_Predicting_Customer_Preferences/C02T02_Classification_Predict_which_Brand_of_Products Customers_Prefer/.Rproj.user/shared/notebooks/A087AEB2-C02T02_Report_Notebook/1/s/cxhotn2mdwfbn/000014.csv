@@ -1,0 +1,18 @@
+"0","#load library and set seed"
+"0","library(caret)"
+"0","library(readr) "
+"0","set.seed(998)"
+"0","#load the data set"
+"0","df <- read_csv(""CompleteResponses.csv"");"
+"2","Parsed with column specification:
+cols(
+  salary = [32mcol_double()[39m,
+  age = [32mcol_double()[39m,
+  elevel = [32mcol_double()[39m,
+  car = [32mcol_double()[39m,
+  zipcode = [32mcol_double()[39m,
+  credit = [32mcol_double()[39m,
+  brand = [32mcol_double()[39m
+)
+"
+"0","head(df)"

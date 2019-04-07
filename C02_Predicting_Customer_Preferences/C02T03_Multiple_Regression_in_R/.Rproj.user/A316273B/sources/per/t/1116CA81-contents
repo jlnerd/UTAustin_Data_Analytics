@@ -1,0 +1,544 @@
+---
+title: 'Task 3: Multiple Regression in R'
+output:
+  html_notebook: default
+  pdf_document: default
+---
+***
+***
+#### Note to the reader
+
+> <span style='color:red'> markdown comments noted by the student/author (John Leonard) are highlighted in red. The final section of the document (section 7) contains the informal written report </span>
+
+***
+***
+### Your Task:
+__FROM:__ Danielle Sherman <br>
+__Subject:__ Brand Preference Prediction
+Hello,
+
+The sales team has again consulted with me with some concerns about ongoing product sales in one of our stores. Specifically, they have been tracking the sales performance of specific product types and would like us to redo our previous sales prediction analysis, but this time they'd like us to include the ‘product type’ attribute in our predictions to better understand how specific product types perform against each other. __They have asked our team to analyze historical sales data and then make sales volume predictions for a list of new product types, some of which are also from a previous task.__ This will help the sales team better understand how types of products might impact sales across the enterprise.
+
+I have attached historical sales data and new product data sets to this email. I would like for you to do the analysis with the goals of:
+
+Predicting sales of four different product types: PC, Laptops, Netbooks and Smartphones
+Assessing the impact services reviews and customer reviews have on sales of different product types
+When you have completed your analysis, please submit a brief report that includes the methods you employed and your results. I would also like to see the results exported from R for each of the methods.
+
+Thanks,
+
+Danielle
+
+__[existingproductattributes2017](https://s3.amazonaws.com/gbstool/emails/2902/existingproductattributes2017.csv?AWSAccessKeyId=AKIAJBIZLMJQ2O6DKIAA&Expires=1550048400&Signature=2foIhxJQPS2MYq5ZMuV0Vyp1hFY%3D)__ </br>
+__[newproductattributes2017](https://s3.amazonaws.com/gbstool/emails/2902/newproductattributes2017.csv?AWSAccessKeyId=AKIAJBIZLMJQ2O6DKIAA&Expires=1550048400&Signature=i32K%2Fx1OcQa0iisFdWwPGoedIWM%3D)__</br>
+
+***
+***
+## Plan of Attack
+### Introduction
+#### Your Task
+You have been asked by Danielle Sherman, CTO of Blackwell Electronics, to __predict the sales in four different product types while assessing the effects service and customer reviews have on sales__. You'll be __using Regression__ to build machine learning models for this analyses using a __choice of two of three popular algorithms__. Once you have determined which one works better on the provided data set, Danielle would like you to __predict the sales of four product types from the new products list__ and prepare a report of your findings.
+
+This task requires you to prepare one deliverable for Danielle Sherman:
+
+Sales Prediction Report. A report in a Zip file that includes:
+
+* A brief summary in Word or PowerPoint of your methods and results that include:
+     * The algorithms you tried. 
+     * The algorithm you selected to make the predictions, including a rationale for selecting the method you did and the level of confidence in the predictions.
+     * Your sales predictions for four target product types found in the new product attributes data set
+     * A chart that displays the impact of customer and service reviews have on sales volume. 
+* The results of each model you constructed, exported from R
+The steps in the following tabs will walk you through this process.
+
+***
+***
+### <span style='color:red'> Setup </span>
+```{r}
+#Load the libraries & set random seed
+library(caret)
+library(readr) 
+set.seed(1)
+
+#load the data set
+df <- read_csv("existingproductattributes2017.csv");
+```
+### 1. Pre-Process the Data
+In previous Regression tasks, you needed to remove non-numeric features to make predictions; however, typical datasets don’t contain only numeric values. Most data will contain a mixture of numeric and nominal data so we need to understand how to incorporate both when it comes to developing regression models and making predictions. 
+
+Categorical variables may be used directly as predictor or predicted variables in a multiple regression model as long as they've been converted to binary values. In order to pre-process the sales data as needed we first need to convert all factor or 'chr' classes to binary features that contain ‘0’ and ‘1’ classes. Fortunately, caret has a method for creating these 'Dummy Variables' as follows:
+
+```{r}
+# one-hot encode (dummify) the data
+df_preprocessed <- dummyVars(" ~.",data = df)
+df_preprocessed <- data.frame(predict(df_preprocessed,newdata = df))
+
+colnames(df_preprocessed)
+```
+#### Correlation
+
+Correlation as you likely already know about is a measure of the relationship between two or more features or variables. In this problem, you were tasked with ascertaining if some specific features impact on weekly sales volume.
+
+1. In order to measure the correlation between the variables in the data, all variables must not contain nominal data types. Use the str() to check all of the datatypes in your dataframe. 
+```{r}
+str(df_preprocessed) #Check data structure
+```
+
+2. Now use summary() to check for missing data. Missing data is represented by "NA". There are many methods of addressing missing data, but for now let's delete any attribute that has missing information. 
+```{r}
+summary(df_preprocessed)
+```
+```{r}
+#drop columsn that contain NA
+drops <- c("BestSellersRank")
+df_preprocessed <- df_preprocessed[,!(names(df_preprocessed) %in% drops)]
+
+names(df_preprocessed)
+
+```
+3. While correlation doesn't always imply causation you can start your analysis by finding the correlation between the relevant independent variables and the dependent variable. In the next steps you will use the cor() function to create a correlation matrix that you can visualize to ascertain the correlation between all of the features.
+4. Use the cor() function to build the correlation matrix:
+```{r}
+df_corr <-cor(df_preprocessed)
+```
+Correlation values fall within -1 and 1 with variables have string positive relationships having correlation values closer to 1 and strong negative relationships with values closer to -1. What kind of relationship do two variables with a correlation of '0' have?
+
+<span style="color:red"> 0 correlation corresponds to no linear relationship between the two columns being correlated. </span>
+
+It is often very helpful to visualize the correlation matrix with a heat map so we can 'see' the impact different variables have on one another. To generate a heat map for your correlation matrix we'll use corrplot package as follows:
+```{r}
+#install.packages("corrplot")
+library(corrplot)
+corrplot(df_corr,order="hclust",tl.col="black", tl.srt=90,tl.cex = .45)
+```
+blue (cooler) colors show a positive relationship and red (warmer) colors indicate more negative relationships. Knowing what you do about correlation - what do you think intersections in the chart without colors represent?
+
+<span style="color:red"> 0 correlation corresponds to no linear relationship between the two columns being correlated. </span>
+
+Using the heat map, review the service and customer review relationships with sales volume and note the associated correlations for your report. If you would like more detailed correlation figures than those available with the heat map, enter the name of your correlation object into console and review the printed information.
+
+Now that you know the relationships between all of the variables in the data it is a good time to remove any features that aren't needed for your analysis.
+```{r}
+# Search for cross correlations > 0.95 and < 1 that aren't related to the label_column ("Volume")
+label_column <- "Volume"
+drops <- c(label_column)
+df_corr_abs <- abs(df_corr)
+df_corr_abs <- df_corr_abs[,!(colnames(df_corr_abs) %in% drops)] #drop the label column so you dont remove features correlated with this label
+for (col_name in c(colnames(df_corr_abs))){
+  df_column <-df_corr_abs[,col_name]
+  df_strong_corr<-df_column[df_column>0.95]
+  if (length(df_strong_corr)>0) {
+    print(col_name)
+    print(df_strong_corr)
+  }
+}
+```
+```{r}
+# Delete one of the pairs from each correlation
+drops <- c("x1StarReviews","x5StarReviews")
+df_preprocessed<-df_preprocessed[,!(colnames(df_preprocessed) %in% drops)] 
+
+#Transform Volume to log10_Volume to prevent predictions of <0 volume
+df_preprocessed<-df_preprocessed[!(df$Volume==0),]
+df_preprocessed['log10_Volume'] <- log10(df_preprocessed$Volume)
+drops <- c("Volume")
+df_preprocessed<-df_preprocessed[,!(colnames(df_preprocessed) %in% drops)] 
+```
+
+```{r}
+#Visualize the data
+plot_summary_of_data<-function(DatasetName,x_index=1){
+  
+  column_names = names(DatasetName)
+  
+  subplot_cols = 2
+  subplot_rows = 2
+  par(mfrow=c(subplot_rows,subplot_cols))  
+  
+  x <- unlist(DatasetName[,x_index])
+  x_header = column_names[x_index]
+  
+  for(i in 1:length(column_names)){
+    
+    if(i != x_index) {
+    y <- unlist(DatasetName[,i])
+    y_header = column_names[i]
+    
+    try(plot(x,y, xlab = x_header, ylab = y_header),silent=TRUE)  #Scatter (Box) Plot
+    } 
+  }
+}
+
+plot_summary_of_data(df_preprocessed,x_index=26)
+```
+
+
+***
+***
+### 2. Develop Multiple Regression Models
+In this step you will build models, make predictions and learn which algorithms are appropriate for parametric and non-parametric data sets.
+
+1. Using the steps in 'R Walkthrough' that outlined train a linear model, create a linear model that uses volume as its dependent variable. Use the summary() function of R to evaluate the model and make a specific note of the R-Squared value.
+```{r}
+#setup seed for reproducability
+set.seed(1)
+
+# Define Label
+y <- df_preprocessed$log10_Volume
+
+#define a 75-25% train-test split of the dataset
+inTraining <- createDataPartition(y, p = .75, list = FALSE)
+df_train <- df_preprocessed[inTraining,]
+df_test <- df_preprocessed[-inTraining,]
+
+y_train = df_train$log10_Volume
+y_test = df_test$log10_Volume
+
+#check dimensions of train & test set
+dim(df_train); dim(df_test);
+
+View(df_train)
+```
+```{r}
+train_controls <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
+model <- train(log10_Volume ~., data = df_train, method = "lm", trControl=train_controls)
+print(model)
+
+cat('\n df_train post resample: \n')
+df_train_test = df_train
+y_train_test=y_train
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+
+cat('\n df_test post resample: \n')
+df_train_test = df_test
+y_train_test=y_test
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+```
+</br>
+     1. What do you notice about the RMSE and R-Squared values?
+     </br>
+      <span style='color:red'> on the training set, the RMSE and Rsquared are quite good, but the values are poor for the testing set, suggesting the model is overfitting. Furthermore, multiple errors were thrown during th fit. </span>
+</br>      
+     2. Did the model perform well? Why or why not? 
+     </br>
+     <span style='color:red'> No, R-square is very low for testing set.  </span>
+</br>     
+     3. If not, perhaps you used the wrong type of machine learning method on the wrong type of data. See the following resource for more information: [Parametric vs non-parametric methods for data analysis](https://s3.amazonaws.com/gbstool/courses/883/docs/ParametricNonparametric_Altman_2009.pdf?AWSAccessKeyId=AKIAJBIZLMJQ2O6DKIAA&Expires=1550480400&Signature=PRY9DUNqxdpRErkrhPTBOgBAOzc%3D)
+     
+So let's dive into using some non-parametric machine learning models:
+
+1. Using the same general approach documented in the walkthrough and the steps outlined below, make sales volume predictions on the new products dataset after training and testing your models on the historical data set:
+
+     1. Set seed and create training and test sets
+```{r}
+#setup seed for reproducability
+set.seed(1)
+
+# Define Label
+y <- df_preprocessed$log10_Volume
+
+#define a 75-25% train-test split of the dataset
+inTraining <- createDataPartition(y, p = .75, list = FALSE)
+df_train <- df_preprocessed[inTraining,]
+df_test <- df_preprocessed[-inTraining,]
+
+y_train = df_train$log10_Volume
+y_test = df_test$log10_Volume
+
+#check dimensions of train & test set
+dim(df_train); dim(df_test);
+```
+    
+2. Use the following 3 algorithms for your analysis; you might have to research each of these as there are variants of each in caret - you may choose which variant you need:
+     
+   1. Support Vector Machine (SVM)
+           
+           <span style='color:red'> [walkthrough link](http://dataaspirant.com/2017/01/19/support-vector-machine-classifier-implementation-r-caret-package/) <\span>
+```{r}
+train_controls <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
+
+#View(df_train)
+ 
+model <- train(log10_Volume ~., data = df_train, method = "svmLinear",
+                 trControl=train_controls,
+                 tuneLength = 10)
+model_svmLinear <- model
+print(model)
+
+cat('\n df_train post resample: \n')
+df_train_test = df_train
+y_train_test=y_train
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+
+cat('\n df_test post resample: \n')
+df_train_test = df_test
+y_train_test=y_test
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+```
+           
+  2. Random Forest
+```{r}
+train_controls <- trainControl(method = "repeatedcv", number = 10, repeats = 1)
+#View(df_train)
+ 
+model <- train(log10_Volume ~., data = df_train, method = "rf",
+                 trControl=train_controls,
+                 tuneLength = 10)
+model_rf <- model
+print(model)
+
+cat('\n df_train post resample: \n')
+df_train_test = df_train
+y_train_test=y_train
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+
+cat('\n df_test post resample: \n')
+df_train_test = df_test
+y_train_test=y_test
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+```
+
+  3. Gradient Boosting
+      
+```{r}
+train_controls <- trainControl(method = "repeatedcv", number = 10, repeats = 1)
+#View(df_train)
+ 
+model <- train(log10_Volume ~., data = df_train, method = "xgbTree",
+                 trControl=train_controls,
+                 tuneLength = 10)
+model_gbTree <- model
+print(model)
+
+cat('\n df_train post resample: \n')
+df_train_test = df_train
+y_train_test=y_train
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+
+cat('\n df_test post resample: \n')
+df_train_test = df_test
+y_train_test=y_test
+prediction <- predict(model, df_train_test)
+df_postResample<-postResample(pred = prediction, obs = y_train_test)
+print(df_postResample)
+```
+      
+           
+2. Be sure to take any precautions needed to guard against overfitting and longer training times
+
+3. Apply each of your models to your testing data as you have done in the previous task using the predict() function in R. 
+</br>
+     1. Example: Predictions<-predict(TrainedModelName, newdata=testSet).
+     </br>
+     <span style='color:red'> This was done in-line with the model training </span>
+     
+4. Review your models and identify the one that performed best without overfitting. You should also look at the predicted values themselves. If you have negative vales in your predictions and negative values are not possible for your dependent variable, choose a different model. Be prepared to explain why you chose to use the algorithms you did in your report.
+
+```{r}
+
+compare_models <- function (model_list, df_train, df_test, label_column){
+    for (i in 1:length(model_list)){
+      
+      model <- model_list[i]
+      model_name <- list(model[[1]]$method)[[1]]
+      
+      cat(paste('\n ----- model_name:',model_name,'-----'))
+      cat('\n df_train post resample: \n')
+      df_train_test = df_train
+      y_train_test = df_train[,c(label_column)]
+      prediction <- predict(model, df_train_test)[[1]]
+            
+      df_postResample<-postResample(pred = prediction, obs = y_train_test)
+      print(df_postResample)
+    
+      plot(y_train_test,prediction,xlab = 'Label',ylab = 'Prediction', col='blue', main = model_name)
+      par(new=FALSE)
+      
+      cat('\n df_test post resample: \n')
+      df_train_test = df_test
+      y_train_test = df_test[,c(label_column)]
+      prediction <- predict(model, df_train_test)[[1]]
+      df_postResample<-postResample(pred = prediction, obs = y_train_test)
+      print(df_postResample)
+      
+      points(y_train_test,prediction,xlab = 'Label',ylab = 'Prediction', col='red')
+      legend(4, legend = list('Train','Test'),col=c('Blue','Red'),pch='o')
+    }
+}
+
+model_list <- list(model_svmLinear, model_rf, model_gbTree)
+compare_models(model_list, df_train, df_test, label_column = 'log10_Volume')
+
+```
+
+<span style='color:red'> the random forest and xgbTree appear the best, however the xgb tree seems to be overfitting, based on the R-squared score and the nearly perfect linear correlation between the label and the prediction in the label vs prediction plot, so we will proceed using the random forest as the best model </span>
+
+5. After choosing a model, you will need to prepare the new products data set for prediction. Anything that has been done to the structure of the existing products data needs to repeated for new products. With new products, use dummyVars() and then remove any attribute that you removed from the existing products data sets. When using dummyVars, be sure to change the name of the object you are creating so that you don't overwrite your earlier work. Example: newDataframe should be changed to newDataframe2 where ever it appears in your dummyVar work. 
+
+```{r}
+#load the data set
+df_validation <- read_csv("newproductattributes2017.csv");
+
+# one-hot encode (dummify) the data
+df_validation_preprocessed <- dummyVars(" ~.",data = df_validation)
+df_validation_preprocessed <- data.frame(predict(df_validation_preprocessed,newdata = df_validation))
+
+#drop columsn that contain NA
+drops <- c("BestSellersRank","x1StarReviews","x5StarReviews")
+df_validation_preprocessed <- df_validation_preprocessed[,!(names(df_validation_preprocessed) %in% drops)]
+
+#Make predictions
+model <- model_gbTree
+df_train_test = df_validation_preprocessed
+prediction <- predict(model, df_train_test)
+prediction_validation <- prediction
+
+prediction_validation_Volume <- 10^(prediction_validation)
+```
+```{r}
+#Add predictions to df
+df_validation_w_predictions <- df_validation
+df_validation_w_predictions['Predicted_Volume'] <- prediction_validation_Volume
+
+#sort the df
+df_validation_w_predictions <- df_validation_w_predictions[order(df_validation_w_predictions$Predicted_Volume),]
+
+#Add unique ID column
+df_validation_w_predictions['ProductType_ProductNumber_Price']<- with(df_validation_w_predictions, paste0(ProductType,'_#', ProductNum,'_$', Price))
+
+par(mar=c(11,4,1,1))
+barplot(height = df_validation_w_predictions$Predicted_Volume, names.arg = df_validation_w_predictions$ProductType_ProductNumber_Price, las=2, cex.axis = .8 , cex.names = 0.8, ylab = 'Volume')
+
+#aggregate by Product Type
+df_ProductType_aggregate <- aggregate(df_validation_w_predictions$Predicted_Volume, by=list(Category=df_validation_w_predictions$ProductType), FUN=sum)
+colnames(df_ProductType_aggregate) <- c("ProductType", "Total_Predicted_Volume")
+
+# sort the aggregate
+df_ProductType_aggregate <- df_ProductType_aggregate[order(df_ProductType_aggregate$Total_Predicted_Volume),]
+
+par(mar=c(9,4,1,4))
+barplot(height = df_ProductType_aggregate$Total_Predicted_Volume, names.arg = df_ProductType_aggregate$ProductType, las=2, ylab = 'Total Volume')
+```
+
+```{r}
+#Plot Ratings and Reviews vs. Volume
+x<-log10(df_validation_w_predictions$x4StarReviews)
+y<-log10(df_validation_w_predictions$Predicted_Volume)
+plot(x,y,col='red',xlab = "log10(# of ratings)", ylab = "log10(Predicted_Volume)")
+
+x<-log10(df_validation_w_predictions$x3StarReviews)
+points(x,y,col='green')
+
+x<-log10(df_validation_w_predictions$x2StarReviews)
+points(x,y,col='blue')
+legend(2.1,2.2, legend = list('4 Stars','3 Stars','2 Stars'),col=c('red','green','blue'),pch='o')
+
+#Plot service reviews
+x<-log10(df_validation_w_predictions$PositiveServiceReview)
+y<-log10(df_validation_w_predictions$Predicted_Volume)
+plot(x,y,col='green',xlab = "log10(# of Service Reviews)", ylab = "log10(Predicted_Volume)")
+
+x<-log10(df_validation_w_predictions$NegativeServiceReview)
+points(x,y,col='red')
+
+legend(2, legend = list('Positive','Negative'),col=c('green','red'),pch='o')
+
+```
+
+6. Once new products is prepared, use the predict() function again. This time with the new products dataset to create your final predictions in an object called finalPred.
+
+
+Often times it is helpful for report building to output your data set and predictions from RStudio. Let’s add your predictions to the new products data and then create a csv file. Use your csv and Excel to organize your data for reporting.
+
+* Add predictions to the new products data set 
+     
+<span style='color:red'> This was done in the previous part </span>
+        
+* Create a csv file and write it to your hard drive. Note: You may need to use your computer’s search function to locate your output file. 
+     
+```{r}
+write.csv(df_validation_w_predictions, file="C2.T3output.csv", row.names = FALSE)
+```
+
+3. Use Excel to organize your predictions. Remember the four product types you need to focus on: PC, Laptops, Netbooks and Smartphones
+
+<span style='color:red'> We'll just stick to organizing the data in R </span>
+
+***
+***
+## 3. Write an informal report
+Write an informal report to Danielle Sherman, in Word or PowerPoint, describing your analysis. In addition to presenting your findings, you might address questions such as the following:
+
+* Did you learn anything of potential business value from this analysis?
+* Was it straightforward to rerun your projections of sales volume using both models? 
+* What are the main lessons you've learned from this experience?
+* What recommendations would you give to the sales department regarding your findings relating to the different types of reviews? 
+
+***
+***
+## <span style='color:red'> Multiple Regression in R Report </span>
+
+### Introduction
+In this report we review multiple regression techniques used to predict the volumes for new products from Blackwell Electronics. In developing these multiple regression models, we performed a number of preprocessing steps to elliminate features with high colinearity, scale the data so all features had similar numeric ranges, one-hot encoded (dummified) categorical string data to allow the models to leverage these categorical features, and transformed the label of interest, Volume, into a log-scale to prevent the model from ever predicting volumes of less than 0.
+
+### Preprocessing
+The "existingproductattributes2017.csv" data set was used the build the multiple regression models. After pulling the data into R, the categorical feature, Product Type, was one-hot encoded (dummified). In this step, the "dummyVars" function basically determines the number of categories, n_cat of Producty Types, then for each row of data, n_cat columns are created, with each column labeled as one of the product types. The cells of these new columns are then populated with zeros, if that given data row does not correspond to the particular product type in that column, and a value of one is populated in the cell of the product type column that the row of data was originally labeled to correspond to. In this way, we transformed string-based categorical data into numeric data, which the machine learning algorithms can leverage as features in making predictions and training.
+
+Following the one-hot encoding, we analyzed the data to see if any columns contained "NA" values. "BestSellersRank" was observed to contain 15 NA cells, thus this column was dropped as a relevant feature.
+
+Next, we analyzed the correlations in the data sets using a correlation plot, shown below
+
+!["Correlation Plot"](figures/correlation_plot.png)
+Here, the deep blue colors represent strong positive correlations, while the deep red cells represent strong negative correlations. Using the correlation covariance values from this table, we filtered out the features with colinearities >0.95 ("x1StarReviews" with "x2StarReviews". Furthermore, we discovered the "x5starReviews" feature had a perfect correlation of 1 with the "Volumes" label. This is a suspiciously good correlation between a feature and label, thus we analyzed the data in a scatter plot, shown below.
+
+!["Volume vs x5StarReviews"](figures/Volume_vs_5starReviews.png)
+As can be seen, this feature and our label of interest have a perfect correlation, which implies there is likely some data entry error with the "x5starReviews" feature. For this reason, this column was droped as a relevant feature for our models.
+
+Following the exclusion of the "x1StarReviews" and "x5StarReviews" features, we transformed the label column ("Volume") into a log10 scale. This was done to prevent any of the models from ever predicting negative volumes, since a negative prediction for log10(Volume), would simply correspond to a volume <1 (10^-1 = 0.1).
+
+Finally, the data was split into a training and testing set using a 75-25% train-test partition. 
+
+### Training & Testing the Models
+Three models were evaluated: (1) support vector machine (SVM) with linear kernel, (2) random forest (RF), and (3) eXtreme gradient boosted tree. From each model, the train and test RMSE and R-squared was calculated. The table below shows the summary of the results.
+
+!["Train Test Metrics"](figures/Train_test_metrics.png)
+
+To visualize the results, we also plotted the true log10(Volume) label vs. the log10(Volume) prediction.
+!["Label vs. prediction plots"](figures/label_vs_prediction_plots.png)
+Viewing the RMSE & R-squared summary table, along with the label vs. prediction plots, we can see that the RF and gbTree are the best models. However, comparing these two models, we also see that the gbTree has an R-squared nearly equal to one (0.9999) and the trend in the label vs prediction plot is almost perfectly linear on the training set. These two facts suggest this model is overfitting the training data and thus the RF is a better model for generalization. 
+
+### Predicting New Product Volumes
+Using the trained RF model, we performed predictions for the new products defined in the "newproductattributes.csv" data set. Prior to feeding the data into the trained model, we carried out the previously mentioned preprocessing steps (one-hot encode the product type, drop the "BestSellerRank", "x1StarReviews", and "x5StarReviews" columns, and transform volume to log10(volume)). After predicting the log10(Volume) for each case in the new product attritubes table, we extracted the predicted volume from the predicted log10(Volume) column. The bar chart below shows the breakdown of the Total (aggregate) predicted volume vs. Product Type.
+
+!["Total_Volume_vs_Product_Type"](figures/Total_Volume_vs_Product_Type.png)
+Here, we can see Tablets and Game Consoles are expected to have the highest sales volumes. Diving deeper into the data, we can breakdown the products further by product type, product number, and price. The bar chart below shows this breakdown.
+
+!["Volume_breakdown"](figures/Volume_breakdown.png)
+From these, we can more clearly see which unique product is expected to have the highest sales volume. Specifically, we see Tablet #187, sold at $199, contributes to the majority of the total volume sold by tablets, while Game Console #307 and #199 have nearly equal contribution to the total game console volume sold.
+
+These conclusions have 2 key business value implications: (1) if the objective of sales is to minimize the number of products while maximizing sales, then focusing on Tablet #187 is the best course of action. (2) if the objective of sales is to offer the widest range of product types, while maximizing sales volume, then the team should focus on PC#17, Tablet #186, Smartphone #194, Netbook #180, Game Consoles #307 and/or #199, and Tablet #187.
+
+Finally, the last prediction that may be of interest to the Sales team is the impact of customer rating and sales review on Volume. The scatter plot below shows the predicted volume vs # of ratings for 4 star, 3 star, and 2 star ratings, all on a log-log scale.
+
+!["Volume_breakdown"](figures/Volume_vs_ratings.png)
+Here, we can see that there is essentially a linear relationship between log10(# of ratings) and log10(predicted Volume).
+
+Similar to the # of ratings, we also see a linear relationship between the log10(Volume) and log10(# of service reviews (positive and negative)), as can be seen in the plot below.
+!["Volume_breakdown"](figures/Volume_vs_service_reviews.png)
+
+### Task 2 Opinions/Comments
+Overall I found this to be the most challenging of the tasks we have completed, largely because it required more individual exploration, rather than following the plan of attack line by line. Overall, I think this style of the activity was very educational. The part I had the most trouble with was running the initial linear model, as the errors the model was throwing were somewhat strange and there wasn't a consistant answer online as to what they actually mean. Other than that though, I did find it pretty straightforward to rerun predictions using different models, though I wish R had better "function" capabilities, more similar to python, because I did find myself just copying and pasting lines of code because I didn't feel like dealing with the unique characteristics of R functions.

@@ -1,0 +1,16 @@
+"0","```r
+library(caret)
+library(mlbench)
+data(Sonar)
+set.seed(107)
+inTrain <- createDataPartition(y=Sonar$Class, ## the outcome data are needed
+                               p=0.75, ## the percentage of data in the training set
+                               list = FALSE) #The format of the results)
+## The output is a set of integers for the rows of Sonar that belong in the training set
+str(inTrain)
+```"
+"1"," int [1:157, 1] 1 2 3 6 7 9 10 11 12 13 ...
+ - attr(*, \"dimnames\")=List of 2
+  ..$ : NULL
+  ..$ : chr \"Resample1\"
+"

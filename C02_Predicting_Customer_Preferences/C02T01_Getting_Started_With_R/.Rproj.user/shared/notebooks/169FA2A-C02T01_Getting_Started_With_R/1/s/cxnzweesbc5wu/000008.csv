@@ -1,0 +1,1 @@
+"0","plot(df_cars$'speed_of_car',df_cars$'distance_of_car',xlab = 'speed_of_car', ylab = 'distance_of_car',main='training+test set')"

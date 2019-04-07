@@ -1,0 +1,33 @@
+"0","```r
+#dataframe for manual tuning of mtry
+rfGrid <- expand.grid(mtry=c(1,2,3))
+#train Random Forest Regression model
+#note the system time wrapper. system.time()
+#this is used to measure process execution time 
+system.time(rfFit_manualgrid_1 <- train(SolarRad~., data = training, method = \"rf\", trControl=fitControl, tuneGrid=rfGrid))
+```"
+"1","   user  system elapsed 
+227.311   3.325 231.253 
+"
+"0","```r
+#training results
+rfFit_manualgrid_1
+```"
+"1","Random Forest 
+
+5271 samples
+   7 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 1 times) 
+Summary of sample sizes: 4745, 4744, 4743, 4743, 4745, 4743, ... 
+Resampling results across tuning parameters:
+
+  mtry  RMSE      Rsquared   MAE     
+  1     97.61393  0.8808622  61.77288
+  2     84.45396  0.9043399  47.99523
+  3     82.35951  0.9070724  43.96085
+
+RMSE was used to select the optimal model using the smallest value.
+The final value used for the model was mtry = 3.
+"

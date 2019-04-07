@@ -1,0 +1,97 @@
+"0","```r
+# Search for cross correlations > 0.95 and < 1 that aren't related to the label_column (\"Volume\")
+label_column <- \"Volume\"
+drops <- c(label_column)
+df_corr_abs <- abs(df_corr)
+df_corr_abs <- df_corr_abs[,!(colnames(df_corr_abs) %in% drops)] #drop the label column so you dont remove features correlated with this label
+for (col_name in c(colnames(df_corr_abs))){
+  df_column <-df_corr_abs[,col_name]
+  df_strong_corr<-df_column[df_column>0.95]
+  if (length(df_strong_corr)>0) {
+    print(col_name)
+    print(df_strong_corr)
+  }
+}
+```"
+"1","[1] \"ProductTypeAccessories\"
+ProductTypeAccessories 
+                     1 
+[1] \"ProductTypeDisplay\"
+ProductTypeDisplay 
+                 1 
+[1] \"ProductTypeExtendedWarranty\"
+ProductTypeExtendedWarranty 
+                          1 
+[1] \"ProductTypeGameConsole\"
+ProductTypeGameConsole 
+                     1 
+[1] \"ProductTypeLaptop\"
+ProductTypeLaptop 
+                1 
+[1] \"ProductTypeNetbook\"
+ProductTypeNetbook 
+                 1 
+[1] \"ProductTypePC\"
+ProductTypePC 
+            1 
+[1] \"ProductTypePrinter\"
+ProductTypePrinter 
+                 1 
+[1] \"ProductTypePrinterSupplies\"
+ProductTypePrinterSupplies 
+                         1 
+[1] \"ProductTypeSmartphone\"
+ProductTypeSmartphone 
+                    1 
+[1] \"ProductTypeSoftware\"
+ProductTypeSoftware 
+                  1 
+[1] \"ProductTypeTablet\"
+ProductTypeTablet 
+                1 
+[1] \"ProductNum\"
+ProductNum 
+         1 
+[1] \"Price\"
+Price 
+    1 
+[1] \"x5StarReviews\"
+x5StarReviews        Volume 
+            1             1 
+[1] \"x4StarReviews\"
+x4StarReviews 
+            1 
+[1] \"x3StarReviews\"
+x3StarReviews 
+            1 
+[1] \"x2StarReviews\"
+x2StarReviews x1StarReviews 
+     1.000000      0.951913 
+[1] \"x1StarReviews\"
+x2StarReviews x1StarReviews 
+     0.951913      1.000000 
+[1] \"PositiveServiceReview\"
+PositiveServiceReview 
+                    1 
+[1] \"NegativeServiceReview\"
+NegativeServiceReview 
+                    1 
+[1] \"Recommendproduct\"
+Recommendproduct 
+               1 
+[1] \"ShippingWeight\"
+ShippingWeight 
+             1 
+[1] \"ProductDepth\"
+ProductDepth 
+           1 
+[1] \"ProductWidth\"
+ProductWidth 
+           1 
+[1] \"ProductHeight\"
+ProductHeight 
+            1 
+[1] \"ProfitMargin\"
+ProfitMargin 
+           1 
+"

@@ -1,0 +1,7 @@
+"0","train_test_size<-function(DatasetName,training_size_ratio=0.7){"
+"0","  trainSize<-round(nrow(DatasetName)*training_size_ratio) "
+"0","  testSize<-nrow(DatasetName)-trainSize"
+"0","  df_out = data.frame('trainSize'=c(trainSize),'testSize'=c(testSize))"
+"0","  return(df_out)"
+"0","}"
+"0","train_test_size(df_cars,0.7)"

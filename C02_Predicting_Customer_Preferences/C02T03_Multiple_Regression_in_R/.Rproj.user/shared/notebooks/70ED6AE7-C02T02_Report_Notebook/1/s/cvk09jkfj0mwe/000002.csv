@@ -1,0 +1,9 @@
+"0","```r
+# Analyze Variable Importance
+varImp(model)
+
+```"
+"1","C5.0 variable importance
+
+  only 20 most important variables shown (out of 34)
+"

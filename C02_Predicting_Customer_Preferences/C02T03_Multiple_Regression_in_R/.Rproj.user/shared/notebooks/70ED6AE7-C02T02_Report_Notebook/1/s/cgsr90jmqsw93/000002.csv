@@ -1,0 +1,25 @@
+"0","```r
+#training results
+rfFit_manualgrid_1
+```"
+"1","Random Forest 
+
+7424 samples
+   6 predictor
+   2 classes: '0', '1' 
+
+No pre-processing
+Resampling: Cross-Validated (10 fold, repeated 1 times) 
+Summary of sample sizes: 6681, 6682, 6681, 6682, 6682, 6681, ... 
+Resampling results across tuning parameters:
+
+  mtry  Accuracy   Kappa       
+  1     0.6217673  0.0000000000
+  2     0.6219020  0.0004418206
+  3     0.7267010  0.3390088145
+  4     0.8537144  0.6805815658
+  5     0.8923742  0.7709911267
+
+Accuracy was used to select the optimal model using the largest value.
+The final value used for the model was mtry = 5.
+"

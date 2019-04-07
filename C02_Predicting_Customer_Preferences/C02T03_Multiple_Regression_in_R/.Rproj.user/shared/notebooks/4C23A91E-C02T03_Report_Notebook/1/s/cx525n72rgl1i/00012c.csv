@@ -1,0 +1,4 @@
+"0","#Plot service reviews"
+"0","x<-log10(df_validation_w_predictions$PositiveServiceReview)"
+"0","y<-log10(df_validation_w_predictions$Predicted_Volume)"
+"0","plot(x,y,col='green',xlab = ""log10(# of Service Reviews)"", ylab = ""log10(Predicted_Volume)"")"

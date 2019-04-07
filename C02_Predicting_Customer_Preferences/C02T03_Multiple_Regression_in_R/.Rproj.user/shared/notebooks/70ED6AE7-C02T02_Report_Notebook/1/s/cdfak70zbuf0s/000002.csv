@@ -1,0 +1,14 @@
+"0","```r
+#setup seed for reproducability
+set.seed(998)
+#define a 75-25% train-test split of the dataset
+y <- df_preprocesssed$brand
+inTraining <- createDataPartition(y, p = .75, list = FALSE)
+training <- df_preprocesssed[inTraining,]
+testing <- df_preprocesssed[-inTraining,]
+#check dimensions of train & test set
+dim(training); dim(testing);
+```"
+"1","[1] 7424    7
+[1] 2474    7
+"

@@ -1,0 +1,1 @@
+"0","abline(lm(distance_of_car ~ speed_of_car, df_trainSet),col='red')"
