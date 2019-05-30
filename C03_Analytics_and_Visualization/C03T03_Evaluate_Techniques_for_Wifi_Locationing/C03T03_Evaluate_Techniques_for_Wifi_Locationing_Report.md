@@ -5,7 +5,7 @@ __Author:__ John T. Leonard <br>
 __Contact:__ jtleona01@gmail.com <br>
 __Date:__ 2019.05.27 <br>
 
-<img src="figures/Wifi-router-and-mobile.jpg" style="width: 400px;"/>
+<img src="figures/Wifi-router-and-mobile.jpg" style="width: 300px;"/>
 
 # Overview
 In this technical report, we review an investigation in predicting Wifi location using signals from multiple wifi hotspots within a building. We describe the data set used for the analysis, a number of preprocessing and feature engineering steps taken, and the various prediction models evaluated. More specifically, in building the prediction models, we performed hyperparameter grid search routines, with parallel computing sessions, to attempt to find the best model for each different type of model evaluated. The model types evaluated include: (1) decision tree, (2) K-nearest neighbors (KNN), (3) support vector machine (SVM), (4) linear model. For each type of model, we developed a classification-based version, and a regression-based version, as some of the target labels were categorical, while other were continuous. Following training, we compared the performance metrics of each of the best models from the hyperparameter grid search and evaluated the prediction time for each model. Based on the model performance, including prediction time, we conclude the decision tree model is the most optimal for predicting Wifi Location.
