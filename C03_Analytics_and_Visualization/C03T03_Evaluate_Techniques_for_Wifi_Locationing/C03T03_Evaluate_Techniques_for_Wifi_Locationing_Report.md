@@ -5,7 +5,7 @@ __Author:__ John T. Leonard <br>
 __Contact:__ jtleona01@gmail.com <br>
 __Date:__ 2019.05.27 <br>
 
-<img src="figures/Wifi-router-and-mobile.jpg" style="width: 300px;"/>
+<img src="figures/Wifi-router-and-mobile.jpg" style="width: 200px;"/>
 
 # Overview
 In this technical report, we review an investigation in predicting Wifi location using signals from multiple wifi hotspots within a building. We describe the data set used for the analysis, a number of preprocessing and feature engineering steps taken, and the various prediction models evaluated. More specifically, in building the prediction models, we performed hyperparameter grid search routines, with parallel computing sessions, to attempt to find the best model for each different type of model evaluated. The model types evaluated include: (1) decision tree, (2) K-nearest neighbors (KNN), (3) support vector machine (SVM), (4) linear model. For each type of model, we developed a classification-based version, and a regression-based version, as some of the target labels were categorical, while other were continuous. Following training, we compared the performance metrics of each of the best models from the hyperparameter grid search and evaluated the prediction time for each model. Based on the model performance, including prediction time, we conclude the decision tree model is the most optimal for predicting Wifi Location.
@@ -26,6 +26,7 @@ Overall, the key objective of this study is to develop a general framework for d
 
 # Data Source & Structure
 The data used for this study is contained in the 'trainingData.csv' file. This data set was used to compose the training set, validation set, and testing set throughout the study. We will refer to this data set as the 'DataFrame' (df). The df consists of 19937 rows and 529 columns. These columns can broken into two main fields: non-WAP columns and WAP columns. The meaning of WAP is unknown and is not really important in any case. The WAP columns simply refer to columns with the WAP prefix, following by some index. These columns are our many features of interest, containing the sensor data from various wifi hotspots for a given user. In total, the initial df contained 520 WAP columns and 9 non-WAP columns. The non-WAP columns and their respective data types are shown in the table below.
+
 <img src="figures/df_non_WAP_headers_and_dtypes.png" style="width: 200px;"/>
 
 
