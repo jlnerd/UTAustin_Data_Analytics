@@ -1,0 +1,1 @@
+[{"Name": "UTA_EMR_Example", "Type": "STREAMING", "Args": ["-files", "s3://jl-mapper/Mapper.py, s3://jl-reducer/reducer.py", "-mapper", "Mapper.py-reducer", "reducer.py", "-input", "s3://commoncrawl/crawl-data/CC-MAIN-2019-22/segments/1558232254253.31/wet/CC-MAIN-20190519061520-20190519083520-00000.warc.wet.gz", "-output", "s3://jl-output/"], "ActionOnFailure": "CONTINUE"}]
